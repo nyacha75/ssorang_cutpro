@@ -32,7 +32,7 @@
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; text-align: center; }
 
-        /* 컬러 피커 컴팩트 UI */
+        /* カラー 피커 컴팩트 UI */
         .color-combo { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 3px; background: #fff; height: 22px; width: fit-content; overflow: hidden; transition: 0.2s; }
         .color-combo input[type="color"] { width: 22px; height: 22px; border: none; padding: 0; margin: 0; cursor: pointer; background: transparent; }
         .color-combo input[type="text"] { width: 55px; border: none; font-size: 11px; text-transform: uppercase; font-family: monospace; text-align: center; outline: none; padding: 0; }
@@ -83,7 +83,6 @@
     <div class="container">
         <div class="canvas-wrapper">
             <div style="display:flex; justify-content:center; gap:15px; margin-bottom:10px; font-weight:bold; font-size:13px; color:#0055FF; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #0055FF; box-shadow: 0 2px 10px rgba(0,85,255,0.1);">
-                <label><input type="radio" name="previewState" value="initial" onchange="draw()"> 등장 전 (초기)</label>
                 <label><input type="radio" name="previewState" value="endMain" checked onchange="draw()"> 전투 배치 완료</label>
                 <label><input type="radio" name="previewState" value="ending" onchange="draw()"> 엔딩 연출 화면</label>
             </div>
@@ -91,7 +90,7 @@
             <canvas id="canvas" width="600" height="800"></canvas>
             
             <div class="hint-box">
-                • <span>마우스 드래그</span>: 위치 이동 | <span>모서리 조절점</span>: 크기 조절 | <span>상단 동그라미</span>: 회전<br>
+                • <span>마우스 드래그</span>: 위치 이동 | <span>모서리 조절점</span>: 크기 조절 | <span>상단 조절점</span>: 회전<br>
                 • <span>[간단 배치]</span>: 메인 이미지들의 가로/세로 비율을 감지하여 겹치지 않게 스마트 정렬합니다.
             </div>
             
@@ -156,7 +155,7 @@
             <div class="control-group" style="flex:1; display:flex; flex-direction:column;">
                 <h3>3. 메인 레이어 및 효과</h3>
                 <div class="row" style="margin-bottom:8px;">
-                    <label style="font-size:12px; width:90px;">애니메이션 속도:</label>
+                    <label style="font-size:12px; width:95px; white-space:nowrap;">애니메이션 속도:</label>
                     <select id="animSpeed" onchange="toggleCustomSpeed(); draw();" style="flex:1; font-size:12px;">
                         <option value="1000">빠르게</option>
                         <option value="2000" selected>기본</option>
@@ -280,6 +279,7 @@
                     <div class="row">
                         <label style="font-size:12px; width:75px;">타이핑 속도:</label>
                         <select id="endTypeSpeed" onchange="$('endCustomTypeSpeedWrapper').style.display=this.value==='custom'?'flex':'none'; draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
+                            <option value="0">타이핑 없음 (즉시 등장)</option>
                             <option value="50">빠르게</option>
                             <option value="100" selected>기본</option>
                             <option value="200">느리게</option>
@@ -306,14 +306,14 @@
                     
                     <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                         <label class="fx-label"><input type="checkbox" id="endVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
-                        <label class="fx-label"><input type="checkbox" id="endBold" checked onchange="draw(); triggerAutoSave();">굵게</label>
-                        <label class="fx-label"><input type="checkbox" id="endItalic" onchange="draw(); triggerAutoSave();">기울임</label>
+                        <label class="fx-label"><input type="checkbox" id="endBold" onchange="draw(); triggerAutoSave();">굵게</label>
+                        <label class="fx-label"><input type="checkbox" id="endItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
                         <label class="fx-label"><input type="checkbox" id="endShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
                         <label class="fx-label"><input type="checkbox" id="endStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
                         
                         <div class="color-combo" title="테두리 색상">
-                            <input type="color" id="endStrokeColor" value="#ffffff" oninput="$('endStrokeHex').value=this.value; draw(); triggerAutoSave();">
-                            <input type="text" id="endStrokeHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('endStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
+                            <input type="color" id="endStrokeColor" value="#000000" oninput="$('endStrokeHex').value=this.value; draw(); triggerAutoSave();">
+                            <input type="text" id="endStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('endStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
                         </div>
                         <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="endStrokeWidth" value="4" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
                     </div>
@@ -371,11 +371,12 @@
         const ctx = canvasEl.getContext('2d', { willReadFrequently: true });
         
         let layers = [], extraLayers = [], customFonts = [], sel = -1, selExtra = -1;
-        let isDrag = false, dragType = '', isPlay = false;
+        let isDrag = false, dragType = '';
         let offX = 0, offY = 0, textRelX = 0, textRelY = 0;
         let W = 600, H = 800;
         let gifWorkerUrl = null, endingImgObj = null; 
         
+        // 정중앙 초기 배치 좌표 고도화
         let endSettings = { x: 200, y: 300, scale: 1.0, rotation: 0, textX: 120, textY: 360, textRot: 0 };
         
         const offCanvas = document.createElement('canvas');
@@ -420,7 +421,7 @@
             let isVert = isVertOverride !== undefined ? isVertOverride : $('gVertical').checked;
             if (isVert) {
                 let w = 0, chars = text.split(''); chars.forEach(c => w = Math.max(w, ctx.measureText(c).width));
-                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.5) : (fSize * 1.05); });
+                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.25) : (fSize * 1.05); }); // 자간 절반 다이어트 압축
                 return { w: w + 4, h: h + 4 };
             } else return { w: ctx.measureText(text).width + 4, h: fSize + 10 };
         };
@@ -433,113 +434,27 @@
 
         window.resizeCanvas = () => {
             W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800;
-            canvasEl.width = W; canvasEl.height = H; draw(); triggerAutoSave();
-        };
-
-        // --- 마우스 조작 히트박스 계산 ---
-        function getTransformHit(x, y, targetX, targetY, w, h, angle) {
-            let cx = targetX + w/2, cy = targetY + h/2;
-            let dx = x - cx, dy = y - cy;
-            let localX = dx * Math.cos(-angle) - dy * Math.sin(-angle);
-            let localY = dx * Math.sin(-angle) + dy * Math.cos(-angle);
+            canvasEl.width = W; canvasEl.height = H;
             
-            let isRot = localX >= -12 && localX <= 12 && localY >= -h/2 - 40 && localY <= -h/2 - 15;
-            let isRes = localX >= w/2 - 15 && localX <= w/2 + 5 && localY >= h/2 - 15 && localY <= h/2 + 5;
-            let isInside = localX >= -w/2 && localX <= w/2 && localY >= -h/2 && localY <= h/2;
-            return { isInside, isRes, isRot, cx, cy };
-        }
-
-        // --- 무제한 DB 자동저장 ---
-        const localDB = {
-            db: null,
-            init() { return new Promise((res, rej) => { const req = indexedDB.open('CCfoliaCutinDB_AdvPRO', 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('data')) e.target.result.createObjectStore('data'); }; req.onsuccess = e => { this.db = e.target.result; res(); }; req.onerror = rej; }); },
-            set(key, val) { return new Promise((res) => { if (!this.db) return res(); const tx = this.db.transaction('data', 'readwrite'); tx.objectStore('data').put(val, key); tx.oncomplete = res; }); },
-            get(key) { return new Promise((res) => { if (!this.db) return res(null); const tx = this.db.transaction('data', 'readonly'); const req = tx.objectStore('data').get(key); req.onsuccess = () => res(req.result); req.onerror = () => res(null); }); }
+            let endFSize = parseInt($('endFontSize').value) || 60;
+            let b = getTextBounds($('endText').value, endFSize, true);
+            endSettings.textX = W/2 - b.w/2; endSettings.textY = H/2 - b.h/2;
+            if (endingImgObj) { endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2; }
+            draw(); triggerAutoSave();
         };
 
-        let autoSaveTimer;
-        window.triggerAutoSave = () => {
-            if(isPlay) return; clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(async () => {
-                try { await localDB.set('ccfolia_cutin_backup', JSON.stringify(getProjectData())); const st = $('autoSaveStatus'); if (st) { st.innerText = "✓ 방금 전 저장됨"; setTimeout(() => { if (st.innerText === "✓ 방금 전 저장됨") st.innerText = ""; }, 2500); } } catch(e) {}
-            }, 1000);
-        };
-
-        const getProjectData = () => ({
-            layers: layers.map(l => ({ src: l.src, name: l.name, anim: l.anim, scale: l.scale, rotation: l.rotation, x: l.x, y: l.y, text: l.text, textRot: l.textRot, colors: l.colors, textX: l.textX, textY: l.textY })),
-            extraLayers: extraLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, anim: el.anim, animSpeed: el.animSpeed, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, content: el.content, fontSize: el.fontSize, color: el.color })),
-            settings: { 
-                gap: $('gap').value, globalFont: $('globalFont').value, gFontSize: $('gFontSize').value, gBold: $('gBold').checked, gItalic: $('gItalic').checked, gShadow: $('gShadow').checked, gStroke: $('gStroke').checked, gStrokeColor: $('gStrokeColor').value, gStrokeHex: $('gStrokeHex').value, gStrokeWidth: $('gStrokeWidth').value, gVertical: $('gVertical').checked, typeSpeed: $('typeSpeed').value, customTypeSpeed: $('customTypeSpeed').value, animSpeed: $('animSpeed').value, customSpeed: $('customSpeed').value, globalEffect: $('globalEffect').value, quality: $('quality').value, gifTransparentCheck: $('gifTransparentCheck').checked, gifBgColor: $('gifBgColor').value, gifBgHex: $('gifBgHex').value, ccfoliaBgCheck: $('ccfoliaBgCheck').checked, canvasW: W, canvasH: H,
-                endActive: $('endActive').checked, endOpacity: $('endOpacity').value, endEffect: $('endEffect').value, endText: $('endText').value, endColor: $('endColor').value, endColorHex: $('endColorHex').value, endFontSize: $('endFontSize').value, endTypeSpeed: $('endTypeSpeed').value, endCustomTypeSpeed: $('endCustomTypeSpeed').value, endVertical: $('endVertical').checked, endBold: $('endBold').checked, endItalic: $('endItalic').checked, endShadow: $('endShadow').checked, endStroke: $('endStroke').checked, endStrokeColor: $('endStrokeColor').value, endStrokeHex: $('endStrokeHex').value, endStrokeWidth: $('endStrokeWidth').value, endingImgSrc: endingImgObj ? endingImgObj.src : null,
-                endX: endSettings.x, endY: endSettings.y, endScale: endSettings.scale, endRotation: endSettings.rotation, endTextX: endSettings.textX, endTextY: endSettings.textY, endTextRot: endSettings.textRot
-            }
-        });
-
-        const restoreProjectData = (data) => {
-            const s = data.settings;
-            if(s) {
-                ['gap', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endText', 'endFontSize', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
-                ['gBold', 'gItalic', 'gShadow', 'gStroke', 'gVertical', 'gifTransparentCheck', 'ccfoliaBgCheck', 'endActive', 'endVertical', 'endBold', 'endItalic', 'endShadow', 'endStroke'].forEach(id => { if(s[id]!==undefined) $(id).checked = !!s[id]; });
-                ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endColor', 'endColorHex', 'endStrokeColor', 'endStrokeHex'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
-                
-                if (s.globalFont && !Array.from($('globalFont').options).some(opt => opt.value === s.globalFont)) {
-                    const opt = document.createElement('option'); opt.value = opt.text = s.globalFont; $('globalFont').appendChild(opt); customFonts.push(s.globalFont);
-                }
-                $('globalFont').value = s.globalFont || 'Black Han Sans';
-                if (s.endFont && !Array.from($('endFont').options).some(opt => opt.value === s.endFont)) {
-                    const opt = document.createElement('option'); opt.value = opt.text = s.endFont; $('endFont').appendChild(opt);
-                }
-                $('endFont').value = s.endFont || 'Black Han Sans';
-                
-                W = canvasEl.width = s.canvasW || 600; H = canvasEl.height = s.canvasH || 800;
-                $('canvasW').value = W; $('canvasH').value = H;
-
-                if(s.endX) { endSettings.x=s.endX; endSettings.y=s.endY; endSettings.scale=s.endScale; endSettings.rotation=s.endRotation; endSettings.textX=s.endTextX; endSettings.textY=s.endTextY; endSettings.textRot=s.endTextRot; }
-
-                $('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none';
-                $('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none';
-                $('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
-                toggleBgColor(); toggleTrans(); toggleEndingUI();
-
-                if (s.endingImgSrc) {
-                    endingImgObj = new Image(); endingImgObj.onload = () => draw(); endingImgObj.src = s.endingImgSrc; $('removeEndImgBtn').style.display = 'inline-block';
-                }
-            }
-
-            layers = []; extraLayers = []; let loadedCount = 0; let totalToLoad = (data.layers?data.layers.length:0) + (data.extraLayers?data.extraLayers.length:0);
-            const checkDone = () => { if(++loadedCount >= totalToLoad) { updateUI(-1); updateExtraUI(-1); draw(); } };
-
-            if(totalToLoad === 0) { updateUI(); updateExtraUI(); draw(); return; }
-
-            if(data.layers) data.layers.forEach((lData, idx) => {
-                const img = new Image(); img.onload = () => { layers[idx] = { ...lData, img: img }; if(!layers[idx].rotation) layers[idx].rotation = 0; if(!layers[idx].textRot) layers[idx].textRot = 0; checkDone(); }; img.src = lData.src;
-            });
-            if(data.extraLayers) data.extraLayers.forEach((elData, idx) => {
-                if (elData.type === 'image' && elData.src) {
-                    const img = new Image(); img.onload = () => { extraLayers[idx] = { ...elData, img: img }; if(!extraLayers[idx].rotation) extraLayers[idx].rotation=0; checkDone(); }; img.src = elData.src;
-                } else { extraLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
-            });
-        };
-
-        window.saveProjectFile = () => {
-            let fn = prompt("저장할 프로젝트 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith('.json')) fn += '.json';
-            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getProjectData())], { type: "application/json" })); a.download = fn; a.click();
-        };
-
-        window.loadProjectFile = (e) => {
-            const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
-            reader.onload = ev => { try { restoreProjectData(JSON.parse(ev.target.result)); } catch(err) { alert("파일 오류"); } }; reader.readAsText(file); e.target.value = '';
-        };
-
-        // --- 독립 추가 레이어 ---
+        // --- 독립 추가 레이어 생성기 ---
         window.addExtraText = () => {
-            extraLayers.push({ type: 'text', content: '추가 타이포', name: '타이포', anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, x: W/2-50, y: H/2, fontSize: 40, color: '#ffffff' });
+            let fSize = 40; ctx.font = `bold ${fSize}px "${$('globalFont').value}"`;
+            let w = ctx.measureText('추가 타이포').width, h = fSize * 1.1;
+            extraLayers.push({ type: 'text', content: '추가 타이포', name: '타이포', anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, color: '#ffffff' });
             updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
         };
         $('extraImageInput').onchange = e => {
             Array.from(e.target.files).forEach(file => { const r = new FileReader();
                 r.onload = ev => { const img = new Image(); img.onload = () => {
-                        extraLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, anim: 'fade', animSpeed: 1000, scale: 0.5, rotation: 0, x: W/2 - (img.width*0.5)/2, y: H/2 - (img.height*0.5)/2 });
+                        let sc = 0.5; let w = img.width * sc, h = img.height * sc;
+                        extraLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, anim: 'fade', animSpeed: 1000, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
                         updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
                     }; img.src = ev.target.result;
                 }; r.readAsDataURL(file);
@@ -548,7 +463,14 @@
         
         $('endImgInput').onchange = e => {
             if(!e.target.files[0]) return; const r = new FileReader();
-            r.onload = ev => { endingImgObj = new Image(); endingImgObj.onload = () => { draw(); triggerAutoSave(); }; endingImgObj.src = ev.target.result; $('removeEndImgBtn').style.display = 'inline-block'; }; r.readAsDataURL(e.target.files[0]);
+            r.onload = ev => { 
+                endingImgObj = new Image(); 
+                endingImgObj.onload = () => { 
+                    endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2;
+                    draw(); triggerAutoSave(); 
+                }; 
+                endingImgObj.src = ev.target.result; $('removeEndImgBtn').style.display = 'inline-block'; 
+            }; r.readAsDataURL(file);
         };
         window.removeEndImg = () => { endingImgObj = null; $('endImgInput').value = ''; $('removeEndImgBtn').style.display = 'none'; draw(); triggerAutoSave(); };
 
@@ -557,7 +479,6 @@
             const list = $('extraLayerList'); list.innerHTML = extraLayers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">독립 요소가 없습니다.</p>';
             for (let i = extraLayers.length - 1; i >= 0; i--) {
                 const el = extraLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selExtra ? 'active' : ''}`;
-                
                 let controls = '';
                 if(el.type === 'text') {
                     controls = `<div class="row" style="margin-top:5px;">
@@ -606,96 +527,45 @@
                         ${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${l.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${l.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
                 }
 
-                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-weight:bold; font-size:13px;"><div style="display:flex; align-items:center; gap:8px;"><img src="${l.src}" class="thumb"> <span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i+1}]; layers[${i+1}]=t; updateUI(${i===sel?i+1:sel}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i-1}]; layers[${i-1}]=t; updateUI(${i===sel?i-1:sel}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="layers.splice(${i},1); updateUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
-                    <div class="row"><select onchange="layers[${i}].anim=this.value; updateUI(${i}); triggerAutoSave();" style="flex:1;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${l.anim===v?'selected':''}>${t}</option>`; }).join('')}</select></div>
-                    <div class="row" style="margin-top:5px;"><input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; draw(); triggerAutoSave();" onchange="updateUI(${i});" style="flex:1;"></div>${colorPickersHTML}`;
-                list.appendChild(div);
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-weight:bold; font-size:13px;">
+                        <div style="display:flex; align-items:center; gap:8px;"><img src="${l.src}" class="thumb"> <span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.name}</span></div>
+                        <div style="display:flex; gap:3px;"><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i+1}]; layers[${i+1}]=t; updateUI(${i===sel?i+1:sel}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i-1}]; layers[${i-1}]=t; updateUI(${i===sel?i-1:sel}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="layers.splice(${i},1); updateUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div>
+                    </div>
+                    <div class="row">
+                        <select onchange="layers[${i}].anim=this.value; updateUI(${i}); triggerAutoSave();" style="flex:1;">
+                            ${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${l.anim===v?'selected':''}>${t}</option>`; }).join('')}
+                        </select>
+                    </div>
+                    <div class="row" style="margin-top:5px;"><input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; draw(); triggerAutoSave();" onchange="updateUI(${i});" style="flex:1;"></div>
+                    ${colorPickersHTML}
+                `; list.appendChild(div);
             }
         };
 
-        $('imageInput').onchange = e => {
-            Array.from(e.target.files).forEach(file => { const r = new FileReader();
-                r.onload = ev => { const img = new Image(); img.onload = () => {
-                        const sc = 0.5; layers.push({ img, src: ev.target.result, name: file.name, anim: layers.length % 2 === 0 ? 'slideLeft' : 'slideRight', scale: sc, rotation: 0, textRot: 0, x: W/2 - (img.width*sc)/2, y: H/2 - (img.height*sc)/2, text: '', colors: [], textX: W/2 - (img.width*sc)/2 - 80, textY: H/2 - (img.height*sc)/2 - 30 });
-                        updateUI(layers.length - 1); draw(); triggerAutoSave();
-                    }; img.src = ev.target.result;
-                }; r.readAsDataURL(file);
-            }); e.target.value = '';
+        // 폰트 비동기 적재 버그 방어 조치
+        $('fontInput').onchange = async e => {
+            for (let file of e.target.files) {
+                try {
+                    const fontName = file.name.split('.')[0]; 
+                    const font = new FontFace(fontName, await file.arrayBuffer()); await font.load(); document.fonts.add(font);
+                    if(!customFonts.includes(fontName)) { 
+                        customFonts.push(fontName); 
+                        const opt1 = document.createElement('option'); opt1.value = opt1.text = fontName; $('globalFont').appendChild(opt1); 
+                        const opt2 = document.createElement('option'); opt2.value = opt2.text = fontName; $('endFont').appendChild(opt2); 
+                        $('globalFont').value = fontName; $('endFont').value = fontName;
+                    }
+                } catch (err) { alert('폰트 로드 실패'); }
+            } e.target.value = '';
+            document.fonts.ready.then(() => { draw(); triggerAutoSave(); });
         };
 
-        window.act = (type) => {
-            if (!layers.length) return;
-            const gap = +$('gap').value || 0, l = layers[sel!==-1?sel:0];
-            
-            if (type === 'crop') {
-                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
-                layers.forEach(ly => { 
-                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize);
-                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
-                    if(ly.anim === 'slideLeft') minX -= 70; if(ly.anim === 'slideRight') maxX += 70; if(ly.anim === 'slideUp') maxY += 70; if(ly.anim === 'slideDown') minY -= 70;
-                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
-                });
-                if(mX === Infinity) return;
-                const cx = W / 2, cy = H / 2, newW = Math.max(100, Math.ceil(Math.max(cx - mX, xX - cx) + 10) * 2), newH = Math.max(100, Math.ceil(Math.max(cy - mY, xY - cy) + 10) * 2);
-                W = canvasEl.width = newW; H = canvasEl.height = newH; $('canvasW').value = W; $('canvasH').value = H;
-                layers.forEach(ly => { ly.x += newW/2 - cx; ly.y += newH/2 - cy; ly.textX += newW/2 - cx; ly.textY += newH/2 - cy; });
-            }
-            else if (type === 'matchH' || type === 'matchW') {
-                if (layers.length > 1 && l) {
-                    const isH = type === 'matchH', target = isH ? l.img.height * l.scale : l.img.width * l.scale;
-                    layers.forEach(ly => { if(ly !== l) { const oldSc = ly.scale; ly.scale = target / (isH ? ly.img.height : ly.img.width); const r = ly.scale / oldSc; ly.textX = ly.x + (ly.textX - ly.x) * r; ly.textY = ly.y + (ly.textY - ly.y) * r; } }); 
-                }
-            }
-            else if (type === 'distH' || type === 'distV') {
-                const isH = type === 'distH', tSz = layers.reduce((a, ly) => a + ly.img[isH?'width':'height'] * ly.scale, 0) + gap * (layers.length - 1);
-                let cur = ((isH?W:H) - tSz) / 2;
-                layers.forEach(ly => { 
-                    const dx = isH ? cur - ly.x : ((W - ly.img.width*ly.scale)/2) - ly.x, dy = isH ? ((H - ly.img.height*ly.scale)/2) - ly.y : cur - ly.y;
-                    ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; cur += ly.img[isH?'width':'height']*ly.scale + gap; 
-                });
-            }
-            else if (type === 'center') {
-                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
-                layers.forEach(ly => { 
-                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize);
-                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
-                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
-                });
-                if(mX === Infinity) return;
-                let cx = (mX + xX) / 2, cy = (mY + xY) / 2, sX = W/2 - cx, sY = H/2 - cy;
-                layers.forEach(ly => { ly.x += sX; ly.y += sY; ly.textX += sX; ly.textY += sY; });
-            }
-            else if (type.startsWith('quick')) {
-                let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
-                const doV = type === 'quickV' || (type === 'quick' && tW > tH);
-                act(doV ? 'matchW' : 'matchH'); act(doV ? 'distV' : 'distH'); act('center');
-            }
-            draw(); triggerAutoSave();
-        };
-
-        // --- 마우스 인터랙션 ---
-        const getPos = e => { const r = canvasEl.getBoundingClientRect(); return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) }; };
-        
-        canvasEl.onwheel = e => { 
-            if(isPlay) return; e.preventDefault(); 
-            if (document.querySelector('input[name="previewState"]:checked').value === 'ending' && $('endActive').checked) {
-                if (endingImgObj) endSettings.scale = Math.max(0.05, endSettings.scale + (e.deltaY < 0 ? 0.05 : -0.05));
-                else $('endFontSize').value = Math.max(10, parseInt($('endFontSize').value) + (e.deltaY < 0 ? 5 : -5));
-            }
-            else if (selExtra !== -1 && extraLayers[selExtra]) {
-                if (extraLayers[selExtra].type === 'image') extraLayers[selExtra].scale = Math.max(0.05, extraLayers[selExtra].scale + (e.deltaY < 0 ? 0.05 : -0.05));
-                else extraLayers[selExtra].fontSize = Math.max(10, extraLayers[selExtra].fontSize + (e.deltaY < 0 ? 5 : -5));
-            } 
-            else if (sel !== -1 && layers[sel]) {
-                const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, l.scale + (e.deltaY < 0 ? 0.05 : -0.05)); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r;
-            }
-            updateExtraUI(); updateUI(); draw(); triggerAutoSave();
-        };
-        
+        // --- 마우스 변환 제어 엔진 및 핸들 트래킹 로직 ---
         canvasEl.onmousedown = e => {
             if (isPlay) return; const {x, y} = getPos(e); const fSize = parseInt($('gFontSize').value) || 60;
             let viewState = document.querySelector('input[name="previewState"]:checked').value;
             
+            // 시네마틱 엔딩 편집 상태의 전면 캡처 파트
             if (viewState === 'ending' && $('endActive').checked) {
                 let endFSize = parseInt($('endFontSize').value) || 60;
                 if (endingImgObj) {
@@ -708,11 +578,13 @@
                     let b = getTextBounds($('endText').value, endFSize, true);
                     let hitTxt = getTransformHit(x, y, endSettings.textX, endSettings.textY, b.w, b.h, endSettings.textRot || 0);
                     if (hitTxt.isRot) { isDrag = true; dragType = 'endTextRot'; offX = hitTxt.cx; offY = hitTxt.cy; return; }
+                    if (hitTxt.isRes) { isDrag = true; dragType = 'endTextRes'; offX = endSettings.textX; offY = endSettings.textY; return; }
                     if (hitTxt.isInside) { isDrag = true; dragType = 'endTextMove'; offX = x - endSettings.textX; offY = y - endSettings.textY; return; }
                 }
-                return; // 엔딩 화면에서는 메인 조작 차단
+                return;
             }
 
+            // 추가 독립 레이어 캡처 파트
             if (selExtra !== -1 && extraLayers[selExtra]) {
                 let el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx);
                 let hit = getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0);
@@ -721,6 +593,7 @@
                 if (hit.isInside) { isDrag = true; dragType = 'extraMove'; offX = x - el.x; offY = y - el.y; return; }
             }
 
+            // 메인 컷인 레이어 캡처 파트
             if (sel !== -1 && layers[sel]) {
                 let l = layers[sel], w = l.img.width*l.scale, h = l.img.height*l.scale;
                 let hitImg = getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0);
@@ -731,10 +604,12 @@
                 if (l.text) {
                     let b = getTextBounds(l.text, fSize); let hitTxt = getTransformHit(x, y, l.textX, l.textY, b.w, b.h, l.textRot || 0);
                     if (hitTxt.isRot) { isDrag = true; dragType = 'mainTextRot'; offX = hitTxt.cx; offY = hitTxt.cy; return; }
+                    if (hitTxt.isRes) { isDrag = true; dragType = 'mainTextRes'; offX = l.textX; offY = l.textY; return; } // 메인 타이포 캔버스 직접 조절 조작계 연동
                     if (hitTxt.isInside) { isDrag = true; dragType = 'mainTextMove'; offX = x - l.textX; offY = y - l.textY; return; }
                 }
             }
             
+            // 레이어 미선택 상태 터치 추적 필터링 단락
             for (let i = extraLayers.length - 1; i >= 0; i--) {
                 let el = extraLayers[i], b = getExtraLayerBounds(el, ctx);
                 if (getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0).isInside) { isDrag = true; dragType = 'extraMove'; updateExtraUI(i); offX = x - el.x; offY = y - el.y; draw(); return; }
@@ -757,80 +632,105 @@
             else if (dragType === 'endTextRot') endSettings.textRot = Math.atan2(y - offY, x - offX) + Math.PI/2;
             else if (dragType === 'endImgRes' && endingImgObj) endSettings.scale = Math.max(0.05, (x - offX) / endingImgObj.width);
             else if (dragType === 'endImgMove') { endSettings.x = x - offX; endSettings.y = y - offY; }
+            else if (dragType === 'endTextRes') { $('endFontSize').value = Math.max(10, Math.round((y - offY) / 1.1)); }
             else if (dragType === 'endTextMove') { endSettings.textX = x - offX; endSettings.textY = y - offY; }
+
             else if (dragType === 'extraRot') extraLayers[selExtra].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'extraRes') { let el = extraLayers[selExtra]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, (y - offY)); }
+            else if (dragType === 'extraRes') { let el = extraLayers[selExtra]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); }
             else if (dragType === 'extraMove') { extraLayers[selExtra].x = x - offX; extraLayers[selExtra].y = y - offY; }
+            
             else if (dragType === 'mainImgRot') layers[sel].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
             else if (dragType === 'mainTextRot') layers[sel].textRot = Math.atan2(y - offY, x - offX) + Math.PI/2;
             else if (dragType === 'mainImgRes') { const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, (x - offX) / l.img.width); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r; }
+            else if (dragType === 'mainTextRes') { $('gFontSize').value = Math.max(10, Math.round((y - offY) / 1.1)); }
             else if (dragType === 'mainTextMove') { layers[sel].textX = x - offX; layers[sel].textY = y - offY; }
             else if (dragType === 'mainImgMove') { layers[sel].x = x - offX; layers[sel].y = y - offY; layers[sel].textX = layers[sel].x + textRelX; layers[sel].textY = layers[sel].y + textRelY; }
             draw();
         };
         window.onmouseup = () => { if (isDrag) triggerAutoSave(); isDrag = false; dragType = ''; };
 
-        // --- 백그라운드 렌더러 ---
+        // --- 백그라운드 프레임 연산 버퍼 렌더러 ---
         const renderBackground = (c, t, dur) => {
             let pRaw = Math.min(1, t / dur), p = ease(pRaw), postP = Math.max(0, (t - dur) / 2000), eff = $('globalEffect').value;
-            let isEndPhase = $('endActive').checked && t > dur, endAlphaMulti = 1.0, sSplitD = 0, isHorizLayout = false;
-
+            let isEndPhase = $('endActive').checked && t > dur, endAlphaMulti = 1.0;
+            
             if (isEndPhase) {
                 let endOpGoal = parseInt($('endOpacity').value) / 100;
                 endAlphaMulti = 1.0 - (ease(postP) * (1.0 - endOpGoal));
             }
-            if (layers.length > 1) { let hC = 0; layers.forEach(ly => { if(ly.img.width*ly.scale > ly.img.height*ly.scale) hC++; }); isHorizLayout = hC >= (layers.length / 2); } 
-            else if (layers.length === 1) isHorizLayout = layers[0].img.width*layers[0].scale > layers[0].img.height*layers[0].scale;
+
+            let isHorizLayout = false;
+            if (layers.length > 1) {
+                let hCount = 0; layers.forEach(ly => { if(ly.img.width * ly.scale > ly.img.height * ly.scale) hCount++; }); isHorizLayout = hCount >= (layers.length / 2);
+            } else if (layers.length === 1) {
+                isHorizLayout = layers[0].img.width * layers[0].scale > layers[0].img.height * layers[0].scale;
+            }
             
             c.imageSmoothingEnabled = true; c.imageSmoothingQuality = "high";
             
-            const drawWithTransform = (cRef, x, y, w, h, angle, alphaVal, drawFunc) => {
+            // [시네마틱 중앙 가르기 밀어내기 완벽 처리] 화면 바깥으로 100% 가려지게 밀어내기 배율 보정
+            const drawWithTransform = (x, y, w, h, angle, alphaVal, drawFunc) => {
                 let cx = x + w/2, cy = y + h/2, pushX = 0, pushY = 0;
                 if (isEndPhase && $('endEffect').value === 'split') {
-                    let splitD = ease(postP) * (Math.max(W, H) / 2);
-                    if (isHorizLayout) pushY = (cy < H/2) ? -splitD : splitD; else pushX = (cx < W/2) ? -splitD : splitD;
+                    let splitD = ease(postP);
+                    if (isHorizLayout) pushY = (cy < H/2) ? -H * splitD : H * splitD; 
+                    else pushX = (cx < W/2) ? -W * splitD : W * splitD;
                 }
-                cRef.save(); cRef.translate(cx + pushX, cy + pushY); cRef.rotate(angle); cRef.translate(-w/2, -h/2); cRef.globalAlpha = alphaVal * endAlphaMulti;
-                drawFunc(cRef, w, h); cRef.restore();
+                c.save(); c.translate(cx + pushX, cy + pushY); c.rotate(angle); c.translate(-w/2, -h/2);
+                c.globalAlpha = alphaVal * endAlphaMulti;
+                drawFunc(c, w, h); c.restore();
             };
 
+            // 1. 메인 레이어 렌더링 단락
             layers.forEach(l => {
                 let s = l.scale, w = l.img.width*s, h = l.img.height*s, dx = 0, dy = 0; 
-                if(l.anim === 'slideLeft') dx = -(1-p)*70; else if(l.anim === 'slideRight') dx = (1-p)*70; else if(l.anim === 'slideUp') dy = (1-p)*70; else if(l.anim === 'slideDown') dy = -(1-p)*70; else if(l.anim === 'zoomIn') { s *= 0.7 + p*0.3; w = l.img.width*s; h = l.img.height*s; dx = -(w - l.img.width*l.scale)/2; dy = -(h - l.img.height*l.scale)/2; }
+                if(l.anim === 'slideLeft') dx = -(1-p)*70; else if(l.anim === 'slideRight') dx = (1-p)*70; else if(l.anim === 'slideUp') dy = (1-p)*70; else if(l.anim === 'slideDown') dy = -(1-p)*70;
+                else if(l.anim === 'zoomIn') { s *= 0.7 + p*0.3; w = l.img.width*s; h = l.img.height*s; dx = -(w - l.img.width*l.scale)/2; dy = -(h - l.img.height*l.scale)/2; }
                 
-                drawWithTransform(c, l.x + dx, l.y + dy, w, h, l.rotation || 0, Math.min(p * 1.5, 1), (ctxRef, dw, dh) => {
+                drawWithTransform(l.x + dx, l.y + dy, w, h, l.rotation || 0, Math.min(p * 1.5, 1), (ctxRef, dw, dh) => {
                     ctxRef.drawImage(l.img, 0, 0, dw, dh);
-                    if (eff === 'trace' && pRaw < 1) { let pm = (dw + dh) * 2; ctxRef.strokeStyle = '#ffffff'; ctxRef.shadowColor = '#ffffff'; ctxRef.shadowBlur = 8; ctxRef.lineWidth = 2; ctxRef.setLineDash([pm * 0.15, pm * 0.85]); ctxRef.lineDashOffset = -pm * pRaw * 2; ctxRef.strokeRect(0, 0, dw, dh); }
+                    if (eff === 'trace' && pRaw < 1) {
+                        let perim = (dw + dh) * 2; ctxRef.strokeStyle = '#ffffff'; ctxRef.shadowColor = '#ffffff'; ctxRef.shadowBlur = 8; ctxRef.lineWidth = 2; ctxRef.setLineDash([perim * 0.15, perim * 0.85]); ctxRef.lineDashOffset = -perim * pRaw * 2; ctxRef.strokeRect(0, 0, dw, dh);
+                    }
                     if (eff === 'lines' && pRaw < 1) {
                         ctxRef.save(); ctxRef.beginPath(); ctxRef.rect(-2, -2, dw + 4, dh + 4); ctxRef.clip();
-                        if (!isHorizLayout) {
-                            let lH = dh * 0.8, hY = (dh + lH) * pRaw - lH, gL = ctxRef.createLinearGradient(0, hY, 0, hY + lH); gL.addColorStop(1, 'rgba(255,255,255,1)'); gL.addColorStop(0, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gL; ctxRef.fillRect(0, hY, 3, lH);
-                            let hYR = dh - (dh + lH) * pRaw + lH, gR = ctxRef.createLinearGradient(0, hYR - lH, 0, hYR); gR.addColorStop(0, 'rgba(255,255,255,1)'); gR.addColorStop(1, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gR; ctxRef.fillRect(dw - 3, hYR - lH, 3, lH);
-                        } else {
-                            let lW = dw * 0.8, hX = (dw + lW) * pRaw - lW, gT = ctxRef.createLinearGradient(hX, 0, hX + lW, 0); gT.addColorStop(1, 'rgba(255,255,255,1)'); gT.addColorStop(0, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gT; ctxRef.fillRect(hX, 0, lW, 3);
-                            let hXB = dw - (dw + lW) * pRaw + lW, gB = ctxRef.createLinearGradient(hXB - lW, 0, hXB, 0); gB.addColorStop(0, 'rgba(255,255,255,1)'); gB.addColorStop(1, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gB; ctxRef.fillRect(hXB - lW, dh - 3, lW, 3);
+                        if (!isHorizLayout) { 
+                            let lineH = dh * 0.8, headY = (dh + lineH) * pRaw - lineH; 
+                            let gradLeft = ctxRef.createLinearGradient(0, headY, 0, headY + lineH); gradLeft.addColorStop(1, 'rgba(255,255,255,1)'); gradLeft.addColorStop(0, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gradLeft; ctxRef.fillRect(0, headY, 3, lineH);
+                            let headYRight = dh - (dh + lineH) * pRaw + lineH, gradRight = ctxRef.createLinearGradient(0, headYRight - lineH, 0, headYRight); gradRight.addColorStop(0, 'rgba(255,255,255,1)'); gradRight.addColorStop(1, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gradRight; ctxRef.fillRect(dw - 3, headYRight - lineH, 3, lineH);
+                        } else { 
+                            let lineW = dw * 0.8, headX = (dw + lineW) * pRaw - lineW; 
+                            let gradTop = ctxRef.createLinearGradient(headX, 0, headX + lineW, 0); gradTop.addColorStop(1, 'rgba(255,255,255,1)'); gradTop.addColorStop(0, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gradTop; ctxRef.fillRect(headX, 0, lineW, 3);
+                            let headXBot = dw - (dw + lineW) * pRaw + lineW, gradBot = ctxRef.createLinearGradient(headXBot - lineW, 0, headXBot, 0); gradBot.addColorStop(0, 'rgba(255,255,255,1)'); gradBot.addColorStop(1, 'rgba(255,255,255,0)'); ctxRef.fillStyle = gradBot; ctxRef.fillRect(headXBot - lineW, dh - 3, lineW, 3);
                         } ctxRef.restore();
                     }
-                    if (eff === 'trace_after' && pRaw >= 1 && postP < 1) { let pm = (dw + dh) * 2; ctxRef.strokeStyle = '#ffffff'; ctxRef.shadowColor = '#ffffff'; ctxRef.shadowBlur = 8; ctxRef.lineWidth = 2; ctxRef.setLineDash([pm * 0.15, pm * 0.85]); ctxRef.lineDashOffset = -pm * postP * 3; ctxRef.globalAlpha *= Math.max(0, 1 - postP * 1.5); ctxRef.strokeRect(0, 0, dw, dh); }
+                    if (eff === 'trace_after' && pRaw >= 1 && postP < 1) {
+                        let perim = (dw + dh) * 2; ctxRef.strokeStyle = '#ffffff'; ctxRef.shadowColor = '#ffffff'; ctxRef.shadowBlur = 8; ctxRef.lineWidth = 2; ctxRef.setLineDash([perim * 0.15, perim * 0.85]); ctxRef.lineDashOffset = -perim * postP * 3; ctxRef.globalAlpha *= Math.max(0, 1 - postP * 1.5); ctxRef.strokeRect(0, 0, dw, dh);
+                    }
                 });
 
                 if(l.text) {
                     let fSize = parseInt($('gFontSize').value) || 60, b = getTextBounds(l.text, fSize);
-                    drawWithTransform(c, l.textX + dx, l.textY + dy, b.w, b.h, l.textRot || 0, 1.0, (ctxRef, dw, dh) => {
+                    drawWithTransform(l.textX + dx, l.textY + dy, b.w, b.h, l.textRot || 0, 1.0, (ctxRef, dw, dh) => {
                         if (l.anim === 'zoomIn') { let ts = 0.7 + p * 0.3; ctxRef.translate(dw/2, dh/2); ctxRef.scale(ts, ts); ctxRef.translate(-dw/2, -dh/2); }
                         ctxRef.font = getFontStr(); ctxRef.textBaseline = 'top';
                         if ($('gShadow').checked) { ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; }
                         if ($('gStroke').checked) { ctxRef.lineWidth = parseInt($('gStrokeWidth').value) || 3; ctxRef.strokeStyle = $('gStrokeHex').value; }
-                        let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, tSpdMs = getTypeSpeedMs();
+
+                        let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, lineHeight = fSize * 1.1, tSpdMs = getTypeSpeedMs();
                         chars.forEach((ch, idx) => {
                             let charP = Math.min(Math.max((t - idx * tSpdMs) / 150, 0), 1); ctxRef.globalAlpha = charP * Math.min(p * 1.5, 1) * endAlphaMulti;
-                            if(ch !== ' ') { ctxRef.fillStyle = l.colors[idx] || '#ffffff'; let chX = isVert ? charX + (dw / 2) - (ctxRef.measureText(ch).width / 2) - 2 : charX; if ($('gStroke').checked) ctxRef.strokeText(ch, chX, charY); ctxRef.fillText(ch, chX, charY); }
-                            if (isVert) charY += (ch === ' ') ? (fSize * 0.5) : (fSize * 1.05); else charX += ctxRef.measureText(ch).width;
+                            if(ch !== ' ') {
+                                ctxRef.fillStyle = l.colors[idx] || '#ffffff'; let chX = isVert ? charX + (dw / 2) - (ctxRef.measureText(ch).width / 2) - 2 : charX;
+                                if ($('gStroke').checked) ctxRef.strokeText(ch, chX, charY); ctxRef.fillText(ch, chX, charY);   
+                            }
+                            if (isVert) charY += (ch === ' ') ? (fSize * 0.25) : (fSize * 1.05); else charX += ctxRef.measureText(ch).width;
                         });
                     });
                 }
             });
 
+            // 2. 독립 레이어 렌더링 단락
             extraLayers.forEach(el => {
                 let eDur = el.animSpeed || 1000, epRaw = Math.min(1, t / eDur), ep = ease(epRaw);
                 let b = getExtraLayerBounds(el, c), dx = 0, dy = 0, eAngle = el.rotation || 0, eAlpha = Math.min(ep * 1.5, 1);
@@ -839,7 +739,7 @@
                 if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70;
                 else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; } else if(el.anim === 'rotateIn') eAngle += (1-ep) * Math.PI * 2; else if(el.anim === 'blink' && epRaw >= 1) eAlpha = 0.4 + Math.sin(t / 120) * 0.4;
 
-                drawWithTransform(c, el.x + dx, el.y + dy, w, h, eAngle, eAlpha, (ctxRef, dw, dh) => {
+                drawWithTransform(el.x + dx, el.y + dy, w, h, eAngle, eAlpha, (ctxRef, dw, dh) => {
                     if (el.type === 'text') {
                         ctxRef.font = `bold ${el.fontSize}px "${$('globalFont').value}"`; ctxRef.fillStyle = el.color; ctxRef.textBaseline = 'top';
                         ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; ctxRef.lineWidth = 3; ctxRef.strokeStyle = '#000'; ctxRef.strokeText(el.content, 0, 0); ctxRef.fillText(el.content, 0, 0);
@@ -847,7 +747,7 @@
                 });
             });
 
-            if (eff === 'flash' && pRaw >= 1 && postP < 1) { let fA = Math.max(0, 1 - postP * 4); if (fA > 0) { c.save(); c.fillStyle = `rgba(255, 255, 255, ${fA})`; c.fillRect(0, 0, W, H); c.restore(); } }
+            if (eff === 'flash' && pRaw >= 1 && postP < 1) { let flashA = Math.max(0, 1 - postP * 4); if (flashA > 0) { c.save(); c.fillStyle = `rgba(255, 255, 255, ${flashA})`; c.fillRect(0, 0, W, H); c.restore(); } }
         };
 
         const draw = () => {
@@ -858,14 +758,17 @@
             offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, previewT, dur);
             ctx.drawImage(offCanvas, 0, 0);
 
+            // 시네마틱 엔딩 오버레이 렌더링
             if ($('endActive').checked && state === 'ending') {
                 ctx.save();
                 if (endingImgObj) {
                     let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale;
-                    ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.drawImage(endingImgObj, -ew/2, -eh/2, ew, eh);
+                    ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
+                    ctx.drawImage(endingImgObj, 0, 0, ew, eh);
                 } else {
                     let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                    ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0);
+                    ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0); ctx.translate(-b.w/2, -b.h/2);
+                    
                     ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
                     if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
                     if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
@@ -876,12 +779,13 @@
                             ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX;
                             if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY);   
                         }
-                        if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
+                        if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
                     });
                 }
                 ctx.restore();
             }
             
+            // 조절 핸들 가시 프레임 처리 단락
             if (state === 'ending' && $('endActive').checked) {
                 if (endingImgObj) drawSelectionHandle(endSettings.x, endSettings.y, endingImgObj.width*endSettings.scale, endingImgObj.height*endSettings.scale, endSettings.rotation || 0);
                 else drawSelectionHandle(endSettings.textX, endSettings.textY, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).w, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).h, endSettings.textRot || 0);
@@ -897,30 +801,46 @@
             }
         };
 
+        const drawSelectionHandle = (x, y, w, h, angle) => {
+            let cx = x + w/2, cy = y + h/2;
+            ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle);
+            ctx.strokeStyle = '#0055FF'; ctx.lineWidth = 2; ctx.setLineDash([5,5]); ctx.strokeRect(-w/2, -h/2, w, h); ctx.setLineDash([]);
+            ctx.fillStyle = '#0055FF'; ctx.fillRect(w/2 - 7, h/2 - 7, 14, 14); 
+            ctx.beginPath(); ctx.moveTo(0, -h/2); ctx.lineTo(0, -h/2 - 25); ctx.stroke(); 
+            ctx.beginPath(); ctx.arc(0, -h/2 - 25, 6, 0, Math.PI*2); ctx.fill(); 
+            ctx.restore();
+        };
+
         const exec = cb => { const t1 = sel, t2 = selExtra; updateUI(-1); updateExtraUI(-1); cb(t1, t2); };
         
         $('previewBtn').onclick = () => {
             if (!layers.length || isPlay || $('generateBtn').disabled) return; isPlay = true; 
-            let dur = getDuration(), isEnd = $('endActive').checked, totalDur = isEnd ? dur + 2500 : dur + 2000, startT = performance.now();
+            let dur = getDuration(), isEnd = $('endActive').checked, endHold = isEnd ? 3000 : 2000, totalDur = dur + endHold; 
+            let startT = performance.now();
             
             exec((t1, t2) => { 
                 const loop = (now) => { 
                     if (!isPlay) return; let t = now - startT;
                     if (t >= totalDur) { document.querySelector('input[value="ending"]').checked = isEnd; setTimeout(() => { isPlay = false; updateUI(t1); updateExtraUI(t2); draw(); }, 100); return; }
                     
-                    ctx.clearRect(0, 0, W, H); offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur); ctx.drawImage(offCanvas, 0, 0);
-                    
+                    ctx.clearRect(0, 0, W, H);
                     if (isEnd && t > dur) {
+                        offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur);
+                        ctx.drawImage(offCanvas, 0, 0);
+                        
                         let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value;
                         ctx.save(); ctx.globalAlpha = Math.min(1, postP * 4);
                         if (endingImgObj) {
-                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            ctx.drawImage(endingImgObj, -ew/2, -eh/2, ew, eh);
+                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale;
+                            ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
+                            else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
+                            ctx.drawImage(endingImgObj, 0, 0, ew, eh);
                         } else {
                             let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                            ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
+                            ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0); ctx.translate(-b.w/2, -b.h/2);
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
+                            else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
                             
                             ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
                             if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
@@ -928,13 +848,15 @@
                             
                             let chars = txt.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
                             chars.forEach((ch, idx) => {
-                                let charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); ctx.globalAlpha = charP * Math.min(postP * 4, 1);
+                                let charP = 1;
+                                if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } // [기능 보강] 타이핑 유무 처리 검사식
+                                ctx.globalAlpha = charP * Math.min(postP * 4, 1);
                                 if(ch !== ' ') { ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
+                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
                             });
                         }
                         ctx.restore();
-                    }
+                    } else renderBackground(ctx, t, dur);
                     requestAnimationFrame(loop); 
                 }; requestAnimationFrame(loop); 
             });
@@ -962,19 +884,20 @@
                     if (isEnd && t > dur) {
                         let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value; oCtx.save(); oCtx.globalAlpha = Math.min(1, postP * 4);
                         if (endingImgObj) {
-                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; oCtx.translate(endSettings.x + ew/2, endSettings.y + eh/2); oCtx.rotate(endSettings.rotation || 0);
+                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; oCtx.translate(endSettings.x + ew/2, endSettings.y + eh/2); oCtx.rotate(endSettings.rotation || 0); oCtx.translate(-ew/2, -eh/2);
                             if (eff === 'slam') { let sP = Math.min(1, postP*4); oCtx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) oCtx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            oCtx.drawImage(endingImgObj, -ew/2, -eh/2, ew, eh);
+                            oCtx.drawImage(endingImgObj, 0, 0, ew, eh);
                         } else {
                             let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                            oCtx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); oCtx.rotate(endSettings.textRot || 0);
+                            oCtx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); oCtx.rotate(endSettings.textRot || 0); oCtx.translate(-b.w/2, -b.h/2);
                             if (eff === 'slam') { let sP = Math.min(1, postP*4); oCtx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) oCtx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
                             oCtx.font = getEndFontStr(); oCtx.textBaseline = 'top'; if ($('endShadow').checked) { oCtx.shadowColor = 'rgba(0,0,0,0.7)'; oCtx.shadowBlur = 6; } if ($('endStroke').checked) { oCtx.lineWidth = parseInt($('endStrokeWidth').value) || 4; oCtx.strokeStyle = $('endStrokeHex').value; }
-                            let chars = txt.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
-                            chars.forEach((ch, idx) => {
-                                let charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); oCtx.globalAlpha = charP * Math.min(postP * 4, 1);
+                            let charX = 0, charY = 0, lineHeight = endFSize * 1.1, isVert = $('endVertical').checked, tSpdMs = getEndTypeSpeedMs();
+                            txt.split('').forEach((ch, idx) => {
+                                let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); }
+                                oCtx.globalAlpha = charP * Math.min(postP * 4, 1);
                                 if(ch !== ' ') { oCtx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (oCtx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) oCtx.strokeText(ch, chX, charY); oCtx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += oCtx.measureText(ch).width;
+                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += oCtx.measureText(ch).width;
                             });
                         } oCtx.restore();
                     } oCtx.restore();
@@ -1002,8 +925,8 @@
             });
         };
 
-        // 초기 실행: 빈 캔버스 그리기
-        updateUI(); updateExtraUI(); draw();
+        // 초기 실행: 빈 캔버스 그리기 및 정중앙 리포지셔닝 트리거
+        resizeCanvas();
     </script>
 </body>
 </html>
