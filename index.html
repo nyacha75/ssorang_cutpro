@@ -9,35 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        /* 기본 스타일 */
         body { font-family: 'Malgun Gothic', sans-serif; background: #f4f7f9; color: #333; padding: 20px; display: flex; flex-direction: column; align-items: center; margin: 0; min-height: 100vh; overflow-x: hidden; }
         .container { display: flex; gap: 20px; width: 100%; max-width: 1500px; justify-content: center; align-items: flex-start; }
-        
-        /* 캔버스 및 좌측 영역 */
         .canvas-wrapper { display: flex; flex-direction: column; width: fit-content; max-width: 100%; position: sticky; top: 20px; }
         canvas { border: 2px solid #0055FF; border-radius: 4px; background: #fff; background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .hint-box { font-size: 12px; color: #555; line-height: 1.6; margin-top: 10px; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #E8D8C8; box-sizing: border-box; }
         .hint-box span { color: #0055FF; font-weight: bold; }
-        
-        /* 컨트롤 패널 */
         .control-panel { width: 440px; display: flex; flex-direction: column; gap: 15px; background: #fff; padding: 20px; border-radius: 8px; border: 2px solid #E8D8C8; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-height: 90vh; overflow-y: auto; flex-shrink: 0; }
         .control-group { border-bottom: 1px solid #E8D8C8; padding-bottom: 15px; }
         .control-group:last-child { border-bottom: none; padding-bottom: 0; }
         .control-group h3 { margin: 0 0 10px 0; font-size: 15px; color: #0055FF; }
-        
-        /* 입력 요소 스타일 */
         input, select { background: #fff; border: 1px solid #E8D8C8; padding: 7px; border-radius: 4px; box-sizing: border-box; color: #333; font-size: 12px; outline: none; }
         input:focus, select:focus { border-color: #0055FF; }
         input[type="checkbox"], input[type="radio"] { cursor: pointer; vertical-align: middle; margin: 0 4px 0 0; }
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; text-align: center; }
-
-        /* カラー 피커 컴팩트 UI */
         .color-combo { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 3px; background: #fff; height: 22px; width: fit-content; overflow: hidden; transition: 0.2s; }
         .color-combo input[type="color"] { width: 22px; height: 22px; border: none; padding: 0; margin: 0; cursor: pointer; background: transparent; }
         .color-combo input[type="text"] { width: 55px; border: none; font-size: 11px; text-transform: uppercase; font-family: monospace; text-align: center; outline: none; padding: 0; }
-        
-        /* 버튼 및 레이아웃 */
         .row { display: flex; gap: 5px; margin-bottom: 5px; align-items: center; }
         .btn { background: #fff; color: #333; border: 1px solid #E8D8C8; flex: 1; padding: 8px 6px; font-size: 12px; cursor: pointer; border-radius: 4px; transition: 0.2s; text-align: center; }
         .btn:hover { background: #F2E8DA; }
@@ -45,8 +34,6 @@
         .btn.hl:hover { background: #E8D8C8; }
         .btn.magic { background: #0055FF; color: #fff; border-color: #0044CC; font-weight: bold; font-size: 13px; padding: 10px; }
         .btn.magic:hover { background: #0044CC; }
-        
-        /* 레이어 리스트 */
         .layer-list { max-height: 220px; overflow-y: auto; background: #f9f9f9; border: 1px solid #E8D8C8; border-radius: 4px; padding: 5px; }
         .layer-item { background: #fff; margin-bottom: 5px; padding: 10px; border-radius: 4px; border: 1px solid #E8D8C8; cursor: grab; position: relative; }
         .layer-item.active { border-color: #0055FF; background: #F0F4FF; box-shadow: 0 2px 8px rgba(0,85,255,0.1); }
@@ -57,15 +44,12 @@
         .char-color-box { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .char-color-box span { font-size: 11px; font-weight: bold; color: #555; }
         .fx-label { display: flex; align-items: center; gap: 3px; white-space: nowrap; cursor: pointer; font-size: 11px; }
-
-        /* 하단 액션 버튼 */
         .action-btn { border: none; padding: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; font-size: 14px; color: #fff; transition: 0.2s; }
         #previewBtn { background: #E8D8C8; color: #333; border: 1px solid #DBC4AC; } 
         #previewBtn:hover { background: #DBC4AC; }
         #generateBtn { background: #0055FF; }
         #generateBtn:hover { background: #0044CC; }
         button:disabled { background: #ccc !important; cursor: not-allowed; color: #888 !important; border-color: #ccc !important; }
-        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
@@ -90,7 +74,7 @@
             <canvas id="canvas" width="600" height="800"></canvas>
             
             <div class="hint-box">
-                • <span>마우스 드래그</span>: 위치 이동 | <span>모서리 조절점</span>: 크기 조절 | <span>상단 조절점</span>: 회전<br>
+                • <span>마우스 드래그</span>: 위치 이동 | <span>모서리 점</span>: 크기 조절 | <span>상단 동그라미</span>: 회전<br>
                 • <span>[간단 배치]</span>: 메인 이미지들의 가로/세로 비율을 감지하여 겹치지 않게 스마트 정렬합니다.
             </div>
             
@@ -124,10 +108,7 @@
                     <input type="number" id="canvasH" value="800" style="width:55px;">
                     <button class="btn hl" onclick="resizeCanvas()" style="flex:none; padding:5px 10px; margin-left:8px; background:#0055FF; color:#fff; border:none;">크기 적용</button>
                 </div>
-                <div class="row">
-                    <button class="btn magic" onclick="act('quick')">✨ 간단 배치 (자동 정렬)</button>
-                </div>
-                
+                <div class="row"><button class="btn magic" onclick="act('quick')">✨ 간단 배치 (자동 정렬)</button></div>
                 <div style="text-align:center; margin: 8px 0 3px 0;">
                     <span onclick="toggleAdvAlign(this)" style="text-decoration: underline; cursor: pointer; font-size: 11px; color: #555;">상세 조절 펼치기 ▼</span>
                 </div>
@@ -137,7 +118,6 @@
                         <button class="btn hl" onclick="act('matchH')">📏 세로 통일</button>
                         <button class="btn hl" onclick="act('matchW')">📏 가로 통일</button>
                         <button class="btn hl" onclick="act('crop')">✂️ 캔버스 맞추기</button>
-                        
                         <button class="btn" onclick="act('distH')">↔️ 가로 간격 정렬</button>
                         <button class="btn" onclick="act('distV')">↕️ 세로 간격 정렬</button>
                         <button class="btn hl" style="background:#e0edff; color:#0055ff; border-color:#0055ff;" onclick="act('center')">🎯 중앙 정렬</button>
@@ -157,10 +137,7 @@
                 <div class="row" style="margin-bottom:8px;">
                     <label style="font-size:12px; width:95px; white-space:nowrap;">애니메이션 속도:</label>
                     <select id="animSpeed" onchange="toggleCustomSpeed(); draw();" style="flex:1; font-size:12px;">
-                        <option value="1000">빠르게</option>
-                        <option value="2000" selected>기본</option>
-                        <option value="3000">느리게</option>
-                        <option value="custom">직접 조정</option>
+                        <option value="1000">빠르게</option><option value="2000" selected>기본</option><option value="3000">느리게</option><option value="custom">직접 조정</option>
                     </select>
                     <div id="customSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
                         <input type="number" id="customSpeed" value="2000" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;">
@@ -184,17 +161,11 @@
             
             <div class="control-group" style="border-bottom:none; padding-bottom:0;">
                 <h3>4. 메인 타이포</h3>
-                <div class="row">
-                    <label style="font-size:12px; width:75px;">파일 업로드:</label>
-                    <input type="file" id="fontInput" multiple accept=".ttf,.otf,.woff,.woff2" style="flex:1;">
-                </div>
+                <div class="row"><label style="font-size:12px; width:75px;">파일 업로드:</label><input type="file" id="fontInput" multiple accept=".ttf,.otf,.woff,.woff2" style="flex:1;"></div>
                 <div class="row">
                     <label style="font-size:12px; width:75px;">타이핑 속도:</label>
                     <select id="typeSpeed" onchange="toggleCustomTypeSpeed(); draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="50">빠르게</option>
-                        <option value="100" selected>기본</option>
-                        <option value="200">느리게</option>
-                        <option value="custom">직접 조정</option>
+                        <option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
                     </select>
                     <div id="customTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
                         <input type="number" id="customTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;">
@@ -204,14 +175,10 @@
                 <div class="row">
                     <label style="font-size:12px; width:75px;">적용 폰트:</label>
                     <select id="globalFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="Black Han Sans" selected>블랙한산스</option>
-                        <option value="Jua">주아체</option>
-                        <option value="Nanum Myeongjo">나눔명조</option>
-                        <option value="Malgun Gothic">기본고딕</option>
+                        <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
                     </select>
                     <label style="font-size:12px; display:flex; align-items:center; margin-left:5px; white-space:nowrap;">폰트 크기: 
-                        <input type="number" id="gFontSize" value="60" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;">
-                        <span style="font-size:11px; margin-left:2px;">pt</span>
+                        <input type="number" id="gFontSize" value="60" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;"><span style="font-size:11px; margin-left:2px;">pt</span>
                     </label>
                 </div>
                 
@@ -221,7 +188,6 @@
                     <label class="fx-label"><input type="checkbox" id="gItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
                     <label class="fx-label"><input type="checkbox" id="gShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
                     <label class="fx-label"><input type="checkbox" id="gStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
-                    
                     <div class="color-combo" title="테두리 색상">
                         <input type="color" id="gStrokeColor" value="#000000" oninput="$('gStrokeHex').value=this.value; draw(); triggerAutoSave();">
                         <input type="text" id="gStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
@@ -269,38 +235,25 @@
                             <option value="split">기존 이미지 중앙 가르고 등장</option>
                         </select>
                     </div>
-                    
                     <hr style="border:0; border-top:1px dashed #ccc; margin:12px 0;">
                     
-                    <div class="row">
-                        <label style="font-size:12px; width:75px; font-weight:bold;">엔딩 타이포:</label>
-                        <input type="text" id="endText" value="전투 발생" oninput="draw(); triggerAutoSave();" style="flex:1;">
-                    </div>
+                    <div class="row"><label style="font-size:12px; width:75px; font-weight:bold;">엔딩 타이포:</label><input type="text" id="endText" value="전투 발생" oninput="draw(); triggerAutoSave();" style="flex:1;"></div>
                     <div class="row">
                         <label style="font-size:12px; width:75px;">타이핑 속도:</label>
                         <select id="endTypeSpeed" onchange="$('endCustomTypeSpeedWrapper').style.display=this.value==='custom'?'flex':'none'; draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                            <option value="0">타이핑 없음 (즉시 등장)</option>
-                            <option value="50">빠르게</option>
-                            <option value="100" selected>기본</option>
-                            <option value="200">느리게</option>
-                            <option value="custom">직접 조정</option>
+                            <option value="0">타이핑 없음 (즉시 등장)</option><option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
                         </select>
                         <div id="endCustomTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                            <input type="number" id="endCustomTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;">
-                            <span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
+                            <input type="number" id="endCustomTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;"><span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
                         </div>
                     </div>
                     <div class="row">
                         <label style="font-size:12px; width:75px;">적용 폰트:</label>
                         <select id="endFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                            <option value="Black Han Sans" selected>블랙한산스</option>
-                            <option value="Jua">주아체</option>
-                            <option value="Nanum Myeongjo">나눔명조</option>
-                            <option value="Malgun Gothic">기본고딕</option>
+                            <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
                         </select>
                         <label style="font-size:12px; display:flex; align-items:center; margin-left:5px; white-space:nowrap;">폰트 크기: 
-                            <input type="number" id="endFontSize" value="120" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;">
-                            <span style="font-size:11px; margin-left:2px;">pt</span>
+                            <input type="number" id="endFontSize" value="120" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;"><span style="font-size:11px; margin-left:2px;">pt</span>
                         </label>
                     </div>
                     
@@ -318,10 +271,7 @@
                         <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="endStrokeWidth" value="4" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
                     </div>
                     
-                    <div class="row" style="display:none;">
-                        <input type="color" id="endColor" value="#ffffff">
-                        <input type="text" id="endColorHex" value="#ffffff">
-                    </div>
+                    <div class="row" style="display:none;"><input type="color" id="endColor" value="#ffffff"><input type="text" id="endColorHex" value="#ffffff"></div>
 
                     <div class="row" style="margin-top:10px; background:#f9f9f9; padding:5px; border-radius:4px; border:1px dashed #ccc;">
                         <label style="width:75px; font-size:12px; color:#0055ff; font-weight:bold;">또는 이미지:</label>
@@ -335,11 +285,8 @@
                 <h3>7. 출력 파일 형식</h3>
                 <div class="row" style="flex-wrap: nowrap; gap: 8px;">
                     <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0;">
-                        <option value="apng" selected>APNG(코코포리아 최적화)</option>
-                        <option value="gif">GIF</option>
-                        <option value="mp4">MP4 (원본 화질)</option>
+                        <option value="apng" selected>APNG(코코포리아 최적화)</option><option value="gif">GIF</option><option value="mp4">MP4 (원본 화질)</option>
                     </select>
-                    
                     <div id="bgOptionWrapper" style="display:none; align-items:center; gap:8px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
                         <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
                             <div class="color-combo">
@@ -347,13 +294,8 @@
                                 <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
                             </div>
                         </div>
-                        <div id="transCheckWrapper" style="display:flex; align-items:center;">
-                            <label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label>
-                        </div>
-                        <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;">
-                            <input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">
-                            코코포
-                        </label>
+                        <div id="transCheckWrapper" style="display:flex; align-items:center;"><label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label></div>
+                        <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;"><input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">코코포</label>
                     </div>
                 </div>
                 
@@ -371,12 +313,11 @@
         const ctx = canvasEl.getContext('2d', { willReadFrequently: true });
         
         let layers = [], extraLayers = [], customFonts = [], sel = -1, selExtra = -1;
-        let isDrag = false, dragType = '';
+        let isDrag = false, dragType = '', isPlay = false;
         let offX = 0, offY = 0, textRelX = 0, textRelY = 0;
         let W = 600, H = 800;
         let gifWorkerUrl = null, endingImgObj = null; 
         
-        // 정중앙 초기 배치 좌표 고도화
         let endSettings = { x: 200, y: 300, scale: 1.0, rotation: 0, textX: 120, textY: 360, textRot: 0 };
         
         const offCanvas = document.createElement('canvas');
@@ -384,26 +325,9 @@
 
         const ease = t => 1 - Math.pow(1 - t, 3);
 
-        window.toggleAdvAlign = (span) => {
-            const wrap = $('advAlignWrapper');
-            if(wrap.style.display === 'none') { wrap.style.display = 'block'; span.innerText = '상세 조절 접기 ▲'; } 
-            else { wrap.style.display = 'none'; span.innerText = '상세 조절 펼치기 ▼'; }
-        };
-
-        window.toggleBgColor = () => {
-            const v = $('quality').value, wrap = $('bgOptionWrapper'), transOpt = $('transCheckWrapper');
-            if (v === 'gif') { wrap.style.display = 'flex'; transOpt.style.display = 'flex'; } 
-            else if (v === 'mp4') { wrap.style.display = 'flex'; transOpt.style.display = 'none'; $('gifTransparentCheck').checked = false; toggleTrans(); } 
-            else { wrap.style.display = 'none'; }
-        };
-
-        window.toggleTrans = () => {
-            const isTrans = $('gifTransparentCheck').checked;
-            $('gifBgColor').disabled = isTrans; $('gifBgHex').disabled = isTrans; $('ccfoliaBgCheck').disabled = isTrans;
-            $('colorComboWrapper').style.opacity = isTrans ? '0.4' : '1'; $('colorComboWrapper').style.pointerEvents = isTrans ? 'none' : 'auto';
-            draw(); triggerAutoSave();
-        };
-
+        window.toggleAdvAlign = (span) => { const wrap = $('advAlignWrapper'); if(wrap.style.display === 'none') { wrap.style.display = 'block'; span.innerText = '상세 조절 접기 ▲'; } else { wrap.style.display = 'none'; span.innerText = '상세 조절 펼치기 ▼'; } };
+        window.toggleBgColor = () => { const v = $('quality').value, wrap = $('bgOptionWrapper'), transOpt = $('transCheckWrapper'); if (v === 'gif') { wrap.style.display = 'flex'; transOpt.style.display = 'flex'; } else if (v === 'mp4') { wrap.style.display = 'flex'; transOpt.style.display = 'none'; $('gifTransparentCheck').checked = false; toggleTrans(); } else { wrap.style.display = 'none'; } };
+        window.toggleTrans = () => { const isTrans = $('gifTransparentCheck').checked; $('gifBgColor').disabled = isTrans; $('gifBgHex').disabled = isTrans; $('ccfoliaBgCheck').disabled = isTrans; $('colorComboWrapper').style.opacity = isTrans ? '0.4' : '1'; $('colorComboWrapper').style.pointerEvents = isTrans ? 'none' : 'auto'; draw(); triggerAutoSave(); };
         window.toggleEndingUI = () => { $('endingOptions').style.display = $('endActive').checked ? 'block' : 'none'; };
         window.toggleCustomSpeed = () => $('customSpeedWrapper').style.display = $('animSpeed').value === 'custom' ? 'flex' : 'none';
         window.toggleCustomTypeSpeed = () => $('customTypeSpeedWrapper').style.display = $('typeSpeed').value === 'custom' ? 'flex' : 'none';
@@ -415,13 +339,13 @@
         const getFontStr = () => `${$('gItalic').checked ? 'italic ' : ''}${$('gBold').checked ? 'bold ' : ''}${parseInt($('gFontSize').value) || 60}px "${$('globalFont').value}"`;
         const getEndFontStr = () => `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${parseInt($('endFontSize').value) || 60}px "${$('endFont').value}"`;
 
-        const getTextBounds = (text, fSize, isVertOverride) => {
+        const getTextBounds = (text, fSize, isEndPhaseCheck) => {
             if (!text) return { w: 0, h: 0 };
-            ctx.font = isVertOverride ? getEndFontStr() : getFontStr();
-            let isVert = isVertOverride !== undefined ? isVertOverride : $('gVertical').checked;
+            ctx.font = isEndPhaseCheck ? getEndFontStr() : getFontStr();
+            let isVert = isEndPhaseCheck ? $('endVertical').checked : $('gVertical').checked;
             if (isVert) {
                 let w = 0, chars = text.split(''); chars.forEach(c => w = Math.max(w, ctx.measureText(c).width));
-                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.25) : (fSize * 1.05); }); // 자간 절반 다이어트 압축
+                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.5) : (fSize * 1.05); }); // 0.5배로 간격 압축 적용 완료
                 return { w: w + 4, h: h + 4 };
             } else return { w: ctx.measureText(text).width + 4, h: fSize + 10 };
         };
@@ -433,44 +357,97 @@
         };
 
         window.resizeCanvas = () => {
-            W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800;
-            canvasEl.width = W; canvasEl.height = H;
-            
-            let endFSize = parseInt($('endFontSize').value) || 60;
-            let b = getTextBounds($('endText').value, endFSize, true);
+            W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800; canvasEl.width = W; canvasEl.height = H;
+            let endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds($('endText').value, endFSize, true);
             endSettings.textX = W/2 - b.w/2; endSettings.textY = H/2 - b.h/2;
             if (endingImgObj) { endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2; }
             draw(); triggerAutoSave();
         };
 
-        // --- 독립 추가 레이어 생성기 ---
+        function getTransformHit(x, y, targetX, targetY, w, h, angle) {
+            let cx = targetX + w/2, cy = targetY + h/2, dx = x - cx, dy = y - cy;
+            let localX = dx * Math.cos(-angle) - dy * Math.sin(-angle), localY = dx * Math.sin(-angle) + dy * Math.cos(-angle);
+            let isRot = localX >= -12 && localX <= 12 && localY >= -h/2 - 40 && localY <= -h/2 - 15;
+            let isRes = localX >= w/2 - 15 && localX <= w/2 + 5 && localY >= h/2 - 15 && localY <= h/2 + 5;
+            let isInside = localX >= -w/2 && localX <= w/2 && localY >= -h/2 && localY <= h/2;
+            return { isInside, isRes, isRot, cx, cy };
+        }
+
+        const localDB = {
+            db: null,
+            init() { return new Promise((res, rej) => { const req = indexedDB.open('CCfoliaCutinDB_AdvPRO', 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('data')) e.target.result.createObjectStore('data'); }; req.onsuccess = e => { this.db = e.target.result; res(); }; req.onerror = rej; }); },
+            set(key, val) { return new Promise((res) => { if (!this.db) return res(); const tx = this.db.transaction('data', 'readwrite'); tx.objectStore('data').put(val, key); tx.oncomplete = res; }); },
+            get(key) { return new Promise((res) => { if (!this.db) return res(null); const tx = this.db.transaction('data', 'readonly'); const req = tx.objectStore('data').get(key); req.onsuccess = () => res(req.result); req.onerror = () => res(null); }); }
+        };
+
+        let autoSaveTimer;
+        window.triggerAutoSave = () => {
+            if(isPlay) return; clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(async () => { try { await localDB.set('ccfolia_cutin_backup', JSON.stringify(getProjectData())); const st = $('autoSaveStatus'); if (st) { st.innerText = "✓ 방금 전 저장됨"; setTimeout(() => { if (st.innerText === "✓ 방금 전 저장됨") st.innerText = ""; }, 2500); } } catch(e) {} }, 1000);
+        };
+
+        const getProjectData = () => ({
+            layers: layers.map(l => ({ src: l.src, name: l.name, anim: l.anim, scale: l.scale, rotation: l.rotation, x: l.x, y: l.y, text: l.text, textRot: l.textRot, colors: l.colors, textX: l.textX, textY: l.textY })),
+            extraLayers: extraLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, anim: el.anim, animSpeed: el.animSpeed, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, content: el.content, fontSize: el.fontSize, color: el.color })),
+            settings: { 
+                gap: $('gap').value, globalFont: $('globalFont').value, gFontSize: $('gFontSize').value, gBold: $('gBold').checked, gItalic: $('gItalic').checked, gShadow: $('gShadow').checked, gStroke: $('gStroke').checked, gStrokeColor: $('gStrokeColor').value, gStrokeHex: $('gStrokeHex').value, gStrokeWidth: $('gStrokeWidth').value, gVertical: $('gVertical').checked, typeSpeed: $('typeSpeed').value, customTypeSpeed: $('customTypeSpeed').value, animSpeed: $('animSpeed').value, customSpeed: $('customSpeed').value, globalEffect: $('globalEffect').value, quality: $('quality').value, gifTransparentCheck: $('gifTransparentCheck').checked, gifBgColor: $('gifBgColor').value, gifBgHex: $('gifBgHex').value, ccfoliaBgCheck: $('ccfoliaBgCheck').checked, canvasW: W, canvasH: H,
+                endActive: $('endActive').checked, endOpacity: $('endOpacity').value, endEffect: $('endEffect').value, endText: $('endText').value, endColor: $('endColor').value, endColorHex: $('endColorHex').value, endFontSize: $('endFontSize').value, endTypeSpeed: $('endTypeSpeed').value, endCustomTypeSpeed: $('endCustomTypeSpeed').value, endVertical: $('endVertical').checked, endBold: $('endBold').checked, endItalic: $('endItalic').checked, endShadow: $('endShadow').checked, endStroke: $('endStroke').checked, endStrokeColor: $('endStrokeColor').value, endStrokeHex: $('endStrokeHex').value, endStrokeWidth: $('endStrokeWidth').value, endingImgSrc: endingImgObj ? endingImgObj.src : null,
+                endX: endSettings.x, endY: endSettings.y, endScale: endSettings.scale, endRotation: endSettings.rotation, endTextX: endSettings.textX, endTextY: endSettings.textY, endTextRot: endSettings.textRot
+            }
+        });
+
+        const restoreProjectData = (data) => {
+            const s = data.settings;
+            if(s) {
+                ['gap', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endText', 'endFontSize', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
+                ['gBold', 'gItalic', 'gShadow', 'gStroke', 'gVertical', 'gifTransparentCheck', 'ccfoliaBgCheck', 'endActive', 'endVertical', 'endBold', 'endItalic', 'endShadow', 'endStroke'].forEach(id => { if(s[id]!==undefined) $(id).checked = !!s[id]; });
+                ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endColor', 'endColorHex', 'endStrokeColor', 'endStrokeHex'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
+                
+                if (s.globalFont && !Array.from($('globalFont').options).some(opt => opt.value === s.globalFont)) { const opt = document.createElement('option'); opt.value = opt.text = s.globalFont; $('globalFont').appendChild(opt); customFonts.push(s.globalFont); }
+                $('globalFont').value = s.globalFont || 'Black Han Sans';
+                if (s.endFont && !Array.from($('endFont').options).some(opt => opt.value === s.endFont)) { const opt = document.createElement('option'); opt.value = opt.text = s.endFont; $('endFont').appendChild(opt); }
+                $('endFont').value = s.endFont || 'Black Han Sans';
+                
+                W = canvasEl.width = s.canvasW || 600; H = canvasEl.height = s.canvasH || 800; $('canvasW').value = W; $('canvasH').value = H;
+                if(s.endX) { endSettings.x=s.endX; endSettings.y=s.endY; endSettings.scale=s.endScale; endSettings.rotation=s.endRotation; endSettings.textX=s.endTextX; endSettings.textY=s.endTextY; endSettings.textRot=s.endTextRot; }
+
+                $('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none'; $('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none'; $('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
+                toggleBgColor(); toggleTrans(); toggleEndingUI();
+                if (s.endingImgSrc) { endingImgObj = new Image(); endingImgObj.onload = () => draw(); endingImgObj.src = s.endingImgSrc; $('removeEndImgBtn').style.display = 'inline-block'; }
+            }
+
+            layers = []; extraLayers = []; let loadedCount = 0; let totalToLoad = (data.layers?data.layers.length:0) + (data.extraLayers?data.extraLayers.length:0);
+            const checkDone = () => { if(++loadedCount >= totalToLoad) { updateUI(-1); updateExtraUI(-1); draw(); } };
+            if(totalToLoad === 0) { updateUI(); updateExtraUI(); draw(); return; }
+            if(data.layers) data.layers.forEach((lData, idx) => { const img = new Image(); img.onload = () => { layers[idx] = { ...lData, img: img }; if(!layers[idx].rotation) layers[idx].rotation = 0; if(!layers[idx].textRot) layers[idx].textRot = 0; checkDone(); }; img.src = lData.src; });
+            if(data.extraLayers) data.extraLayers.forEach((elData, idx) => {
+                if (elData.type === 'image' && elData.src) { const img = new Image(); img.onload = () => { extraLayers[idx] = { ...elData, img: img }; if(!extraLayers[idx].rotation) extraLayers[idx].rotation=0; checkDone(); }; img.src = elData.src; } 
+                else { extraLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
+            });
+        };
+
+        window.saveProjectFile = () => { let fn = prompt("저장할 프로젝트 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith('.json')) fn += '.json'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getProjectData())], { type: "application/json" })); a.download = fn; a.click(); };
+        window.loadProjectFile = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { try { restoreProjectData(JSON.parse(ev.target.result)); } catch(err) { alert("파일 오류"); } }; reader.readAsText(file); e.target.value = ''; };
+
+        // --- 독립 레이어 생성 ---
         window.addExtraText = () => {
-            let fSize = 40; ctx.font = `bold ${fSize}px "${$('globalFont').value}"`;
-            let w = ctx.measureText('추가 타이포').width, h = fSize * 1.1;
+            let fSize = 40; ctx.font = `bold ${fSize}px "${$('globalFont').value}"`; let w = ctx.measureText('추가 타이포').width, h = fSize * 1.1;
             extraLayers.push({ type: 'text', content: '추가 타이포', name: '타이포', anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, color: '#ffffff' });
             updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
         };
         $('extraImageInput').onchange = e => {
             Array.from(e.target.files).forEach(file => { const r = new FileReader();
                 r.onload = ev => { const img = new Image(); img.onload = () => {
-                        let sc = 0.5; let w = img.width * sc, h = img.height * sc;
+                        let sc = 0.5, w = img.width * sc, h = img.height * sc;
                         extraLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, anim: 'fade', animSpeed: 1000, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
                         updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
                     }; img.src = ev.target.result;
                 }; r.readAsDataURL(file);
             }); e.target.value = '';
         };
-        
         $('endImgInput').onchange = e => {
             if(!e.target.files[0]) return; const r = new FileReader();
-            r.onload = ev => { 
-                endingImgObj = new Image(); 
-                endingImgObj.onload = () => { 
-                    endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2;
-                    draw(); triggerAutoSave(); 
-                }; 
-                endingImgObj.src = ev.target.result; $('removeEndImgBtn').style.display = 'inline-block'; 
-            }; r.readAsDataURL(file);
+            r.onload = ev => { endingImgObj = new Image(); endingImgObj.onload = () => { endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2; draw(); triggerAutoSave(); }; endingImgObj.src = ev.target.result; $('removeEndImgBtn').style.display = 'inline-block'; }; r.readAsDataURL(e.target.files[0]);
         };
         window.removeEndImg = () => { endingImgObj = null; $('endImgInput').value = ''; $('removeEndImgBtn').style.display = 'none'; draw(); triggerAutoSave(); };
 
@@ -481,34 +458,17 @@
                 const el = extraLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selExtra ? 'active' : ''}`;
                 let controls = '';
                 if(el.type === 'text') {
-                    controls = `<div class="row" style="margin-top:5px;">
-                        <input type="text" value="${el.content}" oninput="extraLayers[${i}].content=this.value; draw(); triggerAutoSave();" style="flex:1;">
-                        <div class="color-combo" style="margin-left:3px;"><input type="color" value="${el.color}" oninput="this.nextElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.color}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();}"></div>
-                        <input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:3px;">
-                    </div>`;
+                    controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.content}" oninput="extraLayers[${i}].content=this.value; draw(); triggerAutoSave();" style="flex:1;"><div class="color-combo" style="margin-left:3px;"><input type="color" value="${el.color}" oninput="this.nextElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.color}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();}"></div><input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:3px;"></div>`;
                 } else {
-                    controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;">
-                        <label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="extraLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;">
-                    </div>`;
+                    controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="extraLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`;
                 }
-
-                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;">
-                        <div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div>
-                        <div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i+1}]; extraLayers[${i+1}]=tmp; updateExtraUI(${i===selExtra?i+1:selExtra}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i-1}]; extraLayers[${i-1}]=tmp; updateExtraUI(${i===selExtra?i-1:selExtra}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="extraLayers.splice(${i},1); updateExtraUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
-                        <div class="row" style="margin-top:5px; background:#f0f0f0; padding:4px; border-radius:4px;">
-                            <label style="font-size:11px; margin-right:3px;">효과:</label>
-                            <select onchange="extraLayers[${i}].anim=this.value; draw(); triggerAutoSave();" style="flex:1; font-size:11px; padding:4px;">
-                                ${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대', 'rotateIn:💫 회전하며 등장', 'blink:✨ 계속 반짝임'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${el.anim===v?'selected':''}>${t}</option>`; }).join('')}
-                            </select>
-                            <input type="number" value="${el.animSpeed||1000}" onchange="extraLayers[${i}].animSpeed=parseInt(this.value); draw(); triggerAutoSave();" style="width:45px; margin-left:3px; padding:4px; font-size:11px;"> <span style="font-size:11px;">ms</span>
-                        </div>${controls}`;
-                
+                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i+1}]; extraLayers[${i+1}]=tmp; updateExtraUI(${i===selExtra?i+1:selExtra}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i-1}]; extraLayers[${i-1}]=tmp; updateExtraUI(${i===selExtra?i-1:selExtra}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="extraLayers.splice(${i},1); updateExtraUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
+                    <div class="row" style="margin-top:5px; background:#f0f0f0; padding:4px; border-radius:4px;"><label style="font-size:11px; margin-right:3px;">효과:</label><select onchange="extraLayers[${i}].anim=this.value; draw(); triggerAutoSave();" style="flex:1; font-size:11px; padding:4px;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대', 'rotateIn:💫 회전하며 등장', 'blink:✨ 계속 반짝임'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${el.anim===v?'selected':''}>${t}</option>`; }).join('')}</select><input type="number" value="${el.animSpeed||1000}" onchange="extraLayers[${i}].animSpeed=parseInt(this.value); draw(); triggerAutoSave();" style="width:45px; margin-left:3px; padding:4px; font-size:11px;"> <span style="font-size:11px;">ms</span></div>${controls}`;
                 div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateExtraUI(i); draw(); } };
                 list.appendChild(div);
             }
         };
 
-        // --- 메인 레이어 ---
         const updateUI = (idx = sel) => {
             if(idx !== -1) { sel = idx; selExtra = -1; updateExtraUI(-1); }
             const list = $('layerList'); list.innerHTML = layers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하세요.</p>';
@@ -516,56 +476,123 @@
                 const l = layers[i], div = document.createElement('div'); div.className = `layer-item ${i === sel ? 'active' : ''}`; div.draggable = true;
                 div.onclick = e => { if (!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateUI(i); draw(); } };
                 div.ondragstart = e => { e.dataTransfer.setData('idx', i); setTimeout(() => div.style.opacity = '0.5', 0); };
-                div.ondragend = () => div.style.opacity = '1'; div.ondragover = e => { e.preventDefault(); div.classList.add('drag-over'); };
-                div.ondragleave = () => div.classList.remove('drag-over');
+                div.ondragend = () => div.style.opacity = '1'; div.ondragover = e => { e.preventDefault(); div.classList.add('drag-over'); }; div.ondragleave = () => div.classList.remove('drag-over');
                 div.ondrop = e => { e.preventDefault(); div.classList.remove('drag-over'); const from = parseInt(e.dataTransfer.getData('idx')); if (from !== i && !isNaN(from)) { const activeL = layers[sel]; layers.splice(i, 0, layers.splice(from, 1)[0]); updateUI(layers.indexOf(activeL)); triggerAutoSave(); } };
 
                 let colorPickersHTML = '';
                 if(l.text) {
                     const chars = l.text.split(''); while(l.colors.length < chars.length) l.colors.push('#ffffff');
-                    colorPickersHTML = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">
-                        ${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${l.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${l.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
+                    colorPickersHTML = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${l.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${l.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
                 }
 
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-weight:bold; font-size:13px;">
-                        <div style="display:flex; align-items:center; gap:8px;"><img src="${l.src}" class="thumb"> <span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.name}</span></div>
-                        <div style="display:flex; gap:3px;"><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i+1}]; layers[${i+1}]=t; updateUI(${i===sel?i+1:sel}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i-1}]; layers[${i-1}]=t; updateUI(${i===sel?i-1:sel}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="layers.splice(${i},1); updateUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div>
-                    </div>
-                    <div class="row">
-                        <select onchange="layers[${i}].anim=this.value; updateUI(${i}); triggerAutoSave();" style="flex:1;">
-                            ${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${l.anim===v?'selected':''}>${t}</option>`; }).join('')}
-                        </select>
-                    </div>
-                    <div class="row" style="margin-top:5px;"><input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; draw(); triggerAutoSave();" onchange="updateUI(${i});" style="flex:1;"></div>
-                    ${colorPickersHTML}
-                `; list.appendChild(div);
+                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-weight:bold; font-size:13px;"><div style="display:flex; align-items:center; gap:8px;"><img src="${l.src}" class="thumb"> <span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i+1}]; layers[${i+1}]=t; updateUI(${i===sel?i+1:sel}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let t=layers[${i}]; layers[${i}]=layers[${i-1}]; layers[${i-1}]=t; updateUI(${i===sel?i-1:sel}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="layers.splice(${i},1); updateUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
+                    <div class="row"><select onchange="layers[${i}].anim=this.value; updateUI(${i}); triggerAutoSave();" style="flex:1;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${l.anim===v?'selected':''}>${t}</option>`; }).join('')}</select></div>
+                    <div class="row" style="margin-top:5px;"><input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; draw(); triggerAutoSave();" onchange="updateUI(${i});" style="flex:1;"></div>${colorPickersHTML}`;
+                list.appendChild(div);
             }
         };
 
-        // 폰트 비동기 적재 버그 방어 조치
         $('fontInput').onchange = async e => {
             for (let file of e.target.files) {
                 try {
-                    const fontName = file.name.split('.')[0]; 
-                    const font = new FontFace(fontName, await file.arrayBuffer()); await font.load(); document.fonts.add(font);
+                    const fontName = file.name.split('.')[0]; const font = new FontFace(fontName, await file.arrayBuffer()); await font.load(); document.fonts.add(font);
                     if(!customFonts.includes(fontName)) { 
-                        customFonts.push(fontName); 
-                        const opt1 = document.createElement('option'); opt1.value = opt1.text = fontName; $('globalFont').appendChild(opt1); 
-                        const opt2 = document.createElement('option'); opt2.value = opt2.text = fontName; $('endFont').appendChild(opt2); 
+                        customFonts.push(fontName); const opt1 = document.createElement('option'); opt1.value = opt1.text = fontName; $('globalFont').appendChild(opt1); const opt2 = document.createElement('option'); opt2.value = opt2.text = fontName; $('endFont').appendChild(opt2); 
                         $('globalFont').value = fontName; $('endFont').value = fontName;
                     }
                 } catch (err) { alert('폰트 로드 실패'); }
-            } e.target.value = '';
-            document.fonts.ready.then(() => { draw(); triggerAutoSave(); });
+            } e.target.value = ''; document.fonts.ready.then(() => { draw(); triggerAutoSave(); });
         };
 
-        // --- 마우스 변환 제어 엔진 및 핸들 트래킹 로직 ---
+        $('imageInput').onchange = e => {
+            Array.from(e.target.files).forEach(file => { const r = new FileReader();
+                r.onload = ev => { const img = new Image(); img.onload = () => {
+                        const sc = 0.5; layers.push({ img, src: ev.target.result, name: file.name, anim: layers.length % 2 === 0 ? 'slideLeft' : 'slideRight', scale: sc, rotation: 0, textRot: 0, x: W/2 - (img.width*sc)/2, y: H/2 - (img.height*sc)/2, text: '', colors: [], textX: W/2 - (img.width*sc)/2 - 80, textY: H/2 - (img.height*sc)/2 - 30 });
+                        updateUI(layers.length - 1); draw(); triggerAutoSave();
+                    }; img.src = ev.target.result;
+                }; r.readAsDataURL(file);
+            }); e.target.value = '';
+        };
+
+        window.move = (i, d, e) => { e.stopPropagation(); const t = i + d; if (t >= 0 && t < layers.length) { [layers[i], layers[t]] = [layers[t], layers[i]]; updateUI(sel === i ? t : (sel === t ? i : sel)); triggerAutoSave(); } };
+        window.del = (i, e) => { e.stopPropagation(); layers.splice(i, 1); updateUI(sel === i ? Math.max(0, layers.length - 1) : (sel > i ? sel - 1 : sel)); triggerAutoSave(); };
+        
+        window.act = (type) => {
+            if (!layers.length) return; const gap = +$('gap').value || 0, l = layers[sel!==-1?sel:0];
+            if (type === 'crop') {
+                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
+                layers.forEach(ly => { 
+                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize);
+                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
+                    if(ly.anim === 'slideLeft') minX -= 70; if(ly.anim === 'slideRight') maxX += 70; if(ly.anim === 'slideUp') maxY += 70; if(ly.anim === 'slideDown') minY -= 70;
+                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
+                });
+                if(mX === Infinity) return;
+                const cx = W / 2, cy = H / 2, newW = Math.max(100, Math.ceil(Math.max(cx - mX, xX - cx) + 10) * 2), newH = Math.max(100, Math.ceil(Math.max(cy - mY, xY - cy) + 10) * 2);
+                W = canvasEl.width = newW; H = canvasEl.height = newH; $('canvasW').value = W; $('canvasH').value = H;
+                layers.forEach(ly => { ly.x += newW/2 - cx; ly.y += newH/2 - cy; ly.textX += newW/2 - cx; ly.textY += newH/2 - cy; });
+            }
+            else if (type === 'matchH' || type === 'matchW') {
+                if (layers.length > 1 && l) {
+                    const isH = type === 'matchH', target = isH ? l.img.height * l.scale : l.img.width * l.scale;
+                    layers.forEach(ly => { if(ly !== l) { const oldSc = ly.scale; ly.scale = target / (isH ? ly.img.height : ly.img.width); const r = ly.scale / oldSc; ly.textX = ly.x + (ly.textX - ly.x) * r; ly.textY = ly.y + (ly.textY - ly.y) * r; } }); 
+                }
+            }
+            else if (type === 'distH' || type === 'distV') {
+                const isH = type === 'distH', tSz = layers.reduce((a, ly) => a + ly.img[isH?'width':'height'] * ly.scale, 0) + gap * (layers.length - 1);
+                let cur = ((isH?W:H) - tSz) / 2;
+                layers.forEach(ly => { 
+                    const dx = isH ? cur - ly.x : ((W - ly.img.width*ly.scale)/2) - ly.x, dy = isH ? ((H - ly.img.height*ly.scale)/2) - ly.y : cur - ly.y;
+                    ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; cur += ly.img[isH?'width':'height']*ly.scale + gap; 
+                });
+            }
+            else if (type === 'center') {
+                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
+                layers.forEach(ly => { 
+                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize);
+                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
+                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
+                });
+                if(mX === Infinity) return;
+                let cx = (mX + xX) / 2, cy = (mY + xY) / 2, sX = W/2 - cx, sY = H/2 - cy;
+                layers.forEach(ly => { ly.x += sX; ly.y += sY; ly.textX += sX; ly.textY += sY; });
+            }
+            else if (type.startsWith('quick')) {
+                let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
+                const doV = type === 'quickV' || (type === 'quick' && tW > tH);
+                act(doV ? 'matchW' : 'matchH'); act(doV ? 'distV' : 'distH'); act('center');
+            }
+            
+            let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
+            if(endSettings.textX === 120 && endSettings.textY === 360) { endSettings.textX = W/2 - b.w/2; endSettings.textY = H/2 - b.h/2; }
+            
+            draw(); triggerAutoSave();
+        };
+
+        const getPos = e => { const r = canvasEl.getBoundingClientRect(); return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) }; };
+        
+        canvasEl.onwheel = e => { 
+            if(isPlay) return; e.preventDefault(); 
+            let viewState = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
+            
+            if (viewState === 'ending' && $('endActive').checked) {
+                if (endingImgObj) endSettings.scale = Math.max(0.05, endSettings.scale + (e.deltaY < 0 ? 0.05 : -0.05));
+                else $('endFontSize').value = Math.max(10, parseInt($('endFontSize').value) + (e.deltaY < 0 ? 5 : -5));
+            }
+            else if (selExtra !== -1 && extraLayers[selExtra]) {
+                if (extraLayers[selExtra].type === 'image') extraLayers[selExtra].scale = Math.max(0.05, extraLayers[selExtra].scale + (e.deltaY < 0 ? 0.05 : -0.05));
+                else extraLayers[selExtra].fontSize = Math.max(10, extraLayers[selExtra].fontSize + (e.deltaY < 0 ? 5 : -5));
+            } 
+            else if (sel !== -1 && layers[sel]) {
+                const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, l.scale + (e.deltaY < 0 ? 0.05 : -0.05)); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r;
+            }
+            updateExtraUI(); updateUI(); draw(); triggerAutoSave();
+        };
+        
         canvasEl.onmousedown = e => {
             if (isPlay) return; const {x, y} = getPos(e); const fSize = parseInt($('gFontSize').value) || 60;
-            let viewState = document.querySelector('input[name="previewState"]:checked').value;
+            let viewState = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
             
-            // 시네마틱 엔딩 편집 상태의 전면 캡처 파트
             if (viewState === 'ending' && $('endActive').checked) {
                 let endFSize = parseInt($('endFontSize').value) || 60;
                 if (endingImgObj) {
@@ -584,7 +611,6 @@
                 return;
             }
 
-            // 추가 독립 레이어 캡처 파트
             if (selExtra !== -1 && extraLayers[selExtra]) {
                 let el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx);
                 let hit = getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0);
@@ -593,7 +619,6 @@
                 if (hit.isInside) { isDrag = true; dragType = 'extraMove'; offX = x - el.x; offY = y - el.y; return; }
             }
 
-            // 메인 컷인 레이어 캡처 파트
             if (sel !== -1 && layers[sel]) {
                 let l = layers[sel], w = l.img.width*l.scale, h = l.img.height*l.scale;
                 let hitImg = getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0);
@@ -604,12 +629,11 @@
                 if (l.text) {
                     let b = getTextBounds(l.text, fSize); let hitTxt = getTransformHit(x, y, l.textX, l.textY, b.w, b.h, l.textRot || 0);
                     if (hitTxt.isRot) { isDrag = true; dragType = 'mainTextRot'; offX = hitTxt.cx; offY = hitTxt.cy; return; }
-                    if (hitTxt.isRes) { isDrag = true; dragType = 'mainTextRes'; offX = l.textX; offY = l.textY; return; } // 메인 타이포 캔버스 직접 조절 조작계 연동
+                    if (hitTxt.isRes) { isDrag = true; dragType = 'mainTextRes'; offX = l.textX; offY = l.textY; return; }
                     if (hitTxt.isInside) { isDrag = true; dragType = 'mainTextMove'; offX = x - l.textX; offY = y - l.textY; return; }
                 }
             }
             
-            // 레이어 미선택 상태 터치 추적 필터링 단락
             for (let i = extraLayers.length - 1; i >= 0; i--) {
                 let el = extraLayers[i], b = getExtraLayerBounds(el, ctx);
                 if (getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0).isInside) { isDrag = true; dragType = 'extraMove'; updateExtraUI(i); offX = x - el.x; offY = y - el.y; draw(); return; }
@@ -649,7 +673,6 @@
         };
         window.onmouseup = () => { if (isDrag) triggerAutoSave(); isDrag = false; dragType = ''; };
 
-        // --- 백그라운드 프레임 연산 버퍼 렌더러 ---
         const renderBackground = (c, t, dur) => {
             let pRaw = Math.min(1, t / dur), p = ease(pRaw), postP = Math.max(0, (t - dur) / 2000), eff = $('globalEffect').value;
             let isEndPhase = $('endActive').checked && t > dur, endAlphaMulti = 1.0;
@@ -668,7 +691,7 @@
             
             c.imageSmoothingEnabled = true; c.imageSmoothingQuality = "high";
             
-            // [시네마틱 중앙 가르기 밀어내기 완벽 처리] 화면 바깥으로 100% 가려지게 밀어내기 배율 보정
+            // 시네마틱 밀어내기: 완전히 화면 밖으로 나가도록 W, H 값을 곱해줍니다.
             const drawWithTransform = (x, y, w, h, angle, alphaVal, drawFunc) => {
                 let cx = x + w/2, cy = y + h/2, pushX = 0, pushY = 0;
                 if (isEndPhase && $('endEffect').value === 'split') {
@@ -681,7 +704,6 @@
                 drawFunc(c, w, h); c.restore();
             };
 
-            // 1. 메인 레이어 렌더링 단락
             layers.forEach(l => {
                 let s = l.scale, w = l.img.width*s, h = l.img.height*s, dx = 0, dy = 0; 
                 if(l.anim === 'slideLeft') dx = -(1-p)*70; else if(l.anim === 'slideRight') dx = (1-p)*70; else if(l.anim === 'slideUp') dy = (1-p)*70; else if(l.anim === 'slideDown') dy = -(1-p)*70;
@@ -717,27 +739,28 @@
                         if ($('gShadow').checked) { ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; }
                         if ($('gStroke').checked) { ctxRef.lineWidth = parseInt($('gStrokeWidth').value) || 3; ctxRef.strokeStyle = $('gStrokeHex').value; }
 
-                        let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, lineHeight = fSize * 1.1, tSpdMs = getTypeSpeedMs();
+                        let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, tSpdMs = getTypeSpeedMs();
                         chars.forEach((ch, idx) => {
                             let charP = Math.min(Math.max((t - idx * tSpdMs) / 150, 0), 1); ctxRef.globalAlpha = charP * Math.min(p * 1.5, 1) * endAlphaMulti;
                             if(ch !== ' ') {
                                 ctxRef.fillStyle = l.colors[idx] || '#ffffff'; let chX = isVert ? charX + (dw / 2) - (ctxRef.measureText(ch).width / 2) - 2 : charX;
                                 if ($('gStroke').checked) ctxRef.strokeText(ch, chX, charY); ctxRef.fillText(ch, chX, charY);   
                             }
-                            if (isVert) charY += (ch === ' ') ? (fSize * 0.25) : (fSize * 1.05); else charX += ctxRef.measureText(ch).width;
+                            if (isVert) charY += (ch === ' ') ? (fSize * 0.5) : (fSize * 1.05); else charX += ctxRef.measureText(ch).width;
                         });
                     });
                 }
             });
 
-            // 2. 독립 레이어 렌더링 단락
             extraLayers.forEach(el => {
                 let eDur = el.animSpeed || 1000, epRaw = Math.min(1, t / eDur), ep = ease(epRaw);
                 let b = getExtraLayerBounds(el, c), dx = 0, dy = 0, eAngle = el.rotation || 0, eAlpha = Math.min(ep * 1.5, 1);
                 let w = b.w, h = b.h;
 
                 if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70;
-                else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; } else if(el.anim === 'rotateIn') eAngle += (1-ep) * Math.PI * 2; else if(el.anim === 'blink' && epRaw >= 1) eAlpha = 0.4 + Math.sin(t / 120) * 0.4;
+                else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; } 
+                else if(el.anim === 'rotateIn') { eAngle += (1-ep) * Math.PI * 2; }
+                else if(el.anim === 'blink' && epRaw >= 1) { eAlpha = 0.4 + Math.sin(t / 120) * 0.4; }
 
                 drawWithTransform(el.x + dx, el.y + dy, w, h, eAngle, eAlpha, (ctxRef, dw, dh) => {
                     if (el.type === 'text') {
@@ -752,8 +775,8 @@
 
         const draw = () => {
             if (isPlay || $('generateBtn').disabled) return; ctx.clearRect(0, 0, W, H); let dur = getDuration(); 
-            let state = document.querySelector('input[name="previewState"]:checked').value;
-            let previewT = dur; if (state === 'initial') previewT = 0; if (state === 'ending' && $('endActive').checked) previewT = dur + 2000;
+            let state = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
+            let previewT = dur; if (state === 'ending' && $('endActive').checked) previewT = dur + 2000;
             
             offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, previewT, dur);
             ctx.drawImage(offCanvas, 0, 0);
@@ -779,13 +802,13 @@
                             ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX;
                             if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY);   
                         }
-                        if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
+                        if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
                     });
                 }
                 ctx.restore();
             }
             
-            // 조절 핸들 가시 프레임 처리 단락
+            // 조절 상자 핸들 박스 가시화 (정상 작동)
             if (state === 'ending' && $('endActive').checked) {
                 if (endingImgObj) drawSelectionHandle(endSettings.x, endSettings.y, endingImgObj.width*endSettings.scale, endingImgObj.height*endSettings.scale, endSettings.rotation || 0);
                 else drawSelectionHandle(endSettings.textX, endSettings.textY, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).w, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).h, endSettings.textRot || 0);
@@ -795,7 +818,7 @@
                     drawSelectionHandle(l.x, l.y, l.img.width*l.scale, l.img.height*l.scale, l.rotation || 0);
                     if(l.text) drawSelectionHandle(l.textX, l.textY, b.w, b.h, l.textRot || 0);
                 } else if (selExtra !== -1 && extraLayers[selExtra]) {
-                    const el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx);
+                    const el = extraLayers[selExtra]; let b = getExtraLayerBounds(el, ctx);
                     drawSelectionHandle(el.x, el.y, b.w, b.h, el.rotation || 0);
                 }
             }
@@ -815,48 +838,39 @@
         
         $('previewBtn').onclick = () => {
             if (!layers.length || isPlay || $('generateBtn').disabled) return; isPlay = true; 
-            let dur = getDuration(), isEnd = $('endActive').checked, endHold = isEnd ? 3000 : 2000, totalDur = dur + endHold; 
-            let startT = performance.now();
+            let dur = getDuration(), isEnd = $('endActive').checked, totalDur = isEnd ? dur + 2500 : dur + 2000, startT = performance.now();
             
             exec((t1, t2) => { 
                 const loop = (now) => { 
                     if (!isPlay) return; let t = now - startT;
                     if (t >= totalDur) { document.querySelector('input[value="ending"]').checked = isEnd; setTimeout(() => { isPlay = false; updateUI(t1); updateExtraUI(t2); draw(); }, 100); return; }
                     
-                    ctx.clearRect(0, 0, W, H);
+                    ctx.clearRect(0, 0, W, H); offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur); ctx.drawImage(offCanvas, 0, 0);
+                    
                     if (isEnd && t > dur) {
-                        offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur);
-                        ctx.drawImage(offCanvas, 0, 0);
-                        
                         let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value;
                         ctx.save(); ctx.globalAlpha = Math.min(1, postP * 4);
                         if (endingImgObj) {
-                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale;
-                            ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
-                            else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
+                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
                             ctx.drawImage(endingImgObj, 0, 0, ew, eh);
                         } else {
                             let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
                             ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0); ctx.translate(-b.w/2, -b.h/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
-                            else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
                             
-                            ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
-                            if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
-                            if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
+                            ctx.font = getEndFontStr(); ctx.textBaseline = 'top'; if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; } if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
                             
                             let chars = txt.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
                             chars.forEach((ch, idx) => {
-                                let charP = 1;
-                                if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } // [기능 보강] 타이핑 유무 처리 검사식
+                                let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } // 타이핑 여부 판별
                                 ctx.globalAlpha = charP * Math.min(postP * 4, 1);
                                 if(ch !== ' ') { ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
+                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
                             });
                         }
                         ctx.restore();
-                    } else renderBackground(ctx, t, dur);
+                    }
                     requestAnimationFrame(loop); 
                 }; requestAnimationFrame(loop); 
             });
@@ -897,7 +911,7 @@
                                 let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); }
                                 oCtx.globalAlpha = charP * Math.min(postP * 4, 1);
                                 if(ch !== ' ') { oCtx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (oCtx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) oCtx.strokeText(ch, chX, charY); oCtx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.25) : (endFSize * 1.05); else charX += oCtx.measureText(ch).width;
+                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += oCtx.measureText(ch).width;
                             });
                         } oCtx.restore();
                     } oCtx.restore();
@@ -905,7 +919,7 @@
 
                 if (isMP4) {
                     try {
-                        let mimeType = videoExt === '.mp4' ? 'video/mp4' : 'video/webm', stream = oCtx.canvas.captureStream(30), recorder = new MediaRecorder(stream, { mimeType }), chunks = [];
+                        let mimeType = videoExt === '.mp4' ? 'video/mp4' : 'video/webm', stream = oCtx.canvas.captureStream(30), recorder = new MediaRecorder(stream, { mimeType: mimeType }), chunks = [];
                         recorder.ondataavailable = e => chunks.push(e.data); recorder.onstop = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(chunks, { type: mimeType })); a.download = fn; a.click(); endGenerate("🔥 완료!"); };
                         recorder.start(); let startT = performance.now(); const renderLoop = (now) => { let t = Math.min(now - startT, totalDur); drawFrame(t); if (t < totalDur) requestAnimationFrame(renderLoop); else setTimeout(() => recorder.stop(), 100); }; requestAnimationFrame(renderLoop);
                     } catch(e) { endGenerate("❌ 브라우저 미지원"); alert("비디오 레코딩을 지원하지 않는 브라우저입니다."); }
