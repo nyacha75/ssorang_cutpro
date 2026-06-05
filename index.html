@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO)</title>
+    <title>🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO+)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
@@ -61,7 +61,7 @@
     <div style="visibility: hidden; position: absolute; font-family: 'Nanum Myeongjo';">.</div>
 
     <div id="mainHeader" style="width: 100%; max-width: 1530px; margin-bottom: 20px; text-align: center;">
-        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Black Han Sans', sans-serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,85,255,0.2);">🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO)</h2>
+        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Black Han Sans', sans-serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,85,255,0.2);">🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO+)</h2>
     </div>
 
     <div class="container">
@@ -144,17 +144,11 @@
                         <span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
                     </div>
                 </div>
-                
                 <div id="layerList" class="layer-list"></div>
-
                 <div class="row" style="margin-top:8px;">
                     <label style="font-size:12px; width:90px;">전체 추가 효과:</label>
                     <select id="globalEffect" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="none" selected>효과 없음</option>
-                        <option value="lines">1. 교차 빛나는 선</option>
-                        <option value="trace">2. 이미지 테두리 빛 궤적</option>
-                        <option value="trace_after">3. 애니메이션 종료 후 이미지 테두리 빛 궤적</option>
-                        <option value="flash">4. 애니메이션 종료 후 번쩍</option>
+                        <option value="none" selected>효과 없음</option><option value="lines">1. 교차 빛나는 선</option><option value="trace">2. 이미지 테두리 빛 궤적</option><option value="trace_after">3. 애니메이션 종료 후 이미지 테두리 빛 궤적</option><option value="flash">4. 애니메이션 종료 후 번쩍</option>
                     </select>
                 </div>
             </div>
@@ -168,8 +162,7 @@
                         <option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
                     </select>
                     <div id="customTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                        <input type="number" id="customTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;">
-                        <span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
+                        <input type="number" id="customTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;"><span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
                     </div>
                 </div>
                 <div class="row">
@@ -181,17 +174,13 @@
                         <input type="number" id="gFontSize" value="60" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;"><span style="font-size:11px; margin-left:2px;">pt</span>
                     </label>
                 </div>
-                
                 <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                     <label class="fx-label"><input type="checkbox" id="gVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
                     <label class="fx-label"><input type="checkbox" id="gBold" onchange="draw(); triggerAutoSave();">굵게</label>
                     <label class="fx-label"><input type="checkbox" id="gItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
                     <label class="fx-label"><input type="checkbox" id="gShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
                     <label class="fx-label"><input type="checkbox" id="gStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
-                    <div class="color-combo" title="테두리 색상">
-                        <input type="color" id="gStrokeColor" value="#000000" oninput="$('gStrokeHex').value=this.value; draw(); triggerAutoSave();">
-                        <input type="text" id="gStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
-                    </div>
+                    <div class="color-combo" title="테두리 색상"><input type="color" id="gStrokeColor" value="#000000" oninput="$('gStrokeHex').value=this.value; draw(); triggerAutoSave();"><input type="text" id="gStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gStrokeColor').value=this.value; draw(); triggerAutoSave(); }"></div>
                     <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="gStrokeWidth" value="3" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
                 </div>
             </div>
@@ -216,8 +205,7 @@
                 <h3>6. 시네마틱 엔딩 연출</h3>
                 <div class="row" style="background:#fff4f4; padding:10px; border-radius:4px; border:1px solid #ffcdcc; margin-bottom:10px;">
                     <label style="font-weight:bold; color:#e60000; font-size:13px; display:flex; align-items:center; cursor:pointer;">
-                        <input type="checkbox" id="endActive" onchange="toggleEndingUI(); draw(); triggerAutoSave();"> 
-                        🎬 애니메이션 종료 후 엔딩 효과 켜기
+                        <input type="checkbox" id="endActive" onchange="toggleEndingUI(); draw(); triggerAutoSave();"> 🎬 애니메이션 종료 후 엔딩 효과 켜기
                     </label>
                 </div>
                 
@@ -229,54 +217,46 @@
                     <div class="row" style="margin-bottom:8px;">
                         <label style="width:110px; font-size:12px; font-weight:bold; color:#e60000;">엔딩 등장 효과:</label>
                         <select id="endEffect" onchange="draw(); triggerAutoSave();" style="flex:1;">
-                            <option value="slam">쾅하고 꽂히기</option>
-                            <option value="fade">페이드인</option>
-                            <option value="shake">화면 강하게 흔들림</option>
-                            <option value="split">기존 이미지 중앙 가르고 등장</option>
+                            <option value="slam">쾅하고 꽂히기</option><option value="fade">페이드인</option><option value="shake">화면 강하게 흔들림</option><option value="split">기존 이미지 중앙 가르고 등장</option><option value="flash_appear">번쩍하고 등장 (새하얀 섬광)</option>
                         </select>
                     </div>
                     <hr style="border:0; border-top:1px dashed #ccc; margin:12px 0;">
-                    
-                    <div class="row"><label style="font-size:12px; width:75px; font-weight:bold;">엔딩 타이포:</label><input type="text" id="endText" value="전투 발생" oninput="draw(); triggerAutoSave();" style="flex:1;"></div>
                     <div class="row">
-                        <label style="font-size:12px; width:75px;">타이핑 속도:</label>
-                        <select id="endTypeSpeed" onchange="$('endCustomTypeSpeedWrapper').style.display=this.value==='custom'?'flex':'none'; draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                            <option value="0">타이핑 없음 (즉시 등장)</option><option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
-                        </select>
-                        <div id="endCustomTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                            <input type="number" id="endCustomTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;"><span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label style="font-size:12px; width:75px;">적용 폰트:</label>
-                        <select id="endFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                            <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
-                        </select>
-                        <label style="font-size:12px; display:flex; align-items:center; margin-left:5px; white-space:nowrap;">폰트 크기: 
-                            <input type="number" id="endFontSize" value="120" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;"><span style="font-size:11px; margin-left:2px;">pt</span>
+                        <button class="btn" onclick="addEndText()" style="border-color:#e60000; color:#e60000;">+ 엔딩 타이포 추가</button>
+                        <label class="btn" style="margin:0; border-color:#e60000; color:#e60000; display:flex; justify-content:center; align-items:center; cursor:pointer;">
+                            + 엔딩 이미지 추가 <input type="file" id="endImageInput" multiple accept="image/*" style="display:none;">
                         </label>
                     </div>
+                    <div class="row" style="margin-top:5px;"><button class="btn hl" style="background:#ffebe6; color:#e60000; border-color:#ffcdcc;" onclick="actEnd('center')">🎯 엔딩 요소 중앙 정렬</button></div>
                     
-                    <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
-                        <label class="fx-label"><input type="checkbox" id="endVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
-                        <label class="fx-label"><input type="checkbox" id="endBold" onchange="draw(); triggerAutoSave();">굵게</label>
-                        <label class="fx-label"><input type="checkbox" id="endItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
-                        <label class="fx-label"><input type="checkbox" id="endShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
-                        <label class="fx-label"><input type="checkbox" id="endStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
-                        
-                        <div class="color-combo" title="테두리 색상">
-                            <input type="color" id="endStrokeColor" value="#000000" oninput="$('endStrokeHex').value=this.value; draw(); triggerAutoSave();">
-                            <input type="text" id="endStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('endStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
-                        </div>
-                        <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="endStrokeWidth" value="4" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
-                    </div>
-                    
-                    <div class="row" style="display:none;"><input type="color" id="endColor" value="#ffffff"><input type="text" id="endColorHex" value="#ffffff"></div>
+                    <div id="endLayerList" class="layer-list" style="margin-top:8px;"></div>
 
-                    <div class="row" style="margin-top:10px; background:#f9f9f9; padding:5px; border-radius:4px; border:1px dashed #ccc;">
-                        <label style="width:75px; font-size:12px; color:#0055ff; font-weight:bold;">또는 이미지:</label>
-                        <input type="file" id="endImgInput" accept="image/*" style="flex:1; font-size:11px;">
-                        <button id="removeEndImgBtn" class="btn" style="display:none; flex:none; padding:6px; background:#ff4d4d; color:#fff; border:none;" onclick="removeEndImg()">삭제</button>
+                    <div style="margin-top:10px; background:#f9f9f9; padding:8px; border-radius:4px; border:1px solid #ddd;">
+                        <div style="font-size:11px; font-weight:bold; color:#555; margin-bottom:5px;">▼ 엔딩 타이포 공통 설정</div>
+                        <div class="row">
+                            <label style="font-size:11px; width:65px;">타이핑 속도:</label>
+                            <select id="endTypeSpeed" onchange="$('endCustomTypeSpeedWrapper').style.display=this.value==='custom'?'flex':'none'; draw(); triggerAutoSave();" style="flex:1; font-size:11px;">
+                                <option value="0">타이핑 없음 (즉시 등장)</option><option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
+                            </select>
+                            <div id="endCustomTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
+                                <input type="number" id="endCustomTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:40px; font-size:11px; height:22px; border:1px solid #ccc; border-radius:3px;"><span style="font-size:10px; margin-left:2px;">ms</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label style="font-size:11px; width:65px;">적용 폰트:</label>
+                            <select id="endFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:11px;">
+                                <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
+                            </select>
+                        </div>
+                        <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 5px;">
+                            <label class="fx-label"><input type="checkbox" id="endVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
+                            <label class="fx-label"><input type="checkbox" id="endBold" onchange="draw(); triggerAutoSave();">굵게</label>
+                            <label class="fx-label"><input type="checkbox" id="endItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
+                            <label class="fx-label"><input type="checkbox" id="endShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
+                            <label class="fx-label"><input type="checkbox" id="endStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
+                            <div class="color-combo" title="테두리 색상"><input type="color" id="endStrokeColor" value="#000000" oninput="$('endStrokeHex').value=this.value; draw(); triggerAutoSave();"><input type="text" id="endStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('endStrokeColor').value=this.value; draw(); triggerAutoSave(); }"></div>
+                            <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="endStrokeWidth" value="4" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -312,13 +292,12 @@
         const canvasEl = $('canvas');
         const ctx = canvasEl.getContext('2d', { willReadFrequently: true });
         
-        let layers = [], extraLayers = [], customFonts = [], sel = -1, selExtra = -1;
+        let layers = [], extraLayers = [], endLayers = [], customFonts = [];
+        let sel = -1, selExtra = -1, selEnd = -1;
         let isDrag = false, dragType = '', isPlay = false;
         let offX = 0, offY = 0, textRelX = 0, textRelY = 0;
         let W = 600, H = 800;
-        let gifWorkerUrl = null, endingImgObj = null; 
-        
-        let endSettings = { x: 200, y: 300, scale: 1.0, rotation: 0, textX: 120, textY: 360, textRot: 0 };
+        let gifWorkerUrl = null; 
         
         const offCanvas = document.createElement('canvas');
         const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
@@ -337,32 +316,25 @@
         const getEndTypeSpeedMs = () => $('endTypeSpeed').value === 'custom' ? (parseInt($('endCustomTypeSpeed').value) || 100) : parseInt($('endTypeSpeed').value);
         
         const getFontStr = () => `${$('gItalic').checked ? 'italic ' : ''}${$('gBold').checked ? 'bold ' : ''}${parseInt($('gFontSize').value) || 60}px "${$('globalFont').value}"`;
-        const getEndFontStr = () => `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${parseInt($('endFontSize').value) || 60}px "${$('endFont').value}"`;
+        const getEndFontStr = () => `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}10px "${$('endFont').value}"`; // End text renders with local size but global family
 
         const getTextBounds = (text, fSize, isEndPhaseCheck) => {
             if (!text) return { w: 0, h: 0 };
-            ctx.font = isEndPhaseCheck ? getEndFontStr() : getFontStr();
+            ctx.font = isEndPhaseCheck ? `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${fSize}px "${$('endFont').value}"` : getFontStr();
             let isVert = isEndPhaseCheck ? $('endVertical').checked : $('gVertical').checked;
             if (isVert) {
                 let w = 0, chars = text.split(''); chars.forEach(c => w = Math.max(w, ctx.measureText(c).width));
-                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.5) : (fSize * 1.05); }); // 0.5배로 간격 압축 적용 완료
+                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.5) : (fSize * 1.05); }); // 자간 간격 절반 최적화
                 return { w: w + 4, h: h + 4 };
             } else return { w: ctx.measureText(text).width + 4, h: fSize + 10 };
         };
 
         const getExtraLayerBounds = (el, c) => {
             if (el.type === 'image' && el.img) return { w: el.img.width * el.scale, h: el.img.height * el.scale };
-            c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`;
-            return { w: c.measureText(el.content).width, h: el.fontSize * 1.1 };
+            c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`; return { w: c.measureText(el.content).width, h: el.fontSize * 1.1 };
         };
 
-        window.resizeCanvas = () => {
-            W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800; canvasEl.width = W; canvasEl.height = H;
-            let endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds($('endText').value, endFSize, true);
-            endSettings.textX = W/2 - b.w/2; endSettings.textY = H/2 - b.h/2;
-            if (endingImgObj) { endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2; }
-            draw(); triggerAutoSave();
-        };
+        window.resizeCanvas = () => { W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800; canvasEl.width = W; canvasEl.height = H; draw(); triggerAutoSave(); };
 
         function getTransformHit(x, y, targetX, targetY, w, h, angle) {
             let cx = targetX + w/2, cy = targetY + h/2, dx = x - cx, dy = y - cy;
@@ -373,9 +345,10 @@
             return { isInside, isRes, isRot, cx, cy };
         }
 
+        // --- 데이터베이스 & 자동저장 ---
         const localDB = {
             db: null,
-            init() { return new Promise((res, rej) => { const req = indexedDB.open('CCfoliaCutinDB_AdvPRO', 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('data')) e.target.result.createObjectStore('data'); }; req.onsuccess = e => { this.db = e.target.result; res(); }; req.onerror = rej; }); },
+            init() { return new Promise((res, rej) => { const req = indexedDB.open('CCfoliaCutinDB_AdvPRO3', 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('data')) e.target.result.createObjectStore('data'); }; req.onsuccess = e => { this.db = e.target.result; res(); }; req.onerror = rej; }); },
             set(key, val) { return new Promise((res) => { if (!this.db) return res(); const tx = this.db.transaction('data', 'readwrite'); tx.objectStore('data').put(val, key); tx.oncomplete = res; }); },
             get(key) { return new Promise((res) => { if (!this.db) return res(null); const tx = this.db.transaction('data', 'readonly'); const req = tx.objectStore('data').get(key); req.onsuccess = () => res(req.result); req.onerror = () => res(null); }); }
         };
@@ -389,19 +362,19 @@
         const getProjectData = () => ({
             layers: layers.map(l => ({ src: l.src, name: l.name, anim: l.anim, scale: l.scale, rotation: l.rotation, x: l.x, y: l.y, text: l.text, textRot: l.textRot, colors: l.colors, textX: l.textX, textY: l.textY })),
             extraLayers: extraLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, anim: el.anim, animSpeed: el.animSpeed, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, content: el.content, fontSize: el.fontSize, color: el.color })),
+            endLayers: endLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, text: el.text, fontSize: el.fontSize, colors: el.colors })),
             settings: { 
                 gap: $('gap').value, globalFont: $('globalFont').value, gFontSize: $('gFontSize').value, gBold: $('gBold').checked, gItalic: $('gItalic').checked, gShadow: $('gShadow').checked, gStroke: $('gStroke').checked, gStrokeColor: $('gStrokeColor').value, gStrokeHex: $('gStrokeHex').value, gStrokeWidth: $('gStrokeWidth').value, gVertical: $('gVertical').checked, typeSpeed: $('typeSpeed').value, customTypeSpeed: $('customTypeSpeed').value, animSpeed: $('animSpeed').value, customSpeed: $('customSpeed').value, globalEffect: $('globalEffect').value, quality: $('quality').value, gifTransparentCheck: $('gifTransparentCheck').checked, gifBgColor: $('gifBgColor').value, gifBgHex: $('gifBgHex').value, ccfoliaBgCheck: $('ccfoliaBgCheck').checked, canvasW: W, canvasH: H,
-                endActive: $('endActive').checked, endOpacity: $('endOpacity').value, endEffect: $('endEffect').value, endText: $('endText').value, endColor: $('endColor').value, endColorHex: $('endColorHex').value, endFontSize: $('endFontSize').value, endTypeSpeed: $('endTypeSpeed').value, endCustomTypeSpeed: $('endCustomTypeSpeed').value, endVertical: $('endVertical').checked, endBold: $('endBold').checked, endItalic: $('endItalic').checked, endShadow: $('endShadow').checked, endStroke: $('endStroke').checked, endStrokeColor: $('endStrokeColor').value, endStrokeHex: $('endStrokeHex').value, endStrokeWidth: $('endStrokeWidth').value, endingImgSrc: endingImgObj ? endingImgObj.src : null,
-                endX: endSettings.x, endY: endSettings.y, endScale: endSettings.scale, endRotation: endSettings.rotation, endTextX: endSettings.textX, endTextY: endSettings.textY, endTextRot: endSettings.textRot
+                endActive: $('endActive').checked, endOpacity: $('endOpacity').value, endEffect: $('endEffect').value, endTypeSpeed: $('endTypeSpeed').value, endCustomTypeSpeed: $('endCustomTypeSpeed').value, endVertical: $('endVertical').checked, endBold: $('endBold').checked, endItalic: $('endItalic').checked, endShadow: $('endShadow').checked, endStroke: $('endStroke').checked, endStrokeColor: $('endStrokeColor').value, endStrokeHex: $('endStrokeHex').value, endStrokeWidth: $('endStrokeWidth').value, endFont: $('endFont').value
             }
         });
 
         const restoreProjectData = (data) => {
             const s = data.settings;
             if(s) {
-                ['gap', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endText', 'endFontSize', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
+                ['gap', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
                 ['gBold', 'gItalic', 'gShadow', 'gStroke', 'gVertical', 'gifTransparentCheck', 'ccfoliaBgCheck', 'endActive', 'endVertical', 'endBold', 'endItalic', 'endShadow', 'endStroke'].forEach(id => { if(s[id]!==undefined) $(id).checked = !!s[id]; });
-                ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endColor', 'endColorHex', 'endStrokeColor', 'endStrokeHex'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
+                ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endStrokeColor', 'endStrokeHex'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
                 
                 if (s.globalFont && !Array.from($('globalFont').options).some(opt => opt.value === s.globalFont)) { const opt = document.createElement('option'); opt.value = opt.text = s.globalFont; $('globalFont').appendChild(opt); customFonts.push(s.globalFont); }
                 $('globalFont').value = s.globalFont || 'Black Han Sans';
@@ -409,27 +382,80 @@
                 $('endFont').value = s.endFont || 'Black Han Sans';
                 
                 W = canvasEl.width = s.canvasW || 600; H = canvasEl.height = s.canvasH || 800; $('canvasW').value = W; $('canvasH').value = H;
-                if(s.endX) { endSettings.x=s.endX; endSettings.y=s.endY; endSettings.scale=s.endScale; endSettings.rotation=s.endRotation; endSettings.textX=s.endTextX; endSettings.textY=s.endTextY; endSettings.textRot=s.endTextRot; }
 
                 $('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none'; $('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none'; $('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
                 toggleBgColor(); toggleTrans(); toggleEndingUI();
-                if (s.endingImgSrc) { endingImgObj = new Image(); endingImgObj.onload = () => draw(); endingImgObj.src = s.endingImgSrc; $('removeEndImgBtn').style.display = 'inline-block'; }
             }
 
-            layers = []; extraLayers = []; let loadedCount = 0; let totalToLoad = (data.layers?data.layers.length:0) + (data.extraLayers?data.extraLayers.length:0);
-            const checkDone = () => { if(++loadedCount >= totalToLoad) { updateUI(-1); updateExtraUI(-1); draw(); } };
-            if(totalToLoad === 0) { updateUI(); updateExtraUI(); draw(); return; }
+            layers = []; extraLayers = []; endLayers = []; let loadedCount = 0; let totalToLoad = (data.layers?data.layers.length:0) + (data.extraLayers?data.extraLayers.length:0) + (data.endLayers?data.endLayers.length:0);
+            const checkDone = () => { if(++loadedCount >= totalToLoad) { updateUI(-1); updateExtraUI(-1); updateEndUI(-1); draw(); } };
+            if(totalToLoad === 0) { updateUI(); updateExtraUI(); updateEndUI(); draw(); return; }
+
             if(data.layers) data.layers.forEach((lData, idx) => { const img = new Image(); img.onload = () => { layers[idx] = { ...lData, img: img }; if(!layers[idx].rotation) layers[idx].rotation = 0; if(!layers[idx].textRot) layers[idx].textRot = 0; checkDone(); }; img.src = lData.src; });
             if(data.extraLayers) data.extraLayers.forEach((elData, idx) => {
                 if (elData.type === 'image' && elData.src) { const img = new Image(); img.onload = () => { extraLayers[idx] = { ...elData, img: img }; if(!extraLayers[idx].rotation) extraLayers[idx].rotation=0; checkDone(); }; img.src = elData.src; } 
                 else { extraLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
+            });
+            if(data.endLayers) data.endLayers.forEach((elData, idx) => {
+                if (elData.type === 'image' && elData.src) { const img = new Image(); img.onload = () => { endLayers[idx] = { ...elData, img: img }; if(!endLayers[idx].rotation) endLayers[idx].rotation=0; checkDone(); }; img.src = elData.src; } 
+                else { endLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
             });
         };
 
         window.saveProjectFile = () => { let fn = prompt("저장할 프로젝트 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith('.json')) fn += '.json'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getProjectData())], { type: "application/json" })); a.download = fn; a.click(); };
         window.loadProjectFile = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { try { restoreProjectData(JSON.parse(ev.target.result)); } catch(err) { alert("파일 오류"); } }; reader.readAsText(file); e.target.value = ''; };
 
-        // --- 독립 레이어 생성 ---
+        // --- 엔딩 레이어 추가 제어 ---
+        window.addEndText = () => {
+            let fSize = 120; ctx.font = `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${fSize}px "${$('endFont').value}"`; let w = ctx.measureText('전투 발생').width, h = fSize * 1.1;
+            endLayers.push({ type: 'text', text: '전투 발생', name: '엔딩 텍스트', scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, colors: ['#ffffff','#ffffff','#ffffff','#ffffff','#ffffff'] });
+            updateEndUI(endLayers.length - 1); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
+        };
+        $('endImageInput').onchange = e => {
+            Array.from(e.target.files).forEach(file => { const r = new FileReader();
+                r.onload = ev => { const img = new Image(); img.onload = () => {
+                        let sc = 0.5, w = img.width * sc, h = img.height * sc;
+                        endLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
+                        updateEndUI(endLayers.length - 1); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
+                    }; img.src = ev.target.result;
+                }; r.readAsDataURL(file);
+            }); e.target.value = '';
+        };
+
+        const updateEndUI = (idx = selEnd) => {
+            if(idx !== -1) { selEnd = idx; sel = -1; selExtra = -1; updateUI(-1); updateExtraUI(-1); }
+            const list = $('endLayerList'); list.innerHTML = endLayers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">엔딩 요소가 없습니다.</p>';
+            for (let i = endLayers.length - 1; i >= 0; i--) {
+                const el = endLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selEnd ? 'active' : ''}`;
+                let controls = '';
+                if(el.type === 'text') {
+                    const chars = el.text.split(''); while(el.colors.length < chars.length) el.colors.push('#ffffff');
+                    let cPicker = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${el.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
+                    controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.text}" oninput="endLayers[${i}].text=this.value; updateEndUI(${i}); draw(); triggerAutoSave();" style="flex:1;"><label style="font-size:11px; margin-left:5px;">크기:</label><input type="number" value="${el.fontSize}" onchange="endLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:2px;"></div>${cPicker}`;
+                } else {
+                    controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="endLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`;
+                }
+                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i+1}]; endLayers[${i+1}]=tmp; updateEndUI(${i===selEnd?i+1:selEnd}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i-1}]; endLayers[${i-1}]=tmp; updateEndUI(${i===selEnd?i-1:selEnd}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="endLayers.splice(${i},1); updateEndUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>${controls}`;
+                div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateEndUI(i); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); } };
+                list.appendChild(div);
+            }
+        };
+
+        window.actEnd = (type) => {
+            if (!endLayers.length) return;
+            if (type === 'center') {
+                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                endLayers.forEach(el => {
+                    let w = 0, h = 0; if(el.type==='image') { w = el.img.width*el.scale; h = el.img.height*el.scale; } else { let b = getTextBounds(el.text, el.fontSize, true); w = b.w; h = b.h; }
+                    minX = Math.min(minX, el.x); minY = Math.min(minY, el.y); maxX = Math.max(maxX, el.x + w); maxY = Math.max(maxY, el.y + h);
+                });
+                if(minX === Infinity) return;
+                let cx = (minX + maxX)/2, cy = (minY + maxY)/2, dx = W/2 - cx, dy = H/2 - cy;
+                endLayers.forEach(el => { el.x += dx; el.y += dy; }); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
+            }
+        };
+
+        // --- 독립 추가 레이어 생성기 ---
         window.addExtraText = () => {
             let fSize = 40; ctx.font = `bold ${fSize}px "${$('globalFont').value}"`; let w = ctx.measureText('추가 타이포').width, h = fSize * 1.1;
             extraLayers.push({ type: 'text', content: '추가 타이포', name: '타이포', anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, color: '#ffffff' });
@@ -438,43 +464,37 @@
         $('extraImageInput').onchange = e => {
             Array.from(e.target.files).forEach(file => { const r = new FileReader();
                 r.onload = ev => { const img = new Image(); img.onload = () => {
-                        let sc = 0.5, w = img.width * sc, h = img.height * sc;
+                        let sc = 0.5; let w = img.width * sc, h = img.height * sc;
                         extraLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, anim: 'fade', animSpeed: 1000, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
                         updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
                     }; img.src = ev.target.result;
                 }; r.readAsDataURL(file);
             }); e.target.value = '';
         };
-        $('endImgInput').onchange = e => {
-            if(!e.target.files[0]) return; const r = new FileReader();
-            r.onload = ev => { endingImgObj = new Image(); endingImgObj.onload = () => { endSettings.x = W/2 - (endingImgObj.width * endSettings.scale)/2; endSettings.y = H/2 - (endingImgObj.height * endSettings.scale)/2; draw(); triggerAutoSave(); }; endingImgObj.src = ev.target.result; $('removeEndImgBtn').style.display = 'inline-block'; }; r.readAsDataURL(e.target.files[0]);
-        };
-        window.removeEndImg = () => { endingImgObj = null; $('endImgInput').value = ''; $('removeEndImgBtn').style.display = 'none'; draw(); triggerAutoSave(); };
 
         const updateExtraUI = (idx = selExtra) => {
-            if(idx !== -1) { selExtra = idx; sel = -1; updateUI(-1); }
+            if(idx !== -1) { selExtra = idx; sel = -1; selEnd = -1; updateUI(-1); updateEndUI(-1); }
             const list = $('extraLayerList'); list.innerHTML = extraLayers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">독립 요소가 없습니다.</p>';
             for (let i = extraLayers.length - 1; i >= 0; i--) {
                 const el = extraLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selExtra ? 'active' : ''}`;
                 let controls = '';
                 if(el.type === 'text') {
                     controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.content}" oninput="extraLayers[${i}].content=this.value; draw(); triggerAutoSave();" style="flex:1;"><div class="color-combo" style="margin-left:3px;"><input type="color" value="${el.color}" oninput="this.nextElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.color}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();}"></div><input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:3px;"></div>`;
-                } else {
-                    controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="extraLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`;
-                }
+                } else { controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="extraLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`; }
                 div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i+1}]; extraLayers[${i+1}]=tmp; updateExtraUI(${i===selExtra?i+1:selExtra}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i-1}]; extraLayers[${i-1}]=tmp; updateExtraUI(${i===selExtra?i-1:selExtra}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="extraLayers.splice(${i},1); updateExtraUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
                     <div class="row" style="margin-top:5px; background:#f0f0f0; padding:4px; border-radius:4px;"><label style="font-size:11px; margin-right:3px;">효과:</label><select onchange="extraLayers[${i}].anim=this.value; draw(); triggerAutoSave();" style="flex:1; font-size:11px; padding:4px;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대', 'rotateIn:💫 회전하며 등장', 'blink:✨ 계속 반짝임'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${el.anim===v?'selected':''}>${t}</option>`; }).join('')}</select><input type="number" value="${el.animSpeed||1000}" onchange="extraLayers[${i}].animSpeed=parseInt(this.value); draw(); triggerAutoSave();" style="width:45px; margin-left:3px; padding:4px; font-size:11px;"> <span style="font-size:11px;">ms</span></div>${controls}`;
-                div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateExtraUI(i); draw(); } };
+                div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateExtraUI(i); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); } };
                 list.appendChild(div);
             }
         };
 
+        // --- 메인 레이어 ---
         const updateUI = (idx = sel) => {
-            if(idx !== -1) { sel = idx; selExtra = -1; updateExtraUI(-1); }
+            if(idx !== -1) { sel = idx; selExtra = -1; selEnd = -1; updateExtraUI(-1); updateEndUI(-1); }
             const list = $('layerList'); list.innerHTML = layers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하세요.</p>';
             for (let i = layers.length - 1; i >= 0; i--) {
                 const l = layers[i], div = document.createElement('div'); div.className = `layer-item ${i === sel ? 'active' : ''}`; div.draggable = true;
-                div.onclick = e => { if (!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateUI(i); draw(); } };
+                div.onclick = e => { if (!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateUI(i); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); } };
                 div.ondragstart = e => { e.dataTransfer.setData('idx', i); setTimeout(() => div.style.opacity = '0.5', 0); };
                 div.ondragend = () => div.style.opacity = '1'; div.ondragover = e => { e.preventDefault(); div.classList.add('drag-over'); }; div.ondragleave = () => div.classList.remove('drag-over');
                 div.ondrop = e => { e.preventDefault(); div.classList.remove('drag-over'); const from = parseInt(e.dataTransfer.getData('idx')); if (from !== i && !isNaN(from)) { const activeL = layers[sel]; layers.splice(i, 0, layers.splice(from, 1)[0]); updateUI(layers.indexOf(activeL)); triggerAutoSave(); } };
@@ -492,6 +512,7 @@
             }
         };
 
+        // --- 폰트 추가 로딩 연동 ---
         $('fontInput').onchange = async e => {
             for (let file of e.target.files) {
                 try {
@@ -508,7 +529,7 @@
             Array.from(e.target.files).forEach(file => { const r = new FileReader();
                 r.onload = ev => { const img = new Image(); img.onload = () => {
                         const sc = 0.5; layers.push({ img, src: ev.target.result, name: file.name, anim: layers.length % 2 === 0 ? 'slideLeft' : 'slideRight', scale: sc, rotation: 0, textRot: 0, x: W/2 - (img.width*sc)/2, y: H/2 - (img.height*sc)/2, text: '', colors: [], textX: W/2 - (img.width*sc)/2 - 80, textY: H/2 - (img.height*sc)/2 - 30 });
-                        updateUI(layers.length - 1); draw(); triggerAutoSave();
+                        updateUI(layers.length - 1); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); triggerAutoSave();
                     }; img.src = ev.target.result;
                 }; r.readAsDataURL(file);
             }); e.target.value = '';
@@ -562,10 +583,6 @@
                 const doV = type === 'quickV' || (type === 'quick' && tW > tH);
                 act(doV ? 'matchW' : 'matchH'); act(doV ? 'distV' : 'distH'); act('center');
             }
-            
-            let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-            if(endSettings.textX === 120 && endSettings.textY === 360) { endSettings.textX = W/2 - b.w/2; endSettings.textY = H/2 - b.h/2; }
-            
             draw(); triggerAutoSave();
         };
 
@@ -573,44 +590,46 @@
         
         canvasEl.onwheel = e => { 
             if(isPlay) return; e.preventDefault(); 
-            let viewState = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
+            let viewState = document.querySelector('input[name="previewState"]:checked').value;
             
-            if (viewState === 'ending' && $('endActive').checked) {
-                if (endingImgObj) endSettings.scale = Math.max(0.05, endSettings.scale + (e.deltaY < 0 ? 0.05 : -0.05));
-                else $('endFontSize').value = Math.max(10, parseInt($('endFontSize').value) + (e.deltaY < 0 ? 5 : -5));
+            if (viewState === 'ending' && $('endActive').checked && selEnd !== -1 && endLayers[selEnd]) {
+                if (endLayers[selEnd].type === 'image') endLayers[selEnd].scale = Math.max(0.05, endLayers[selEnd].scale + (e.deltaY < 0 ? 0.05 : -0.05));
+                else endLayers[selEnd].fontSize = Math.max(10, endLayers[selEnd].fontSize + (e.deltaY < 0 ? 5 : -5));
+                updateEndUI();
             }
-            else if (selExtra !== -1 && extraLayers[selExtra]) {
+            else if (viewState === 'endMain' && selExtra !== -1 && extraLayers[selExtra]) {
                 if (extraLayers[selExtra].type === 'image') extraLayers[selExtra].scale = Math.max(0.05, extraLayers[selExtra].scale + (e.deltaY < 0 ? 0.05 : -0.05));
                 else extraLayers[selExtra].fontSize = Math.max(10, extraLayers[selExtra].fontSize + (e.deltaY < 0 ? 5 : -5));
+                updateExtraUI();
             } 
-            else if (sel !== -1 && layers[sel]) {
+            else if (viewState === 'endMain' && sel !== -1 && layers[sel]) {
                 const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, l.scale + (e.deltaY < 0 ? 0.05 : -0.05)); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r;
+                updateUI();
             }
-            updateExtraUI(); updateUI(); draw(); triggerAutoSave();
+            draw(); triggerAutoSave();
         };
         
         canvasEl.onmousedown = e => {
             if (isPlay) return; const {x, y} = getPos(e); const fSize = parseInt($('gFontSize').value) || 60;
-            let viewState = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
+            let viewState = document.querySelector('input[name="previewState"]:checked').value;
             
             if (viewState === 'ending' && $('endActive').checked) {
-                let endFSize = parseInt($('endFontSize').value) || 60;
-                if (endingImgObj) {
-                    let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale;
-                    let hit = getTransformHit(x, y, endSettings.x, endSettings.y, ew, eh, endSettings.rotation || 0);
-                    if (hit.isRot) { isDrag = true; dragType = 'endImgRot'; offX = hit.cx; offY = hit.cy; return; }
-                    if (hit.isRes) { isDrag = true; dragType = 'endImgRes'; offX = endSettings.x; offY = endSettings.y; return; }
-                    if (hit.isInside) { isDrag = true; dragType = 'endImgMove'; offX = x - endSettings.x; offY = y - endSettings.y; return; }
-                } else {
-                    let b = getTextBounds($('endText').value, endFSize, true);
-                    let hitTxt = getTransformHit(x, y, endSettings.textX, endSettings.textY, b.w, b.h, endSettings.textRot || 0);
-                    if (hitTxt.isRot) { isDrag = true; dragType = 'endTextRot'; offX = hitTxt.cx; offY = hitTxt.cy; return; }
-                    if (hitTxt.isRes) { isDrag = true; dragType = 'endTextRes'; offX = endSettings.textX; offY = endSettings.textY; return; }
-                    if (hitTxt.isInside) { isDrag = true; dragType = 'endTextMove'; offX = x - endSettings.textX; offY = y - endSettings.textY; return; }
+                // 1. 엔딩 레이어 타겟 지정
+                if (selEnd !== -1 && endLayers[selEnd]) {
+                    let el = endLayers[selEnd], w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w, h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                    let hit = getTransformHit(x, y, el.x, el.y, w, h, el.rotation || 0);
+                    if (hit.isRot) { isDrag = true; dragType = 'endRot'; offX = hit.cx; offY = hit.cy; return; }
+                    if (hit.isRes) { isDrag = true; dragType = 'endRes'; offX = el.x; offY = el.y; return; }
+                    if (hit.isInside) { isDrag = true; dragType = 'endMove'; offX = x - el.x; offY = y - el.y; return; }
                 }
-                return;
+                for (let i = endLayers.length - 1; i >= 0; i--) {
+                    let el = endLayers[i], w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w, h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                    if (getTransformHit(x, y, el.x, el.y, w, h, el.rotation || 0).isInside) { isDrag = true; dragType = 'endMove'; updateEndUI(i); offX = x - el.x; offY = y - el.y; draw(); return; }
+                }
+                updateEndUI(-1); draw(); return;
             }
 
+            // 평상시 조작
             if (selExtra !== -1 && extraLayers[selExtra]) {
                 let el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx);
                 let hit = getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0);
@@ -646,21 +665,18 @@
                 let l = layers[i], w = l.img.width*l.scale, h = l.img.height*l.scale;
                 if (getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0).isInside) { isDrag = true; dragType = 'mainImgMove'; updateUI(i); offX = x - l.x; offY = y - l.y; textRelX = l.textX - l.x; textRelY = l.textY - l.y; draw(); return; }
             }
-            updateExtraUI(-1); updateUI(-1); draw();
+            updateExtraUI(-1); updateUI(-1); updateEndUI(-1); draw();
         };
         
         window.onmousemove = e => {
             if (isPlay || !isDrag) return; const {x, y} = getPos(e);
             
-            if (dragType === 'endImgRot') endSettings.rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'endTextRot') endSettings.textRot = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'endImgRes' && endingImgObj) endSettings.scale = Math.max(0.05, (x - offX) / endingImgObj.width);
-            else if (dragType === 'endImgMove') { endSettings.x = x - offX; endSettings.y = y - offY; }
-            else if (dragType === 'endTextRes') { $('endFontSize').value = Math.max(10, Math.round((y - offY) / 1.1)); }
-            else if (dragType === 'endTextMove') { endSettings.textX = x - offX; endSettings.textY = y - offY; }
+            if (dragType === 'endRot') endLayers[selEnd].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
+            else if (dragType === 'endRes') { let el = endLayers[selEnd]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); updateEndUI(); }
+            else if (dragType === 'endMove') { endLayers[selEnd].x = x - offX; endLayers[selEnd].y = y - offY; }
 
             else if (dragType === 'extraRot') extraLayers[selExtra].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'extraRes') { let el = extraLayers[selExtra]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); }
+            else if (dragType === 'extraRes') { let el = extraLayers[selExtra]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); updateExtraUI(); }
             else if (dragType === 'extraMove') { extraLayers[selExtra].x = x - offX; extraLayers[selExtra].y = y - offY; }
             
             else if (dragType === 'mainImgRot') layers[sel].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
@@ -691,10 +707,10 @@
             
             c.imageSmoothingEnabled = true; c.imageSmoothingQuality = "high";
             
-            // 시네마틱 밀어내기: 완전히 화면 밖으로 나가도록 W, H 값을 곱해줍니다.
             const drawWithTransform = (x, y, w, h, angle, alphaVal, drawFunc) => {
                 let cx = x + w/2, cy = y + h/2, pushX = 0, pushY = 0;
                 if (isEndPhase && $('endEffect').value === 'split') {
+                    // 완전히 화면 밖으로 밀어내기 (W, H 곱하기 적용)
                     let splitD = ease(postP);
                     if (isHorizLayout) pushY = (cy < H/2) ? -H * splitD : H * splitD; 
                     else pushX = (cx < W/2) ? -W * splitD : W * splitD;
@@ -758,7 +774,7 @@
                 let w = b.w, h = b.h;
 
                 if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70;
-                else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; } 
+                else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; }
                 else if(el.anim === 'rotateIn') { eAngle += (1-ep) * Math.PI * 2; }
                 else if(el.anim === 'blink' && epRaw >= 1) { eAlpha = 0.4 + Math.sin(t / 120) * 0.4; }
 
@@ -771,54 +787,57 @@
             });
 
             if (eff === 'flash' && pRaw >= 1 && postP < 1) { let flashA = Math.max(0, 1 - postP * 4); if (flashA > 0) { c.save(); c.fillStyle = `rgba(255, 255, 255, ${flashA})`; c.fillRect(0, 0, W, H); c.restore(); } }
+            c.globalAlpha = 1.0;
         };
 
         const draw = () => {
             if (isPlay || $('generateBtn').disabled) return; ctx.clearRect(0, 0, W, H); let dur = getDuration(); 
-            let state = document.querySelector('input[name="previewState"]:checked') ? document.querySelector('input[name="previewState"]:checked').value : 'endMain';
+            let state = document.querySelector('input[name="previewState"]:checked').value;
             let previewT = dur; if (state === 'ending' && $('endActive').checked) previewT = dur + 2000;
             
             offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, previewT, dur);
             ctx.drawImage(offCanvas, 0, 0);
 
-            // 시네마틱 엔딩 오버레이 렌더링
             if ($('endActive').checked && state === 'ending') {
                 ctx.save();
-                if (endingImgObj) {
-                    let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale;
-                    ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
-                    ctx.drawImage(endingImgObj, 0, 0, ew, eh);
-                } else {
-                    let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                    ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0); ctx.translate(-b.w/2, -b.h/2);
+                endLayers.forEach(el => {
+                    let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
+                    let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
                     
-                    ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
-                    if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
-                    if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
-                    
-                    let chars = txt.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0;
-                    chars.forEach(ch => {
-                        if(ch !== ' ') {
-                            ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX;
-                            if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY);   
-                        }
-                        if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
-                    });
-                }
+                    ctx.save(); ctx.translate(el.x + w/2, el.y + h/2); ctx.rotate(el.rotation || 0); ctx.translate(-w/2, -h/2);
+                    if (el.type === 'image' && el.img) {
+                        ctx.drawImage(el.img, 0, 0, w, h);
+                    } else if (el.type === 'text') {
+                        ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
+                        if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
+                        if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
+                        
+                        let chars = el.text.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0;
+                        chars.forEach((ch, idx) => {
+                            if(ch !== ' ') {
+                                ctx.fillStyle = el.colors[idx] || '#ffffff'; let chX = isVert ? charX + (w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX;
+                                if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY);   
+                            }
+                            if (isVert) charY += (ch === ' ') ? (el.fontSize * 0.5) : (el.fontSize * 1.05); else charX += ctx.measureText(ch).width;
+                        });
+                    }
+                    ctx.restore();
+                });
                 ctx.restore();
             }
             
-            // 조절 상자 핸들 박스 가시화 (정상 작동)
             if (state === 'ending' && $('endActive').checked) {
-                if (endingImgObj) drawSelectionHandle(endSettings.x, endSettings.y, endingImgObj.width*endSettings.scale, endingImgObj.height*endSettings.scale, endSettings.rotation || 0);
-                else drawSelectionHandle(endSettings.textX, endSettings.textY, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).w, getTextBounds($('endText').value, parseInt($('endFontSize').value)||60, true).h, endSettings.textRot || 0);
+                if (selEnd !== -1 && endLayers[selEnd]) {
+                    let el = endLayers[selEnd], w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w, h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                    drawSelectionHandle(el.x, el.y, w, h, el.rotation || 0);
+                }
             } else {
                 if (sel !== -1 && layers[sel]) {
                     const l = layers[sel], b = getTextBounds(l.text, parseInt($('gFontSize').value)||60);
                     drawSelectionHandle(l.x, l.y, l.img.width*l.scale, l.img.height*l.scale, l.rotation || 0);
                     if(l.text) drawSelectionHandle(l.textX, l.textY, b.w, b.h, l.textRot || 0);
                 } else if (selExtra !== -1 && extraLayers[selExtra]) {
-                    const el = extraLayers[selExtra]; let b = getExtraLayerBounds(el, ctx);
+                    const el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx);
                     drawSelectionHandle(el.x, el.y, b.w, b.h, el.rotation || 0);
                 }
             }
@@ -834,41 +853,58 @@
             ctx.restore();
         };
 
-        const exec = cb => { const t1 = sel, t2 = selExtra; updateUI(-1); updateExtraUI(-1); cb(t1, t2); };
+        const exec = cb => { const t1 = sel, t2 = selExtra, t3 = selEnd; updateUI(-1); updateExtraUI(-1); updateEndUI(-1); cb(t1, t2, t3); };
         
         $('previewBtn').onclick = () => {
             if (!layers.length || isPlay || $('generateBtn').disabled) return; isPlay = true; 
-            let dur = getDuration(), isEnd = $('endActive').checked, totalDur = isEnd ? dur + 2500 : dur + 2000, startT = performance.now();
+            let dur = getDuration(), isEnd = $('endActive').checked, endHold = isEnd ? 3000 : 2000, totalDur = dur + endHold; 
+            let startT = performance.now();
             
-            exec((t1, t2) => { 
+            exec((t1, t2, t3) => { 
                 const loop = (now) => { 
                     if (!isPlay) return; let t = now - startT;
-                    if (t >= totalDur) { document.querySelector('input[value="ending"]').checked = isEnd; setTimeout(() => { isPlay = false; updateUI(t1); updateExtraUI(t2); draw(); }, 100); return; }
+                    if (t >= totalDur) { document.querySelector('input[name="previewState"][value="ending"]').checked = isEnd; setTimeout(() => { isPlay = false; updateUI(t1); updateExtraUI(t2); updateEndUI(t3); draw(); }, 100); return; }
                     
                     ctx.clearRect(0, 0, W, H); offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur); ctx.drawImage(offCanvas, 0, 0);
                     
                     if (isEnd && t > dur) {
                         let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value;
-                        ctx.save(); ctx.globalAlpha = Math.min(1, postP * 4);
-                        if (endingImgObj) {
-                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; ctx.translate(endSettings.x + ew/2, endSettings.y + eh/2); ctx.rotate(endSettings.rotation || 0); ctx.translate(-ew/2, -eh/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            ctx.drawImage(endingImgObj, 0, 0, ew, eh);
-                        } else {
-                            let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                            ctx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); ctx.rotate(endSettings.textRot || 0); ctx.translate(-b.w/2, -b.h/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) ctx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            
-                            ctx.font = getEndFontStr(); ctx.textBaseline = 'top'; if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; } if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
-                            
-                            let chars = txt.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
-                            chars.forEach((ch, idx) => {
-                                let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } // 타이핑 여부 판별
-                                ctx.globalAlpha = charP * Math.min(postP * 4, 1);
-                                if(ch !== ' ') { ctx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += ctx.measureText(ch).width;
-                            });
+                        
+                        if (eff === 'flash_appear' && postP < 0.5) {
+                            ctx.fillStyle = `rgba(255,255,255,${1 - postP * 2})`; ctx.fillRect(0,0,W,H);
                         }
+
+                        ctx.save(); ctx.globalAlpha = Math.min(1, postP * 4);
+                        endLayers.forEach(el => {
+                            let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
+                            let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                            
+                            ctx.save(); ctx.translate(el.x + w/2, el.y + h/2); ctx.rotate(el.rotation || 0);
+                            
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
+                            else if (eff === 'shake' && postP < 0.5) {
+                                // 흔들림 속도 절반 완화
+                                ctx.translate(Math.sin(t/30)*15, Math.cos(t/25)*15); 
+                            }
+                            
+                            ctx.translate(-w/2, -h/2);
+                            
+                            if (el.type === 'image' && el.img) { ctx.drawImage(el.img, 0, 0, w, h); } 
+                            else if (el.type === 'text') {
+                                ctx.font = getEndFontStr(); ctx.textBaseline = 'top';
+                                if ($('endShadow').checked) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 6; }
+                                if ($('endStroke').checked) { ctx.lineWidth = parseInt($('endStrokeWidth').value) || 4; ctx.strokeStyle = $('endStrokeHex').value; }
+                                
+                                let chars = el.text.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
+                                chars.forEach((ch, idx) => {
+                                    let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } // 타이핑 없음 즉시 등장 처리
+                                    ctx.globalAlpha = charP * Math.min(postP * 4, 1);
+                                    if(ch !== ' ') { ctx.fillStyle = el.colors[idx] || '#ffffff'; let chX = isVert ? charX + (w / 2) - (ctx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) ctx.strokeText(ch, chX, charY); ctx.fillText(ch, chX, charY); }
+                                    if (isVert) charY += (ch === ' ') ? (el.fontSize * 0.5) : (el.fontSize * 1.05); else charX += ctx.measureText(ch).width;
+                                });
+                            }
+                            ctx.restore();
+                        });
                         ctx.restore();
                     }
                     requestAnimationFrame(loop); 
@@ -884,36 +920,38 @@
             let fn = prompt("저장할 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith(ext)) fn += ext;
             
             const btn = $('generateBtn'), og = btn.innerText; btn.disabled = $('previewBtn').disabled = true; btn.innerText = "⏳ 인코딩 중...";
-            const endGenerate = (msg) => { btn.innerText = msg; setTimeout(() => { btn.innerText = og; btn.disabled = $('previewBtn').disabled = false; updateUI(sel); updateExtraUI(selExtra); draw(); }, 2000); };
+            const endGenerate = (msg) => { btn.innerText = msg; setTimeout(() => { btn.innerText = og; btn.disabled = $('previewBtn').disabled = false; updateUI(sel); updateExtraUI(selExtra); updateEndUI(selEnd); draw(); }, 2000); };
             
             let eFrames = Math.min(100, Math.round(totalDur / (isAPNG ? 66 : 50))), eDelay = Math.round(totalDur / eFrames), sc = 1.0;
             if (isAPNG) { const curP = W * H * eFrames; if (curP > 5000000) sc = Math.min(1.0, Math.sqrt(5000000 / curP)); }
             
             const eW = Math.floor(W * sc), eH = Math.floor(H * sc), oCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); oCtx.canvas.width = eW; oCtx.canvas.height = eH;
             
-            exec((t1, t2) => {
+            exec((t1, t2, t3) => {
                 const drawFrame = (t) => {
                     oCtx.save(); oCtx.clearRect(0, 0, eW, eH); if (!isGifTrans && !isAPNG) { oCtx.fillStyle = bgColor; oCtx.fillRect(0, 0, eW, eH); }
                     oCtx.scale(sc, sc); offCanvas.width = W; offCanvas.height = H; offCtx.clearRect(0, 0, W, H); renderBackground(offCtx, t, dur); oCtx.drawImage(offCanvas, 0, 0);
                     if (isEnd && t > dur) {
-                        let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value; oCtx.save(); oCtx.globalAlpha = Math.min(1, postP * 4);
-                        if (endingImgObj) {
-                            let ew = endingImgObj.width * endSettings.scale, eh = endingImgObj.height * endSettings.scale; oCtx.translate(endSettings.x + ew/2, endSettings.y + eh/2); oCtx.rotate(endSettings.rotation || 0); oCtx.translate(-ew/2, -eh/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); oCtx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) oCtx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            oCtx.drawImage(endingImgObj, 0, 0, ew, eh);
-                        } else {
-                            let txt = $('endText').value, endFSize = parseInt($('endFontSize').value) || 60, b = getTextBounds(txt, endFSize, true);
-                            oCtx.translate(endSettings.textX + b.w/2, endSettings.textY + b.h/2); oCtx.rotate(endSettings.textRot || 0); oCtx.translate(-b.w/2, -b.h/2);
-                            if (eff === 'slam') { let sP = Math.min(1, postP*4); oCtx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) oCtx.translate((Math.random()-0.5)*20, (Math.random()-0.5)*20);
-                            oCtx.font = getEndFontStr(); oCtx.textBaseline = 'top'; if ($('endShadow').checked) { oCtx.shadowColor = 'rgba(0,0,0,0.7)'; oCtx.shadowBlur = 6; } if ($('endStroke').checked) { oCtx.lineWidth = parseInt($('endStrokeWidth').value) || 4; oCtx.strokeStyle = $('endStrokeHex').value; }
-                            let charX = 0, charY = 0, lineHeight = endFSize * 1.1, isVert = $('endVertical').checked, tSpdMs = getEndTypeSpeedMs();
-                            txt.split('').forEach((ch, idx) => {
-                                let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); }
-                                oCtx.globalAlpha = charP * Math.min(postP * 4, 1);
-                                if(ch !== ' ') { oCtx.fillStyle = $('endColorHex').value; let chX = isVert ? charX + (b.w / 2) - (oCtx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) oCtx.strokeText(ch, chX, charY); oCtx.fillText(ch, chX, charY); }
-                                if (isVert) charY += (ch === ' ') ? (endFSize * 0.5) : (endFSize * 1.05); else charX += oCtx.measureText(ch).width;
-                            });
-                        } oCtx.restore();
+                        let postP = Math.min(1, (t - dur) / 2000), eff = $('endEffect').value;
+                        if (eff === 'flash_appear' && postP < 0.5) { oCtx.fillStyle = `rgba(255,255,255,${1 - postP * 2})`; oCtx.fillRect(0,0,W,H); }
+                        oCtx.save(); oCtx.globalAlpha = Math.min(1, postP * 4);
+                        endLayers.forEach(el => {
+                            let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
+                            let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                            oCtx.save(); oCtx.translate(el.x + w/2, el.y + h/2); oCtx.rotate(el.rotation || 0);
+                            if (eff === 'slam') { let sP = Math.min(1, postP*4); oCtx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } else if (eff === 'shake' && postP < 0.5) oCtx.translate(Math.sin(t/30)*15, Math.cos(t/25)*15);
+                            oCtx.translate(-w/2, -h/2);
+                            if (el.type === 'image' && el.img) { oCtx.drawImage(el.img, 0, 0, w, h); } 
+                            else if (el.type === 'text') {
+                                oCtx.font = getEndFontStr(); oCtx.textBaseline = 'top'; if ($('endShadow').checked) { oCtx.shadowColor = 'rgba(0,0,0,0.7)'; oCtx.shadowBlur = 6; } if ($('endStroke').checked) { oCtx.lineWidth = parseInt($('endStrokeWidth').value) || 4; oCtx.strokeStyle = $('endStrokeHex').value; }
+                                let chars = el.text.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
+                                chars.forEach((ch, idx) => {
+                                    let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - dur - idx * tSpdMs) / 150, 0), 1); } oCtx.globalAlpha = charP * Math.min(postP * 4, 1);
+                                    if(ch !== ' ') { oCtx.fillStyle = el.colors[idx] || '#ffffff'; let chX = isVert ? charX + (w / 2) - (oCtx.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) oCtx.strokeText(ch, chX, charY); oCtx.fillText(ch, chX, charY); }
+                                    if (isVert) charY += (ch === ' ') ? (el.fontSize * 0.5) : (el.fontSize * 1.05); else charX += oCtx.measureText(ch).width;
+                                });
+                            } oCtx.restore();
+                        }); oCtx.restore();
                     } oCtx.restore();
                 };
 
@@ -939,7 +977,7 @@
             });
         };
 
-        // 초기 실행: 빈 캔버스 그리기 및 정중앙 리포지셔닝 트리거
+        // 초기 실행: 빈 캔버스 그리기
         resizeCanvas();
     </script>
 </body>
