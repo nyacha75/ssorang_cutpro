@@ -108,7 +108,10 @@
                     <input type="number" id="canvasH" value="800" style="width:55px;">
                     <button class="btn hl" onclick="resizeCanvas()" style="flex:none; padding:5px 10px; margin-left:8px; background:#0055FF; color:#fff; border:none;">크기 적용</button>
                 </div>
-                <div class="row"><button class="btn magic" onclick="act('quick')">✨ 간단 배치 (자동 정렬)</button></div>
+                <div class="row">
+                    <button class="btn magic" onclick="act('quick')">✨ 간단 배치</button>
+                    <button class="btn magic" style="background:#ff7b00; border-color:#cc6200;" onclick="act('zigzag')">〰️ 지그재그 배치</button>
+                </div>
                 <div style="text-align:center; margin: 8px 0 3px 0;">
                     <span onclick="toggleAdvAlign(this)" style="text-decoration: underline; cursor: pointer; font-size: 11px; color: #555;">상세 조절 펼치기 ▼</span>
                 </div>
@@ -228,6 +231,7 @@
                         </select>
                     </div>
                     <hr style="border:0; border-top:1px dashed #ccc; margin:12px 0;">
+                    
                     <div class="row">
                         <button class="btn" onclick="addEndText()" style="border-color:#e60000; color:#e60000;">+ 엔딩 타이포 추가</button>
                         <label class="btn" style="margin:0; border-color:#e60000; color:#e60000; display:flex; justify-content:center; align-items:center; cursor:pointer;">
@@ -336,6 +340,12 @@
             } else return { w: ctx.measureText(text).width + 4, h: fSize + 10 };
         };
 
+        const getExtraLayerBounds = (el, c) => {
+            if (el.type === 'image' && el.img) return { w: el.img.width * el.scale, h: el.img.height * el.scale };
+            c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`;
+            return { w: c.measureText(el.content).width, h: el.fontSize * 1.1 };
+        };
+
         window.resizeCanvas = () => { W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800; canvasEl.width = W; canvasEl.height = H; draw(); triggerAutoSave(); };
 
         function getTransformHit(x, y, targetX, targetY, w, h, angle) {
@@ -407,7 +417,7 @@
         window.saveProjectFile = () => { let fn = prompt("저장할 프로젝트 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith('.json')) fn += '.json'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getProjectData())], { type: "application/json" })); a.download = fn; a.click(); };
         window.loadProjectFile = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { try { restoreProjectData(JSON.parse(ev.target.result)); } catch(err) { alert("파일 오류"); } }; reader.readAsText(file); e.target.value = ''; };
 
-        // --- 엔딩 레이어 추가 제어 ---
+        // --- 엔딩 다중 레이어 제어 ---
         window.addEndText = () => {
             let fSize = 120; ctx.font = `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${fSize}px "${$('endFont').value}"`; let w = ctx.measureText('전투 발생').width, h = fSize * 1.1;
             endLayers.push({ type: 'text', text: '전투 발생', name: '엔딩 텍스트', scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, colors: ['#ffffff','#ffffff','#ffffff','#ffffff','#ffffff'] });
@@ -434,7 +444,7 @@
                     const chars = el.text.split(''); while(el.colors.length < chars.length) el.colors.push('#ffffff');
                     let cPicker = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${el.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
                     controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.text}" oninput="endLayers[${i}].text=this.value; updateEndUI(${i}); draw(); triggerAutoSave();" style="flex:1;"><label style="font-size:11px; margin-left:5px;">크기:</label><input type="number" value="${el.fontSize}" onchange="endLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:2px;"><span style="font-size:10px; margin-left:2px;">pt</span></div>${cPicker}`;
-                } else controls = ``; // 크기 비율 인풋 제거 반영
+                } else { controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="endLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`; }
                 div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i+1}]; endLayers[${i+1}]=tmp; updateEndUI(${i===selEnd?i+1:selEnd}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i-1}]; endLayers[${i-1}]=tmp; updateEndUI(${i===selEnd?i-1:selEnd}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="endLayers.splice(${i},1); updateEndUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>${controls}`;
                 div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateEndUI(i); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); } };
                 list.appendChild(div);
@@ -579,6 +589,31 @@
                 let cx = (mX + xX) / 2, cy = (mY + xY) / 2, sX = W/2 - cx, sY = H/2 - cy;
                 layers.forEach(ly => { ly.x += sX; ly.y += sY; ly.textX += sX; ly.textY += sY; });
             }
+            else if (type === 'zigzag') {
+                if (layers.length === 0) return;
+                let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
+                const isVertLayout = tW > tH; const ref = layers[sel !== -1 ? sel : 0];
+                
+                if (isVertLayout) { 
+                    const rW = ref.img.width * ref.scale;
+                    layers.forEach(ly => { const oS = ly.scale; ly.scale = rW / ly.img.width; const r = ly.scale / oS; ly.textX = ly.x + (ly.textX - ly.x) * r; ly.textY = ly.y + (ly.textY - ly.y) * r; });
+                    let totH = 0; layers.forEach(ly => totH += ly.img.height * ly.scale); totH += gap * (layers.length - 1);
+                    let startY = (H - totH) / 2, offsetX = rW * 0.15;
+                    layers.forEach((ly, i) => {
+                        let h = ly.img.height * ly.scale, dy = startY - ly.y, tgX = (W / 2) - (rW / 2) + (i % 2 === 0 ? -offsetX : offsetX), dx = tgX - ly.x;
+                        ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; startY += h + gap;
+                    });
+                } else { 
+                    const rH = ref.img.height * ref.scale;
+                    layers.forEach(ly => { const oS = ly.scale; ly.scale = rH / ly.img.height; const r = ly.scale / oS; ly.textX = ly.x + (ly.textX - ly.x) * r; ly.textY = ly.y + (ly.textY - ly.y) * r; });
+                    let totW = 0; layers.forEach(ly => totW += ly.img.width * ly.scale); totW += gap * (layers.length - 1);
+                    let startX = (W - totW) / 2, offsetY = rH * 0.15;
+                    layers.forEach((ly, i) => {
+                        let w = ly.img.width * ly.scale, dx = startX - ly.x, tgY = (H / 2) - (rH / 2) + (i % 2 === 0 ? -offsetY : offsetY), dy = tgY - ly.y;
+                        ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; startX += w + gap;
+                    });
+                }
+            }
             else if (type.startsWith('quick')) {
                 let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
                 const doV = type === 'quickV' || (type === 'quick' && tW > tH);
@@ -693,7 +728,8 @@
             let isEndPhase = $('endActive').checked && t > dur, endAlphaMulti = 1.0;
             
             if (isEndPhase) {
-                let endOpGoal = parseInt($('endOpacity').value) / 100; endAlphaMulti = 1.0 - (ease(postP) * (1.0 - endOpGoal));
+                let endOpGoal = parseInt($('endOpacity').value) / 100;
+                endAlphaMulti = 1.0 - (ease(postP) * (1.0 - endOpGoal));
             }
 
             let isHorizLayout = false;
@@ -705,6 +741,7 @@
             const drawWithTransform = (x, y, w, h, angle, alphaVal, drawFunc) => {
                 let cx = x + w/2, cy = y + h/2, pushX = 0, pushY = 0;
                 if (isEndPhase && $('endEffect').value === 'split') {
+                    // 화면 밖으로 완전히 밀어내는 수식 (최소 W, H 크기값 대입)
                     let splitD = ease(postP);
                     if (isHorizLayout) pushY = (cy < H/2) ? -H * splitD : H * splitD; 
                     else pushX = (cx < W/2) ? -W * splitD : W * splitD;
@@ -740,7 +777,9 @@
                     let fSize = parseInt($('gFontSize').value) || 60, b = getTextBounds(l.text, fSize);
                     drawWithTransform(l.textX + dx, l.textY + dy, b.w, b.h, l.textRot || 0, 1.0, (ctxRef, dw, dh) => {
                         if (l.anim === 'zoomIn') { let ts = 0.7 + p * 0.3; ctxRef.translate(dw/2, dh/2); ctxRef.scale(ts, ts); ctxRef.translate(-dw/2, -dh/2); }
-                        ctxRef.font = getFontStr(); ctxRef.textBaseline = 'top'; if ($('gShadow').checked) { ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; } if ($('gStroke').checked) { ctxRef.lineWidth = parseInt($('gStrokeWidth').value) || 3; ctxRef.strokeStyle = $('gStrokeHex').value; }
+                        ctxRef.font = getFontStr(); ctxRef.textBaseline = 'top';
+                        if ($('gShadow').checked) { ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; }
+                        if ($('gStroke').checked) { ctxRef.lineWidth = parseInt($('gStrokeWidth').value) || 3; ctxRef.strokeStyle = $('gStrokeHex').value; }
                         let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, tSpdMs = getTypeSpeedMs();
                         chars.forEach((ch, idx) => {
                             let charP = Math.min(Math.max((t - idx * tSpdMs) / 150, 0), 1); ctxRef.globalAlpha = charP * Math.min(p * 1.5, 1) * endAlphaMulti;
@@ -755,11 +794,16 @@
                 let eDur = el.animSpeed || 1000, epRaw = Math.min(1, t / eDur), ep = ease(epRaw);
                 let b = getExtraLayerBounds(el, c), dx = 0, dy = 0, eAngle = el.rotation || 0, eAlpha = Math.min(ep * 1.5, 1);
                 let w = b.w, h = b.h;
-                if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70; else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; } else if(el.anim === 'rotateIn') { eAngle += (1-ep) * Math.PI * 2; } else if(el.anim === 'blink' && epRaw >= 1) { eAlpha = 0.4 + Math.sin(t / 120) * 0.4; }
+
+                if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70;
+                else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - b.w)/2; dy = -(h - b.h)/2; }
+                else if(el.anim === 'rotateIn') { eAngle += (1-ep) * Math.PI * 2; }
+                else if(el.anim === 'blink' && epRaw >= 1) { eAlpha = 0.4 + Math.sin(t / 120) * 0.4; }
 
                 drawWithTransform(el.x + dx, el.y + dy, w, h, eAngle, eAlpha, (ctxRef, dw, dh) => {
                     if (el.type === 'text') {
-                        ctxRef.font = `bold ${el.fontSize}px "${$('globalFont').value}"`; ctxRef.fillStyle = el.color; ctxRef.textBaseline = 'top'; ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; ctxRef.lineWidth = 3; ctxRef.strokeStyle = '#000'; ctxRef.strokeText(el.content, 0, 0); ctxRef.fillText(el.content, 0, 0);
+                        ctxRef.font = `bold ${el.fontSize}px "${$('globalFont').value}"`; ctxRef.fillStyle = el.color; ctxRef.textBaseline = 'top';
+                        ctxRef.shadowColor = 'rgba(0,0,0,0.6)'; ctxRef.shadowBlur = 6; ctxRef.lineWidth = 3; ctxRef.strokeStyle = '#000'; ctxRef.strokeText(el.content, 0, 0); ctxRef.fillText(el.content, 0, 0);
                     } else if (el.type === 'image' && el.img) { ctxRef.drawImage(el.img, 0, 0, dw, dh); }
                 });
             });
@@ -781,6 +825,7 @@
                 endLayers.forEach(el => {
                     let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
                     let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                    
                     ctx.save(); ctx.translate(el.x + w/2, el.y + h/2); ctx.rotate(el.rotation || 0); ctx.translate(-w/2, -h/2);
                     if (el.type === 'image' && el.img) { ctx.drawImage(el.img, 0, 0, w, h); } 
                     else if (el.type === 'text') {
@@ -838,6 +883,7 @@
                         endLayers.forEach(el => {
                             let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
                             let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
+                            
                             ctx.save(); ctx.translate(el.x + w/2, el.y + h/2); ctx.rotate(el.rotation || 0);
                             
                             if (eff === 'slam') { let sP = Math.min(1, postP*4); ctx.scale(1 + (1 - Math.pow(sP, 3)) * 4, 1 + (1 - Math.pow(sP, 3)) * 4); } 
