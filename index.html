@@ -2,11 +2,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO+)</title>
+    <title>🌊 [쏘랑] 다인 컷인 에디터 (PRO)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Malgun Gothic', sans-serif; background: #f4f7f9; color: #333; padding: 20px; display: flex; flex-direction: column; align-items: center; margin: 0; min-height: 100vh; overflow-x: hidden; }
@@ -14,51 +14,38 @@
         
         .canvas-wrapper { display: flex; flex-direction: column; width: fit-content; position: sticky; top: 20px; }
         canvas { border: 2px solid #0055FF; border-radius: 4px; background: #fff; background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .hint-box { font-size: 12px; color: #555; line-height: 1.6; margin-top: 10px; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #E8D8C8; box-sizing: border-box; }
+        .hint-box { font-size: 12px; color: #555; line-height: 1.6; margin-top: 10px; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #E8D8C8; }
         
-        .control-panel { width: 440px; display: flex; flex-direction: column; gap: 15px; background: #fff; padding: 20px; border-radius: 8px; border: 2px solid #E8D8C8; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-height: 90vh; overflow-y: auto; flex-shrink: 0; }
+        .control-panel { width: 420px; display: flex; flex-direction: column; gap: 15px; background: #fff; padding: 20px; border-radius: 8px; border: 2px solid #E8D8C8; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-height: 90vh; overflow-y: auto; flex-shrink: 0; }
         .control-group { border-bottom: 1px solid #E8D8C8; padding-bottom: 15px; }
-        .control-group:last-child { border-bottom: none; padding-bottom: 0; }
         .control-group h3 { margin: 0 0 10px 0; font-size: 15px; color: #0055FF; }
         
-        input, select { background: #fff; border: 1px solid #E8D8C8; padding: 7px; border-radius: 4px; box-sizing: border-box; color: #333; font-size: 12px; outline: none; }
-        input:focus, select:focus { border-color: #0055FF; }
-        input[type="checkbox"], input[type="radio"] { cursor: pointer; vertical-align: middle; margin: 0 4px 0 0; }
-        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type="number"] { -moz-appearance: textfield; text-align: center; }
-
-        .color-combo { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 3px; background: #fff; height: 22px; width: fit-content; overflow: hidden; transition: 0.2s; }
-        .color-combo input[type="color"] { width: 22px; height: 22px; border: none; padding: 0; margin: 0; cursor: pointer; background: transparent; }
-        .color-combo input[type="text"] { width: 55px; border: none; font-size: 11px; text-transform: uppercase; font-family: monospace; text-align: center; outline: none; padding: 0; }
+        input, select { background: #fff; border: 1px solid #E8D8C8; padding: 7px; border-radius: 4px; font-size: 12px; outline: none; }
+        input:focus { border-color: #0055FF; }
         
         .row { display: flex; gap: 5px; margin-bottom: 5px; align-items: center; }
-        .btn { background: #fff; color: #333; border: 1px solid #E8D8C8; flex: 1; padding: 8px 6px; font-size: 12px; cursor: pointer; border-radius: 4px; transition: 0.2s; text-align: center; }
+        .btn { background: #fff; color: #333; border: 1px solid #E8D8C8; flex: 1; padding: 8px 6px; font-size: 12px; cursor: pointer; border-radius: 4px; text-align: center; transition: 0.2s; }
         .btn:hover { background: #F2E8DA; }
         .btn.hl { background: #F2E8DA; font-weight: bold; }
-        .btn.hl:hover { background: #E8D8C8; }
-        .btn.magic { background: #0055FF; color: #fff; border-color: #0044CC; font-weight: bold; font-size: 13px; padding: 10px; }
-        .btn.magic:hover { background: #0044CC; }
+        .btn.magic { background: #0055FF; color: #fff; border-color: #0044CC; font-weight: bold; }
         
-        .layer-list { max-height: 220px; overflow-y: auto; background: #f9f9f9; border: 1px solid #E8D8C8; border-radius: 4px; padding: 5px; }
-        .layer-item { background: #fff; margin-bottom: 5px; padding: 10px; border-radius: 4px; border: 1px solid #E8D8C8; cursor: pointer; position: relative; }
-        .layer-item.active { border-color: #0055FF; background: #F0F4FF; box-shadow: 0 2px 8px rgba(0,85,255,0.1); }
-        .layer-item.drag-over { border: 2px dashed #0055FF; opacity: 0.8; }
-        .thumb { width: 30px; height: 30px; object-fit: contain; background: #fff; border-radius: 4px; border: 1px solid #E8D8C8; flex-shrink: 0; }
-        .l-btn { background: #F2E8DA; border: 1px solid #E8D8C8; padding: 3px 6px; font-size: 10px; border-radius: 4px; cursor: pointer; }
-        .l-btn.del { background: #ff4d4d; color: #fff; border: none; font-size: 11px; }
-        .char-color-box { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .char-color-box span { font-size: 11px; font-weight: bold; color: #555; }
-        .fx-label { display: flex; align-items: center; gap: 3px; white-space: nowrap; cursor: pointer; font-size: 11px; }
-
-        .action-btn { border: none; padding: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; font-size: 14px; color: #fff; transition: 0.2s; }
-        #previewBtn { background: #E8D8C8; color: #333; border: 1px solid #DBC4AC; } 
-        #previewBtn:hover { background: #DBC4AC; }
+        .layer-list { max-height: 180px; overflow-y: auto; background: #f9f9f9; border: 1px solid #E8D8C8; border-radius: 4px; padding: 5px; }
+        .layer-item { background: #fff; margin-bottom: 5px; padding: 8px; border-radius: 4px; border: 1px solid #E8D8C8; cursor: pointer; position: relative; }
+        .layer-item.active { border-color: #0055FF; background: #F0F4FF; }
+        .thumb { width: 25px; height: 25px; object-fit: contain; background: #fff; border-radius: 3px; border: 1px solid #ddd; }
+        .l-btn { padding: 3px 6px; font-size: 10px; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; background: #fff; }
+        .l-btn.del { background: #ff4d4d; color: #fff; border: none; }
+        
+        .action-btn { border: none; padding: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; font-size: 14px; color: #fff; margin-top: 10px; }
+        #previewBtn { background: #E8D8C8; color: #333; } 
         #generateBtn { background: #0055FF; }
-        #generateBtn:hover { background: #0044CC; }
-        button:disabled { background: #ccc !important; cursor: not-allowed; color: #888 !important; border-color: #ccc !important; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        
+        .color-combo { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 3px; overflow: hidden; height: 22px; }
+        .color-combo input[type="color"] { width: 22px; height: 22px; border: none; padding: 0; cursor: pointer; }
+        .color-combo input[type="text"] { width: 50px; border: none; font-size: 10px; text-align: center; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
     </style>
 </head>
 <body>
@@ -66,837 +53,445 @@
     <div style="visibility: hidden; position: absolute; font-family: 'Jua';">.</div>
     <div style="visibility: hidden; position: absolute; font-family: 'Nanum Myeongjo';">.</div>
 
-    <div id="mainHeader" style="width: 100%; max-width: 1530px; margin-bottom: 20px; text-align: center;">
-        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Black Han Sans', sans-serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,85,255,0.2);">🌊 [쏘랑] 다인 컷인 에디터 (심화 PRO+)</h2>
+    <div id="mainHeader" style="margin-bottom: 20px; text-align: center;">
+        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Nanum Myeongjo', serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px;">🌊 [쏘랑] 다인 컷인 에디터 (PRO)</h2>
     </div>
 
     <div class="container">
         <div class="canvas-wrapper">
-            <div style="display:flex; justify-content:center; gap:15px; margin-bottom:10px; font-weight:bold; font-size:13px; color:#0055FF; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #0055FF; box-shadow: 0 2px 10px rgba(0,85,255,0.1);">
-                <label><input type="radio" name="previewState" value="endMain" checked onchange="draw()"> 전투 배치 완료</label>
-                <label><input type="radio" name="previewState" value="postMain" onchange="draw()"> 표정 변경 화면</label>
-                <label><input type="radio" name="previewState" value="ending" onchange="draw()"> 엔딩 연출 화면</label>
+            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px; font-weight:bold; font-size:12px; color:#0055FF; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #0055FF;">
+                <label><input type="radio" name="previewState" value="endMain" checked onchange="draw()"> 배치 완료</label>
+                <label><input type="radio" name="previewState" value="postMain" onchange="draw()"> 표정 변경</label>
+                <label><input type="radio" name="previewState" value="ending" onchange="draw()"> 엔딩 연출</label>
             </div>
-            
             <canvas id="canvas" width="600" height="800"></canvas>
-            
             <div class="hint-box">
-                • <b style="color:#0055FF;">마우스 드래그</b>: 위치 이동 | <b style="color:#0055FF;">모서리 점</b>: 크기 조절 | <b style="color:#0055FF;">상단 동그라미</b>: 회전<br>
-                • <b style="color:#0055FF;">[간단 배치]</b>: 메인 이미지들의 비율을 감지하여 겹치지 않게 스마트 정렬합니다.
+                • <b>드래그</b>: 이동 | <b>모서리</b>: 크기 | <b>상단 동그라미</b>: 회전<br>
+                • 7번 기능 사용 시 '표정 변경' 상태에서 이미지를 확인하세요.
             </div>
-            
-            <div style="background:#fff; border:1px solid #0055FF; padding:15px; border-radius:6px; margin-top:10px; box-shadow: 0 2px 8px rgba(0,85,255,0.05);">
-                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:14px; color:#0044CC;">💾 작업 데이터 백업 및 복원</h3>
-                    <span id="autoSaveStatus" style="font-size:12px; color:#ff4d4d; font-weight:bold;"></span>
+            <div style="background:#fff; border:1px solid #0055FF; padding:12px; border-radius:6px; margin-top:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                    <h3 style="margin:0; font-size:13px; color:#0044CC;">💾 백업 및 복원</h3>
+                    <span id="autoSaveStatus" style="font-size:11px; color:#ff4d4d; font-weight:bold;"></span>
                 </div>
                 <div class="row">
-                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold; padding:10px;" onclick="saveProjectFile()">↓ 프로젝트 저장 (.json)</button>
-                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold; padding:10px;" onclick="$('projectFileInput').click()">↑ 프로젝트 불러오기</button>
+                    <button class="btn" style="border-color:#0055FF; color:#0055FF;" onclick="saveProjectFile()">↓ 프로젝트 저장</button>
+                    <button class="btn" style="border-color:#0055FF; color:#0055FF;" onclick="$('projectFileInput').click()">↑ 불러오기</button>
                     <input type="file" id="projectFileInput" accept=".json" style="display:none;" onchange="loadProjectFile(event)">
+                </div>
+                <div style="font-size:12px; color:#555; margin-top:10px; line-height:1.5;">
+                    • 작업 내용은 브라우저 내부에 <b>실시간 자동 보존</b>됩니다.<br>
+                    • 브라우저 캐시 초기화 시 데이터가 삭제될 수 있으므로 중요 작업은 <b>프로젝트 파일로 저장</b>하세요.
                 </div>
             </div>
         </div>
         
         <div class="control-panel">
             <div class="control-group">
-                <h3>1. 메인 이미지 (정렬 대상)</h3>
+                <h3>1. 메인 이미지</h3>
                 <div class="row"><input type="file" id="imageInput" multiple accept="image/*" style="flex:1;"></div>
             </div>
             
             <div class="control-group">
-                <h3>2. 캔버스 조절 및 이미지 정렬</h3>
-                <div class="row" style="margin-bottom:8px; background:#f9f9f9; padding:8px; border-radius:4px; border:1px solid #E8D8C8;">
-                    <label style="font-size:12px; width:80px; font-weight:bold; color:#0055FF;">캔버스 크기:</label>
-                    <input type="number" id="canvasW" value="600" style="width:55px;"> <span style="font-size:12px; margin:0 3px;">X</span>
-                    <input type="number" id="canvasH" value="800" style="width:55px;">
-                    <button class="btn hl" onclick="resizeCanvas()" style="flex:none; padding:5px 10px; margin-left:8px; background:#0055FF; color:#fff; border:none;">크기 적용</button>
+                <h3>2. 캔버스 및 레이아웃</h3>
+                <div class="row" style="background:#f9f9f9; padding:5px; border-radius:4px;">
+                    <input type="number" id="canvasW" value="600" style="width:50px;"> × <input type="number" id="canvasH" value="800" style="width:50px;">
+                    <button class="btn hl" onclick="resizeCanvas()" style="padding:4px;">적용</button>
+                    <button class="btn magic" onclick="act('quick')">✨ 자동 정렬</button>
+                    <button class="btn magic" style="background:#ff7b00; border-color:#cc6200;" onclick="act('zigzag')">〰️ 지그재그</button>
                 </div>
-                <div class="row">
-                    <button class="btn magic" onclick="act('quick')">✨ 간단 배치 (자동 정렬)</button>
-                    <button class="btn magic" style="background:#ff7b00; border-color:#cc6200;" onclick="act('zigzag')">〰️ 지그재그 배치</button>
-                </div>
-                
-                <div style="text-align:center; margin: 8px 0 3px 0;">
-                    <span onclick="toggleAdvAlign(this)" style="text-decoration: underline; cursor: pointer; font-size: 11px; color: #555;">상세 조절 펼치기 ▼</span>
-                </div>
-                
-                <div id="advAlignWrapper" style="display:none; margin-top:8px;">
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
-                        <button class="btn hl" onclick="act('matchH')">📏 세로 통일</button>
-                        <button class="btn hl" onclick="act('matchW')">📏 가로 통일</button>
-                        <button class="btn hl" onclick="act('crop')">✂️ 캔버스 맞추기</button>
-                        <button class="btn" onclick="act('distH')">↔️ 가로 간격 정렬</button>
-                        <button class="btn" onclick="act('distV')">↕️ 세로 간격 정렬</button>
-                        <button class="btn hl" style="background:#e0edff; color:#0055ff; border-color:#0055ff;" onclick="act('center')">🎯 중앙 정렬</button>
+                <div style="text-align:center; margin: 5px 0;"><span onclick="toggleAdvAlign(this)" style="text-decoration:underline; cursor:pointer; font-size:11px; color:#555;">상세 조절 펼치기 ▼</span></div>
+                <div id="advAlignWrapper" style="display:none; margin-top:5px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;">
+                        <button class="btn hl" onclick="act('matchH')">📏 세로통일</button>
+                        <button class="btn hl" onclick="act('matchW')">📏 가로통일</button>
+                        <button class="btn hl" onclick="act('crop')">✂️ 캔버스맞춤</button>
+                        <button class="btn hl" onclick="act('distH')">↔️ 가로정렬</button>
+                        <button class="btn hl" onclick="act('distV')">↕️ 세로정렬</button>
+                        <button class="btn hl" onclick="act('center')">🎯 중앙정렬</button>
                     </div>
-                    <div class="row" style="margin-top:5px; justify-content:space-between; background:#fff; border:1px solid #E8D8C8; border-radius:4px; padding: 6px 10px;">
-                        <label style="font-size:11px; display:flex; align-items:center; margin:0; cursor:pointer; white-space:nowrap;">
-                            이미지 간격: <input type="number" id="gap" value="20" onchange="triggerAutoSave()" style="width:35px; margin-left:4px; height:20px; border:1px solid #ccc; border-radius:3px; padding:0;"> px
-                        </label>
-                        <label style="font-size:11px; display:flex; align-items:center; margin:0; cursor:pointer; white-space:nowrap; color:#ff7b00; font-weight:bold;">
-                            〰️ 지그재그 비율: <input type="number" id="zigzagOffset" value="15" step="1" min="0" max="100" onchange="triggerAutoSave()" style="width:35px; margin-left:4px; height:20px; border:1px solid #ccc; border-radius:3px; padding:0;"> %
-                        </label>
+                    <div class="row" style="margin-top:8px; font-size:11px; justify-content:center; gap: 15px; border-top:1px solid #eee; padding-top:8px;">
+                        <label style="cursor:pointer; display:flex; align-items:center;">이미지 간격: <input type="number" id="gap" value="20" style="width:35px; margin-left:4px;" onchange="triggerAutoSave()"> px</label>
+                        <label style="cursor:pointer; display:flex; align-items:center;">지그재그 비율: <input type="number" id="zigzagOffset" value="15" style="width:35px; margin-left:4px;" onchange="triggerAutoSave()"> %</label>
                     </div>
                 </div>
             </div>
             
-            <div class="control-group" style="flex:1; display:flex; flex-direction:column;">
-                <h3>3. 메인 레이어 및 효과</h3>
-                <div class="row" style="margin-bottom:8px;">
-                    <label style="font-size:12px; width:95px; white-space:nowrap;">애니메이션 속도:</label>
-                    <select id="animSpeed" onchange="toggleCustomSpeed(); draw();" style="flex:1; font-size:12px;">
-                        <option value="1000">빠르게</option><option value="2000" selected>기본</option><option value="3000">느리게</option><option value="custom">직접 조정</option>
-                    </select>
-                    <div id="customSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                        <input type="number" id="customSpeed" value="2000" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;"> <span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
-                    </div>
-                </div>
-                
+            <div class="control-group" style="flex:1;">
+                <h3>3. 레이어 리스트</h3>
                 <div id="layerList" class="layer-list" style="max-height: 250px;"></div>
-
                 <div class="row" style="margin-top:8px;">
-                    <label style="font-size:12px; width:90px;">전체 추가 효과:</label>
-                    <select id="globalEffect" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="none" selected>효과 없음</option>
-                        <option value="lines">1. 교차 빛나는 선</option>
-                        <option value="trace">2. 이미지 테두리 빛 궤적</option>
-                        <option value="trace_after">3. 애니메이션 종료 후 빛 궤적</option>
-                        <option value="flash">4. 애니메이션 종료 후 번쩍</option>
+                    <label style="font-size:11px;">추가 효과:</label>
+                    <select id="globalEffect" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:11px;">
+                        <option value="none">효과 없음</option><option value="lines">1. 교차 빛나는 선</option><option value="trace">2. 이미지 테두리 빛 궤적</option><option value="trace_after">3. 종료 후 빛 궤적</option><option value="flash">4. 종료 후 번쩍</option>
                     </select>
                 </div>
             </div>
             
-            <div class="control-group">
+            <div class="control-group" style="border-bottom:none;">
                 <h3>4. 메인 타이포</h3>
-                <div class="row"><label style="font-size:12px; width:75px;">파일 업로드:</label><input type="file" id="fontInput" multiple accept=".ttf,.otf,.woff,.woff2" style="flex:1;"></div>
+                <div class="row"><input type="file" id="fontInput" multiple accept=".ttf,.otf,.woff,.woff2" style="flex:1;"></div>
                 <div class="row">
-                    <label style="font-size:12px; width:75px;">타이핑 속도:</label>
-                    <select id="typeSpeed" onchange="toggleCustomTypeSpeed(); draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
-                    </select>
-                    <div id="customTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                        <input type="number" id="customTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:50px; font-size:11px; height:24px; border:1px solid #ccc; border-radius:3px;"> <span style="font-size:11px; margin-left:3px; color:#555;">ms</span>
-                    </div>
+                    <select id="globalFont" onchange="draw(); triggerAutoSave();" style="flex:1;"><option value="Black Han Sans">블랙한산스</option><option value="Jua">주아체</option></select>
+                    <input type="number" id="gFontSize" value="60" onchange="draw(); triggerAutoSave();" style="width:40px;"> <span style="font-size:11px;">pt</span>
                 </div>
-                <div class="row">
-                    <label style="font-size:12px; width:75px;">적용 폰트:</label>
-                    <select id="globalFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:12px;">
-                        <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
-                    </select>
-                    <label style="font-size:12px; display:flex; align-items:center; margin-left:5px; white-space:nowrap;">폰트 크기: 
-                        <input type="number" id="gFontSize" value="60" onchange="draw(); triggerAutoSave();" style="width:40px; margin-left:4px;"> <span style="font-size:11px; margin-left:2px;">pt</span>
-                    </label>
+                <div class="row" style="font-size:11px; gap:8px;">
+                    <label><input type="checkbox" id="gVertical" onchange="draw(); triggerAutoSave();">세로쓰기</label>
+                    <label><input type="checkbox" id="gShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
+                    <label><input type="checkbox" id="gStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
+                    <div class="color-combo"><input type="color" id="gStrokeColor" value="#000000" oninput="$('gStrokeHex').value=this.value; draw(); triggerAutoSave();"><input type="text" id="gStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){$('gStrokeColor').value=this.value; draw(); triggerAutoSave();}"></div>
                 </div>
-                
-                <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
-                    <label class="fx-label"><input type="checkbox" id="gVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
-                    <label class="fx-label"><input type="checkbox" id="gBold" onchange="draw(); triggerAutoSave();">굵게</label>
-                    <label class="fx-label"><input type="checkbox" id="gItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
-                    <label class="fx-label"><input type="checkbox" id="gShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
-                    <label class="fx-label"><input type="checkbox" id="gStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
-                    <div class="color-combo" title="테두리 색상"><input type="color" id="gStrokeColor" value="#000000" oninput="$('gStrokeHex').value=this.value; draw(); triggerAutoSave();"><input type="text" id="gStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gStrokeColor').value=this.value; draw(); triggerAutoSave(); }"></div>
-                    <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="gStrokeWidth" value="3" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
-                </div>
-            </div>
-
-            <div class="control-group" style="border-bottom:none; padding-bottom:0; flex:1; display:flex; flex-direction:column;">
-                <h3>5. 독립 레이어 (자동 정렬 무시)</h3>
-                <div class="hint-box" style="margin-top:0; margin-bottom:10px; padding:10px; border-color:#d0e2ff; background:#f4f9ff;">
-                    배경, 로고, 이펙트 등 메인 정렬에 구애받지 않을 이미지를 추가하세요.
-                </div>
-                <div class="row">
-                    <button class="btn" onclick="addExtraText()" style="border-color:#0055FF; color:#0055FF;">+ 타이포 추가</button>
-                    <label class="btn" style="margin:0; border-color:#0055FF; color:#0055FF; display:flex; justify-content:center; align-items:center; cursor:pointer;">
-                        + 이미지 추가 <input type="file" id="extraImageInput" multiple accept="image/*" style="display:none;">
-                    </label>
-                </div>
-                <div id="extraLayerList" class="layer-list" style="margin-top:5px; flex:1;"></div>
             </div>
         </div>
 
         <div class="control-panel">
-            
-            <div class="control-group" style="flex:1; display:flex; flex-direction:column;">
-                <h3>6. 애니메이션 종료 후 이미지 변경</h3>
-                <div class="hint-box" style="margin-top:0; margin-bottom:10px; padding:10px; border-color:#ffcdcc; background:#fff4f4;"> 
-                    메인 애니메이션(이동/크기)이 완료된 후, <b>각 이미지의 위치는 고정된 상태에서 표정이나 의상이 변하는 효과</b>를 줍니다.
+            <div class="control-group">
+                <h3>5. 독립 레이어</h3>
+                <div class="row">
+                    <button class="btn" onclick="addExtraText()" style="border-color:#0055FF; color:#0055FF;">+ 타이포</button>
+                    <button class="btn" onclick="$('extraImageInput').click()" style="border-color:#0055FF; color:#0055FF;">+ 이미지</button>
+                    <input type="file" id="extraImageInput" multiple accept="image/*" style="display:none;">
                 </div>
-                <div id="postLayerList" class="layer-list" style="flex:1;"></div>
+                <div id="extraLayerList" class="layer-list" style="margin-top:5px;"></div>
+            </div>
+
+            <div class="control-group" style="flex:1;">
+                <h3>6. 애니메이션 종료 후 이미지 변경</h3>
+                <div class="row" style="background:#f0f7ff; padding:8px; border-radius:4px; font-size:11px; justify-content:center; gap:10px;">
+                    <label><input type="radio" name="effectOrder" value="postFirst" checked onchange="draw(); triggerAutoSave();"> 표정먼저</label>
+                    <label><input type="radio" name="effectOrder" value="endFirst" onchange="draw(); triggerAutoSave();"> 엔딩먼저</label>
+                </div>
+                <div id="postLayerList" class="layer-list" style="max-height: 250px;"></div>
             </div>
 
             <div class="control-group">
                 <h3>7. 시네마틱 엔딩 연출</h3>
-                <div class="row" style="background:#fff4f4; padding:10px; border-radius:4px; border:1px solid #ffcdcc; margin-bottom:10px;">
-                    <label style="font-weight:bold; color:#e60000; font-size:13px; display:flex; align-items:center; cursor:pointer;">
-                        <input type="checkbox" id="endActive" onchange="toggleEndingUI(); draw(); triggerAutoSave();"> 🎬 표정 변경 이후, 엔딩 효과 켜기
-                    </label>
+                <div class="row" style="background:#fff4f4; padding:8px; border-radius:4px; border:1px solid #ffcdcc;">
+                    <label style="font-weight:bold; color:#e60000; font-size:12px;"><input type="checkbox" id="endActive" onchange="toggleEndingUI(); draw(); triggerAutoSave();"> 🎬 엔딩 효과 켜기</label>
                 </div>
-                
-                <div id="endingOptions" style="display:none; background:#fff; padding:12px; border-radius:4px; border:1px solid #E8D8C8;">
-                    <div class="row" style="margin-bottom:8px;">
-                        <label style="width:110px; font-size:12px; font-weight:bold; color:#e60000;">기존 화면 투명도:</label>
-                        <input type="number" id="endOpacity" value="30" onchange="draw(); triggerAutoSave();" style="width:45px;"> <span style="font-size:12px; margin-left:3px;">% 까지 낮춤</span>
+                <div id="endingOptions" style="display:none; margin-top:8px;">
+                    <div class="row" style="font-size:11px;">
+                        투명도 <input type="number" id="endOpacity" value="30" onchange="draw(); triggerAutoSave();" style="width:35px;">%
+                        효과 <select id="endEffect" onchange="draw(); triggerAutoSave();" style="flex:1;"><option value="slam">쾅하고 꽂히기</option><option value="fade">페이드인</option><option value="shake">흔들림</option><option value="split">중앙 가르기</option><option value="flash_appear">번쩍 등장</option></select>
                     </div>
-                    <div class="row" style="margin-bottom:8px;">
-                        <label style="width:110px; font-size:12px; font-weight:bold; color:#e60000;">엔딩 등장 효과:</label>
-                        <select id="endEffect" onchange="draw(); triggerAutoSave();" style="flex:1;">
-                            <option value="slam">쾅하고 꽂히기</option><option value="fade">페이드인</option><option value="shake">화면 강하게 흔들림</option><option value="split">기존 이미지 중앙 가르고 등장</option><option value="flash_appear">번쩍하고 등장 (새하얀 섬광)</option>
-                        </select>
-                    </div>
-                    
-                    <hr style="border:0; border-top:1px dashed #ccc; margin:12px 0;">
-                    
                     <div class="row">
-                        <button class="btn" onclick="addEndText()" style="border-color:#e60000; color:#e60000;">+ 엔딩 타이포 추가</button>
-                        <label class="btn" style="margin:0; border-color:#e60000; color:#e60000; display:flex; justify-content:center; align-items:center; cursor:pointer;">
-                            + 엔딩 이미지 추가 <input type="file" id="endImageInput" multiple accept="image/*" style="display:none;">
-                        </label>
+                        <button class="btn" onclick="addEndText()" style="font-size:10px;">+ 텍스트</button>
+                        <button class="btn" onclick="$('endImageInput').click()" style="font-size:10px;">+ 이미지</button>
+                        <button class="btn hl" onclick="actEnd('center')" style="font-size:10px;">🎯 중앙정렬</button>
+                        <input type="file" id="endImageInput" multiple accept="image/*" style="display:none;">
                     </div>
-                    <div class="row" style="margin-top:5px;"><button class="btn hl" style="background:#ffebe6; color:#e60000; border-color:#ffcdcc;" onclick="actEnd('center')">🎯 엔딩 요소 중앙 정렬</button></div>
-                    
-                    <div id="endLayerList" class="layer-list" style="margin-top:8px; max-height: 150px;"></div>
-
-                    <div style="margin-top:10px; background:#f9f9f9; padding:8px; border-radius:4px; border:1px solid #ddd;">
-                        <div style="font-size:11px; font-weight:bold; color:#555; margin-bottom:5px;">▼ 엔딩 타이포 공통 설정</div>
-                        <div class="row">
-                            <label style="font-size:11px; width:65px;">타이핑 속도:</label>
-                            <select id="endTypeSpeed" onchange="$('endCustomTypeSpeedWrapper').style.display=this.value==='custom'?'flex':'none'; draw(); triggerAutoSave();" style="flex:1; font-size:11px;">
-                                <option value="0">타이핑 없음 (즉시 등장)</option><option value="50">빠르게</option><option value="100" selected>기본</option><option value="200">느리게</option><option value="custom">직접 조정</option>
-                            </select>
-                            <div id="endCustomTypeSpeedWrapper" style="display:none; align-items:center; margin-left:4px;">
-                                <input type="number" id="endCustomTypeSpeed" value="100" onchange="draw(); triggerAutoSave();" style="width:40px; font-size:11px; height:22px; border:1px solid #ccc; border-radius:3px;"><span style="font-size:10px; margin-left:2px;">ms</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label style="font-size:11px; width:65px;">적용 폰트:</label>
-                            <select id="endFont" onchange="draw(); triggerAutoSave();" style="flex:1; font-size:11px;">
-                                <option value="Black Han Sans" selected>블랙한산스</option><option value="Jua">주아체</option><option value="Nanum Myeongjo">나눔명조</option><option value="Malgun Gothic">기본고딕</option>
-                            </select>
-                        </div>
-                        <div class="row" style="font-size:11px; gap: 6px; flex-wrap: wrap; margin-top: 5px;">
-                            <label class="fx-label"><input type="checkbox" id="endVertical" onchange="draw(); triggerAutoSave();">세로 쓰기</label>
-                            <label class="fx-label"><input type="checkbox" id="endBold" onchange="draw(); triggerAutoSave();">굵게</label>
-                            <label class="fx-label"><input type="checkbox" id="endItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
-                            <label class="fx-label"><input type="checkbox" id="endShadow" checked onchange="draw(); triggerAutoSave();">그림자</label>
-                            <label class="fx-label"><input type="checkbox" id="endStroke" checked onchange="draw(); triggerAutoSave();">테두리</label>
-                            
-                            <div class="color-combo" title="테두리 색상">
-                                <input type="color" id="endStrokeColor" value="#000000" oninput="$('endStrokeHex').value=this.value; draw(); triggerAutoSave();">
-                                <input type="text" id="endStrokeHex" value="#000000" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('endStrokeColor').value=this.value; draw(); triggerAutoSave(); }">
-                            </div>
-                            <label class="fx-label" style="margin-left:auto;">굵기:<input type="number" id="endStrokeWidth" value="4" onchange="draw(); triggerAutoSave();" style="width:28px; margin-left:2px; height:22px; border:1px solid #ccc; border-radius:3px;"></label>
-                        </div>
+                    <div id="endLayerList" class="layer-list" style="margin-top:5px;"></div>
+                    <div style="background:#f9f9f9; padding:8px; border:1px solid #eee; margin-top:5px; font-size:11px;">
+                        타이핑 <select id="endTypeSpeed" onchange="draw(); triggerAutoSave();" style="font-size:10px;"><option value="0" selected>없음</option><option value="50">빠름</option><option value="100">기본</option></select>
+                        폰트 <select id="endFont" onchange="draw(); triggerAutoSave();" style="font-size:10px; width:70px;"><option value="Black Han Sans">블랙한산스</option></select>
+                        <label><input type="checkbox" id="endVertical" onchange="draw(); triggerAutoSave();">세로</label>
+                        <label><input type="checkbox" id="endItalic" checked onchange="draw(); triggerAutoSave();">기울임</label>
                     </div>
                 </div>
             </div>
 
-            <div class="control-group" style="border-bottom:none; padding-bottom:0;">
+            <div class="control-group" style="border-bottom:none;">
                 <h3>8. 출력 파일 형식</h3>
-                <div class="row" style="flex-wrap: nowrap; gap: 8px;">
-                    <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0;">
-                        <option value="apng" selected>APNG(코코포리아 최적화)</option><option value="gif">GIF</option><option value="mp4">MP4 (원본 화질)</option>
-                    </select>
-                    
-                    <div id="bgOptionWrapper" style="display:none; align-items:center; gap:8px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
-                        <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
-                            <div class="color-combo">
-                                <input type="color" id="gifBgColor" value="#ffffff" oninput="$('gifBgHex').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave();" title="배경 색상">
-                                <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
-                            </div>
-                        </div>
-                        <div id="transCheckWrapper" style="display:flex; align-items:center;"><label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label></div>
-                        <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;"><input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">코코포</label>
-                    </div>
+                <div class="row">
+                    <select id="quality" style="flex:1;" onchange="triggerAutoSave();"><option value="apng">APNG (코코포리아)</option><option value="gif">GIF (투명)</option><option value="mp4">MP4 (고화질)</option></select>
                 </div>
-                
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button id="previewBtn" class="action-btn" style="flex:1;">▶ 애니메이션 재생</button>
-                    <button id="generateBtn" class="action-btn" style="flex:1;">🎬 파일 다운로드</button>
-                </div>
+                <div style="display:flex; gap:5px;"><button id="previewBtn" class="action-btn" style="flex:1;">▶ 재생</button><button id="generateBtn" class="action-btn" style="flex:1;">🎬 저장</button></div>
             </div>
         </div>
     </div>
 
     <script>
         const $ = id => document.getElementById(id);
-        const canvasEl = $('canvas');
-        const ctx = canvasEl.getContext('2d', { willReadFrequently: true });
+        const canvasEl = $('canvas'), ctx = canvasEl.getContext('2d', { willReadFrequently: true });
+        const offCanvas = document.createElement('canvas'), offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
         
         let layers = [], extraLayers = [], endLayers = [], customFonts = [];
-        let sel = -1, selExtra = -1, selEnd = -1;
-        let isDrag = false, dragType = '', isPlay = false;
-        let offX = 0, offY = 0, textRelX = 0, textRelY = 0;
-        let W = 600, H = 800;
-        let gifWorkerUrl = null; 
-        
+        let sel = -1, selExtra = -1, selEnd = -1, isDrag = false, dragType = '', isPlay = false;
+        let offX = 0, offY = 0, textRelX = 0, textRelY = 0, W = 600, H = 800;
         const ease = t => 1 - Math.pow(1 - t, 3);
-        
-        window.toggleAdvAlign = (span) => { const wrap = $('advAlignWrapper'); if(wrap.style.display === 'none') { wrap.style.display = 'block'; span.innerText = '상세 조절 접기 ▲'; } else { wrap.style.display = 'none'; span.innerText = '상세 조절 펼치기 ▼'; } };
-        window.toggleEndingUI = () => { $('endingOptions').style.display = $('endActive').checked ? 'block' : 'none'; };
-        window.toggleCustomSpeed = () => $('customSpeedWrapper').style.display = $('animSpeed').value === 'custom' ? 'flex' : 'none';
-        window.toggleCustomTypeSpeed = () => $('customTypeSpeedWrapper').style.display = $('typeSpeed').value === 'custom' ? 'flex' : 'none';
-        window.toggleBgColor = () => { const v = $('quality').value, wrap = $('bgOptionWrapper'), transOpt = $('transCheckWrapper'); if (v === 'gif') { wrap.style.display = 'flex'; transOpt.style.display = 'flex'; } else if (v === 'mp4') { wrap.style.display = 'flex'; transOpt.style.display = 'none'; $('gifTransparentCheck').checked = false; toggleTrans(); } else { wrap.style.display = 'none'; } };
-        window.toggleTrans = () => { const isTrans = $('gifTransparentCheck').checked; $('gifBgColor').disabled = isTrans; $('gifBgHex').disabled = isTrans; $('ccfoliaBgCheck').disabled = isTrans; $('colorComboWrapper').style.opacity = isTrans ? '0.4' : '1'; $('colorComboWrapper').style.pointerEvents = isTrans ? 'none' : 'auto'; draw(); triggerAutoSave(); };
 
-        const getDuration = () => $('animSpeed').value === 'custom' ? (parseInt($('customSpeed').value) || 2000) : parseInt($('animSpeed').value);
-        const getTypeSpeedMs = () => $('typeSpeed').value === 'custom' ? (parseInt($('customTypeSpeed').value) || 100) : parseInt($('typeSpeed').value);
-        const getEndTypeSpeedMs = () => $('endTypeSpeed').value === 'custom' ? (parseInt($('endCustomTypeSpeed').value) || 100) : parseInt($('endTypeSpeed').value);
-        
-        const getFontStr = (sz) => `${$('gItalic').checked ? 'italic ' : ''}${$('gBold').checked ? 'bold ' : ''}${sz || parseInt($('gFontSize').value) || 60}px "${$('globalFont').value}"`;
-        const getEndFontStr = (sz) => `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${sz || parseInt($('endFontSize').value) || 60}px "${$('endFont').value}"`;
+        // --- 렌더링 시스템 ---
+        function renderFrame(c, t) {
+            const dur = 2000, postDur = 1000, endDur = 2000;
+            const isEndActive = $('endActive').checked;
+            const order = document.querySelector('input[name="effectOrder"]:checked').value;
+            const endOp = parseInt($('endOpacity').value) / 100;
 
-        const getTextBounds = (text, fSize, isEndPhaseCheck) => {
-            if (!text) return { w: 0, h: 0 };
-            ctx.font = isEndPhaseCheck ? getEndFontStr(fSize) : getFontStr(fSize);
-            let isVert = isEndPhaseCheck ? $('endVertical').checked : $('gVertical').checked;
-            if (isVert) {
-                let w = 0, chars = text.split(''); chars.forEach(c => w = Math.max(w, ctx.measureText(c).width));
-                let h = 0; chars.forEach(c => { h += (c === ' ') ? (fSize * 0.5) : (fSize * 1.05); }); 
-                return { w: w + 4, h: h + 4 };
-            } else return { w: ctx.measureText(text).width + 4, h: fSize + 10 };
-        };
+            let endPhase = false, endAlpha = 1.0, splitP = 0, flashA = 0;
+            let postPhase = false, postP = 0;
 
-        const getExtraLayerBounds = (el, c) => {
-            if (el.type === 'image' && el.img) return { w: el.img.width * el.scale, h: el.img.height * el.scale };
-            c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`;
-            return { w: c.measureText(el.content).width, h: el.fontSize * 1.1 };
-        };
-
-        window.resizeCanvas = () => { W = parseInt($('canvasW').value) || 600; H = parseInt($('canvasH').value) || 800; canvasEl.width = W; canvasEl.height = H; draw(); triggerAutoSave(); };
-
-        function getTransformHit(x, y, targetX, targetY, w, h, angle) {
-            let cx = targetX + w/2, cy = targetY + h/2, dx = x - cx, dy = y - cy;
-            let localX = dx * Math.cos(-angle) - dy * Math.sin(-angle), localY = dx * Math.sin(-angle) + dy * Math.cos(-angle);
-            let isRot = localX >= -12 && localX <= 12 && localY >= -h/2 - 40 && localY <= -h/2 - 15;
-            let isRes = localX >= w/2 - 15 && localX <= w/2 + 5 && localY >= h/2 - 15 && localY <= h/2 + 5;
-            let isInside = localX >= -w/2 && localX <= w/2 && localY >= -h/2 && localY <= h/2;
-            return { isInside, isRes, isRot, cx, cy };
-        }
-
-        // --- Database ---
-        const localDB = {
-            db: null,
-            init() { return new Promise((res, rej) => { const req = indexedDB.open('CCfoliaCutinDB_AdvPRO_Final2', 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('data')) e.target.result.createObjectStore('data'); }; req.onsuccess = e => { this.db = e.target.result; res(); }; req.onerror = rej; }); },
-            set(key, val) { return new Promise((res) => { if (!this.db) return res(); const tx = this.db.transaction('data', 'readwrite'); tx.objectStore('data').put(val, key); tx.oncomplete = res; }); },
-            get(key) { return new Promise((res) => { if (!this.db) return res(null); const tx = this.db.transaction('data', 'readonly'); const req = tx.objectStore('data').get(key); req.onsuccess = () => res(req.result); req.onerror = () => res(null); }); }
-        };
-
-        let autoSaveTimer;
-        window.triggerAutoSave = () => {
-            if(isPlay) return; clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(async () => { try { await localDB.set('ccfolia_cutin_backup', JSON.stringify(getProjectData())); const st = $('autoSaveStatus'); if (st) { st.innerText = "✓ 방금 전 저장됨"; setTimeout(() => { if (st.innerText === "✓ 방금 전 저장됨") st.innerText = ""; }, 2500); } } catch(e) {} }, 1000);
-        };
-
-        const getProjectData = () => ({
-            layers: layers.map(l => ({ src: l.src, name: l.name, anim: l.anim, scale: l.scale, rotation: l.rotation, x: l.x, y: l.y, text: l.text, textRot: l.textRot, colors: l.colors, textX: l.textX, textY: l.textY, postSrc: l.postSrc, postEffect: l.postEffect })),
-            extraLayers: extraLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, anim: el.anim, animSpeed: el.animSpeed, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, content: el.content, fontSize: el.fontSize, color: el.color })),
-            endLayers: endLayers.map(el => ({ type: el.type, src: el.img ? el.src : null, name: el.name, scale: el.scale, rotation: el.rotation, x: el.x, y: el.y, text: el.text, fontSize: el.fontSize, colors: el.colors })),
-            settings: { 
-                gap: $('gap').value, zigzagOffset: $('zigzagOffset').value, globalFont: $('globalFont').value, gFontSize: $('gFontSize').value, gBold: $('gBold').checked, gItalic: $('gItalic').checked, gShadow: $('gShadow').checked, gStroke: $('gStroke').checked, gStrokeColor: $('gStrokeColor').value, gStrokeHex: $('gStrokeHex').value, gStrokeWidth: $('gStrokeWidth').value, gVertical: $('gVertical').checked, typeSpeed: $('typeSpeed').value, customTypeSpeed: $('customTypeSpeed').value, animSpeed: $('animSpeed').value, customSpeed: $('customSpeed').value, globalEffect: $('globalEffect').value, quality: $('quality').value, gifTransparentCheck: $('gifTransparentCheck').checked, gifBgColor: $('gifBgColor').value, gifBgHex: $('gifBgHex').value, ccfoliaBgCheck: $('ccfoliaBgCheck').checked, canvasW: W, canvasH: H,
-                endActive: $('endActive').checked, endOpacity: $('endOpacity').value, endEffect: $('endEffect').value, endTypeSpeed: $('endTypeSpeed').value, endCustomTypeSpeed: $('endCustomTypeSpeed').value, endVertical: $('endVertical').checked, endBold: $('endBold').checked, endItalic: $('endItalic').checked, endShadow: $('endShadow').checked, endStroke: $('endStroke').checked, endStrokeColor: $('endStrokeColor').value, endStrokeHex: $('endStrokeHex').value, endStrokeWidth: $('endStrokeWidth').value, endFont: $('endFont').value
-            }
-        });
-
-        const restoreProjectData = (data) => {
-            const s = data.settings;
-            if(s) {
-                ['gap', 'zigzagOffset', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
-                ['gBold', 'gItalic', 'gShadow', 'gStroke', 'gVertical', 'gifTransparentCheck', 'ccfoliaBgCheck', 'endActive', 'endVertical', 'endBold', 'endItalic', 'endShadow', 'endStroke'].forEach(id => { if(s[id]!==undefined) $(id).checked = !!s[id]; });
-                ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endStrokeColor', 'endStrokeHex'].forEach(id => { if(s[id]!==undefined) $(id).value = s[id]; });
-                
-                if (s.globalFont && !Array.from($('globalFont').options).some(opt => opt.value === s.globalFont)) { const opt = document.createElement('option'); opt.value = opt.text = s.globalFont; $('globalFont').appendChild(opt); customFonts.push(s.globalFont); }
-                $('globalFont').value = s.globalFont || 'Black Han Sans';
-                if (s.endFont && !Array.from($('endFont').options).some(opt => opt.value === s.endFont)) { const opt = document.createElement('option'); opt.value = opt.text = s.endFont; $('endFont').appendChild(opt); }
-                $('endFont').value = s.endFont || 'Black Han Sans';
-                W = canvasEl.width = s.canvasW || 600; H = canvasEl.height = s.canvasH || 800; $('canvasW').value = W; $('canvasH').value = H;
-
-                $('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none'; $('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none'; $('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
-                toggleBgColor(); toggleTrans(); toggleEndingUI();
-            }
-
-            layers = []; extraLayers = []; endLayers = []; let loadedCount = 0; 
-            let totalToLoad = (data.layers?data.layers.length*2:0) + (data.extraLayers?data.extraLayers.length:0) + (data.endLayers?data.endLayers.length:0);
-            const checkDone = () => { if(++loadedCount >= totalToLoad) { updateUI(-1); updateExtraUI(-1); updateEndUI(-1); updatePostUI(); draw(); } };
-            if(totalToLoad === 0) { updateUI(); updateExtraUI(); updateEndUI(); updatePostUI(); draw(); return; }
-
-            if(data.layers) data.layers.forEach((lData, idx) => {
-                const img = new Image(); img.onload = () => { layers[idx] = { ...layers[idx], ...lData, img: img }; if(!layers[idx].rotation) layers[idx].rotation = 0; if(!layers[idx].textRot) layers[idx].textRot = 0; checkDone(); }; img.src = lData.src;
-                if(lData.postSrc) { const pImg = new Image(); pImg.onload = () => { layers[idx] = { ...layers[idx], postImg: pImg }; checkDone(); }; pImg.src = lData.postSrc; } else { checkDone(); }
-            });
-            if(data.extraLayers) data.extraLayers.forEach((elData, idx) => {
-                if (elData.type === 'image' && elData.src) { const img = new Image(); img.onload = () => { extraLayers[idx] = { ...elData, img: img }; if(!extraLayers[idx].rotation) extraLayers[idx].rotation=0; checkDone(); }; img.src = elData.src; } 
-                else { extraLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
-            });
-            if(data.endLayers) data.endLayers.forEach((elData, idx) => {
-                if (elData.type === 'image' && elData.src) { const img = new Image(); img.onload = () => { endLayers[idx] = { ...elData, img: img }; if(!endLayers[idx].rotation) endLayers[idx].rotation=0; checkDone(); }; img.src = elData.src; } 
-                else { endLayers[idx] = { ...elData, rotation: elData.rotation||0 }; checkDone(); }
-            });
-        };
-
-        window.saveProjectFile = () => { let fn = prompt("저장할 프로젝트 파일명:", "FebCryptbound_fight_PRO")?.trim(); if (!fn) return; if (!fn.endsWith('.json')) fn += '.json'; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getProjectData())], { type: "application/json" })); a.download = fn; a.click(); };
-        window.loadProjectFile = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { try { restoreProjectData(JSON.parse(ev.target.result)); } catch(err) { alert("파일 오류"); } }; reader.readAsText(file); e.target.value = ''; };
-
-        // --- 엔딩 다중 레이어 제어 ---
-        window.addEndText = () => {
-            let fSize = 120; ctx.font = `${$('endItalic').checked ? 'italic ' : ''}${$('endBold').checked ? 'bold ' : ''}${fSize}px "${$('endFont').value}"`; let w = ctx.measureText('전투 발생').width, h = fSize * 1.1;
-            endLayers.push({ type: 'text', text: '전투 발생', name: '엔딩 텍스트', scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, colors: ['#ffffff','#ffffff','#ffffff','#ffffff','#ffffff'] });
-            updateEndUI(endLayers.length - 1); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
-        };
-        $('endImageInput').onchange = e => {
-            Array.from(e.target.files).forEach(file => { const r = new FileReader();
-                r.onload = ev => { const img = new Image(); img.onload = () => {
-                        let sc = 0.5, w = img.width * sc, h = img.height * sc;
-                        endLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
-                        updateEndUI(endLayers.length - 1); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
-                    }; img.src = ev.target.result;
-                }; r.readAsDataURL(file);
-            }); e.target.value = '';
-        };
-
-        const updateEndUI = (idx = selEnd) => {
-            if(idx !== -1) { selEnd = idx; sel = -1; selExtra = -1; updateUI(-1); updateExtraUI(-1); }
-            const list = $('endLayerList'); list.innerHTML = endLayers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">엔딩 요소가 없습니다.</p>';
-            for (let i = endLayers.length - 1; i >= 0; i--) {
-                const el = endLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selEnd ? 'active' : ''}`;
-                let controls = '';
-                if(el.type === 'text') {
-                    const chars = el.text.split(''); while(el.colors.length < chars.length) el.colors.push('#ffffff');
-                    let cPicker = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${el.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; endLayers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
-                    controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.text}" oninput="endLayers[${i}].text=this.value; updateEndUI(${i}); draw(); triggerAutoSave();" style="flex:1;"><label style="font-size:11px; margin-left:5px;">크기:</label><input type="number" value="${el.fontSize}" onchange="endLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:2px;"><span style="font-size:10px; margin-left:2px;">pt</span></div>${cPicker}`;
-                } else { controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="endLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`; }
-                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i+1}]; endLayers[${i+1}]=tmp; updateEndUI(${i===selEnd?i+1:selEnd}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=endLayers[${i}]; endLayers[${i}]=endLayers[${i-1}]; endLayers[${i-1}]=tmp; updateEndUI(${i===selEnd?i-1:selEnd}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="endLayers.splice(${i},1); updateEndUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>${controls}`;
-                div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateEndUI(i); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); } };
-                list.appendChild(div);
-            }
-        };
-
-        window.actEnd = (type) => {
-            if (!endLayers.length) return;
-            if (type === 'center') {
-                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-                endLayers.forEach(el => {
-                    let w = 0, h = 0; if(el.type==='image') { w = el.img.width*el.scale; h = el.img.height*el.scale; } else { let b = getTextBounds(el.text, el.fontSize, true); w = b.w; h = b.h; }
-                    minX = Math.min(minX, el.x); minY = Math.min(minY, el.y); maxX = Math.max(maxX, el.x + w); maxY = Math.max(maxY, el.y + h);
-                });
-                if(minX === Infinity) return;
-                let cx = (minX + maxX)/2, cy = (minY + maxY)/2, dx = W/2 - cx, dy = H/2 - cy;
-                endLayers.forEach(el => { el.x += dx; el.y += dy; }); document.querySelector('input[name="previewState"][value="ending"]').checked = true; draw(); triggerAutoSave();
-            }
-        };
-
-        // --- 독립 추가 레이어 ---
-        window.addExtraText = () => {
-            let fSize = 40; ctx.font = `bold ${fSize}px "${$('globalFont').value}"`; let w = ctx.measureText('추가 타이포').width, h = fSize * 1.1;
-            extraLayers.push({ type: 'text', content: '추가 타이포', name: '타이포', anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, color: '#ffffff' });
-            updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
-        };
-        $('extraImageInput').onchange = e => {
-            Array.from(e.target.files).forEach(file => { const r = new FileReader();
-                r.onload = ev => { const img = new Image(); img.onload = () => {
-                        let sc = 0.5; let w = img.width * sc, h = img.height * sc;
-                        extraLayers.push({ type: 'image', img: img, src: ev.target.result, name: file.name, anim: 'fade', animSpeed: 1000, scale: sc, rotation: 0, x: W/2 - w/2, y: H/2 - h/2 });
-                        updateExtraUI(extraLayers.length - 1); draw(); triggerAutoSave();
-                    }; img.src = ev.target.result;
-                }; r.readAsDataURL(file);
-            }); e.target.value = '';
-        };
-
-        const updateExtraUI = (idx = selExtra) => {
-            if(idx !== -1) { selExtra = idx; sel = -1; selEnd = -1; updateUI(-1); updateEndUI(-1); }
-            const list = $('extraLayerList'); list.innerHTML = extraLayers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">독립 요소가 없습니다.</p>';
-            for (let i = extraLayers.length - 1; i >= 0; i--) {
-                const el = extraLayers[i], div = document.createElement('div'); div.className = `layer-item ${i === selExtra ? 'active' : ''}`;
-                let controls = '';
-                if(el.type === 'text') {
-                    controls = `<div class="row" style="margin-top:5px;"><input type="text" value="${el.content}" oninput="extraLayers[${i}].content=this.value; draw(); triggerAutoSave();" style="flex:1;"><div class="color-combo" style="margin-left:3px;"><input type="color" value="${el.color}" oninput="this.nextElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();"><input type="text" value="${el.color}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; extraLayers[${i}].color=this.value; draw(); triggerAutoSave();}"></div><input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); draw(); triggerAutoSave();" style="width:40px; margin-left:3px;"><span style="font-size:10px; margin-left:2px;">pt</span></div>`;
+            if (isEndActive && t > dur) {
+                let currentT = t - dur;
+                if (order === 'postFirst') {
+                    if (currentT < postDur) { postPhase = true; postP = currentT / postDur; }
+                    else { postPhase = true; postP = 1; endPhase = true; let et = currentT - postDur; endAlpha = 1 - (ease(Math.min(1, et/500)) * (1-endOp)); if ($('endEffect').value === 'split') splitP = ease(Math.min(1, et/endDur)); if ($('endEffect').value === 'flash_appear') flashA = Math.max(0, 1 - (et/500)); }
                 } else {
-                    controls = `<div class="row" style="margin-top:5px; justify-content:flex-end;"><label style="font-size:11px;">크기 비율:</label><input type="number" step="0.05" value="${el.scale}" onchange="extraLayers[${i}].scale=parseFloat(this.value); draw(); triggerAutoSave();" style="width:50px; margin-left:5px;"></div>`;
+                    if (currentT < endDur) { endPhase = true; let et = currentT; endAlpha = 1 - (ease(Math.min(1, et/500)) * (1-endOp)); if ($('endEffect').value === 'split') splitP = ease(Math.min(1, et/endDur)); if ($('endEffect').value === 'flash_appear') flashA = Math.max(0, 1 - (et/500)); }
+                    else { endPhase = true; endAlpha = endOp; splitP = ($('endEffect').value === 'split')? 1 : 0; let pt = currentT - endDur; postPhase = true; postP = Math.min(1, pt / postDur); }
                 }
-                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:12px;"><div style="display:flex; align-items:center; gap:8px;"><span>${el.type==='text'?'📝':'🖼️'}</span><span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${el.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i+1}]; extraLayers[${i+1}]=tmp; updateExtraUI(${i===selExtra?i+1:selExtra}); draw(); event.stopPropagation();">▲</button><button class="l-btn" onclick="let tmp=extraLayers[${i}]; extraLayers[${i}]=extraLayers[${i-1}]; extraLayers[${i-1}]=tmp; updateExtraUI(${i===selExtra?i-1:selExtra}); draw(); event.stopPropagation();">▼</button><button class="l-btn del" onclick="extraLayers.splice(${i},1); updateExtraUI(-1); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
-                    <div class="row" style="margin-top:5px; background:#f0f0f0; padding:4px; border-radius:4px;"><label style="font-size:11px; margin-right:3px;">효과:</label><select onchange="extraLayers[${i}].anim=this.value; draw(); triggerAutoSave();" style="flex:1; font-size:11px; padding:4px;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대', 'rotateIn:💫 회전하며 등장', 'blink:✨ 계속 반짝임'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${el.anim===v?'selected':''}>${t}</option>`; }).join('')}</select><input type="number" value="${el.animSpeed||1000}" onchange="extraLayers[${i}].animSpeed=parseInt(this.value); draw(); triggerAutoSave();" style="width:45px; margin-left:3px; padding:4px; font-size:11px;"> <span style="font-size:11px;">ms</span></div>${controls}`;
-                div.onclick = e => { if(!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateExtraUI(i); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); } };
-                list.appendChild(div);
+            } else if (!isEndActive && t > dur) {
+                postPhase = true; postP = Math.min(1, (t-dur)/postDur);
             }
-        };
 
-        // --- 메인 레이어 ---
-        const updateUI = (idx = sel) => {
-            if(idx !== -1) { sel = idx; selExtra = -1; selEnd = -1; updateExtraUI(-1); updateEndUI(-1); }
-            const list = $('layerList'); list.innerHTML = layers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하세요.</p>';
-            for (let i = layers.length - 1; i >= 0; i--) {
-                const l = layers[i], div = document.createElement('div'); div.className = `layer-item ${i === sel ? 'active' : ''}`; div.draggable = true;
-                div.onclick = e => { if (!['SELECT','BUTTON','INPUT'].includes(e.target.tagName) && !e.target.closest('.color-combo')) { updateUI(i); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); } };
-                div.ondragstart = e => { e.dataTransfer.setData('idx', i); setTimeout(() => div.style.opacity = '0.5', 0); }; div.ondragend = () => div.style.opacity = '1'; div.ondragover = e => { e.preventDefault(); div.classList.add('drag-over'); }; div.ondragleave = () => div.classList.remove('drag-over');
-                div.ondrop = e => { e.preventDefault(); div.classList.remove('drag-over'); const from = parseInt(e.dataTransfer.getData('idx')); if (from !== i && !isNaN(from)) { const activeL = layers[sel]; layers.splice(i, 0, layers.splice(from, 1)[0]); updateUI(layers.indexOf(activeL)); updatePostUI(); triggerAutoSave(); } };
+            c.clearRect(0, 0, W, H);
+            c.imageSmoothingQuality = "high";
 
-                let colorPickersHTML = '';
-                if(l.text) {
-                    const chars = l.text.split(''); while(l.colors.length < chars.length) l.colors.push('#ffffff');
-                    colorPickersHTML = `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; padding-top:5px; border-top:1px dashed #E8D8C8;">${chars.map((ch, cIdx) => ch === ' ' ? '' : `<div class="char-color-box"><span>${ch}</span><div class="color-combo"><input type="color" value="${l.colors[cIdx]}" oninput="this.nextElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();"><input type="text" value="${l.colors[cIdx]}" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)){this.previousElementSibling.value=this.value; layers[${i}].colors[${cIdx}]=this.value; draw(); triggerAutoSave();}"></div></div>`).join('')}</div>`;
-                }
+            let isHoriz = false;
+            if (layers.length > 1) { let hc = 0; layers.forEach(l => { if(l.img && l.img.width*l.scale > l.img.height*l.scale) hc++; }); isHoriz = hc >= (layers.length/2); }
 
-                div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-weight:bold; font-size:13px;"><div style="display:flex; align-items:center; gap:8px;"><img src="${l.src}" class="thumb"> <span style="max-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.name}</span></div><div style="display:flex; gap:3px;"><button class="l-btn del" onclick="layers.splice(${i},1); updateUI(-1); updatePostUI(); draw(); triggerAutoSave(); event.stopPropagation();">삭제</button></div></div>
-                    <div class="row"><select onchange="layers[${i}].anim=this.value; updateUI(${i}); triggerAutoSave();" style="flex:1;">${['fade:페이드인', 'slideLeft:⬅️ 왼 슬라이드', 'slideRight:➡️ 오른 슬라이드', 'slideUp:⬆️ 아래 슬라이드', 'slideDown:⬇️ 위 슬라이드', 'zoomIn:🔍 확대'].map(o => { const [v, t] = o.split(':'); return `<option value="${v}" ${l.anim===v?'selected':''}>${t}</option>`; }).join('')}</select></div>
-                    <div class="row" style="margin-top:5px;"><input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; draw(); triggerAutoSave();" onchange="updateUI(${i});" style="flex:1;"></div>${colorPickersHTML}`;
-                list.appendChild(div);
-            }
-        };
+            // 1. 메인 레이어 (+ 6번 포스트 이미지)
+            layers.forEach(l => {
+                let p = Math.min(1, t / dur), pe = ease(p);
+                let s = l.scale, w = l.img.width*s, h = l.img.height*s, dx = 0, dy = 0;
+                if(l.anim === 'zoomIn') { let ts = 0.7 + pe*0.3; w *= ts; h *= ts; dx = -(w-l.img.width*l.scale)/2; dy = -(h-l.img.height*l.scale)/2; }
+                
+                let cx = l.x + w/2 + dx, cy = l.y + h/2 + dy;
+                if (endPhase && splitP > 0) { if (isHoriz) cy += (cy < H/2) ? -H * splitP : H * splitP; else cx += (cx < W/2) ? -W * splitP : W * splitP; }
 
-        const updatePostUI = () => {
-            const list = $('postLayerList'); list.innerHTML = layers.length ? '' : '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하면 목록이 나타납니다.</p>';
-            for (let i = 0; i < layers.length; i++) {
-                const l = layers[i], div = document.createElement('div');
-                let postImgHTML = l.postImg ? `<img src="${l.postSrc}" class="thumb" style="margin-right:5px;"> <button class="l-btn del" onclick="layers[${i}].postImg=null; layers[${i}].postSrc=null; updatePostUI(); draw(); triggerAutoSave();">삭제</button>` : `<button class="l-btn" onclick="$('postImageInput_${i}').click()">+ 이미지 등록</button>`;
-                div.innerHTML = `<div class="row" style="display:flex; align-items:center; justify-content:space-between; gap:5px; margin-bottom:5px; padding: 6px; border:1px solid #ddd; border-radius:4px; background:#fff;">
-                    <div style="display:flex; align-items:center; font-weight:bold; font-size:12px; min-width:80px;"> <img src="${l.src}" class="thumb" style="width:20px;height:20px;margin-right:5px;"> ${l.name}</div>
-                    <div style="display:flex; align-items:center;"> ${postImgHTML} <input type="file" id="postImageInput_${i}" accept="image/*" style="display:none;" onchange="loadPostImage(event, ${i})"> </div>
-                    <div><select onchange="layers[${i}].postEffect=this.value; draw(); triggerAutoSave();" style="font-size:11px; padding:3px; outline:none;"><option value="fade" ${l.postEffect==='fade'?'selected':''}>부드럽게</option><option value="slide" ${l.postEffect==='slide'?'selected':''}>슬라이드</option></select></div>
-                </div>`;
-                list.appendChild(div);
-            }
-        };
-        window.loadPostImage = (e, i) => { const file = e.target.files[0]; if (!file) return; const r = new FileReader(); r.onload = ev => { const img = new Image(); img.onload = () => { layers[i].postImg = img; layers[i].postSrc = ev.target.result; if(!layers[i].postEffect) layers[i].postEffect = 'fade'; updatePostUI(); document.querySelector('input[name="previewState"][value="postMain"]').checked = true; draw(); triggerAutoSave(); }; img.src = ev.target.result; }; r.readAsDataURL(file); e.target.value = ''; };
-
-        // --- 폰트 추가 로딩 연동 ---
-        $('fontInput').onchange = async e => {
-            for (let file of e.target.files) {
-                try {
-                    const fontName = file.name.split('.')[0]; const font = new FontFace(fontName, await file.arrayBuffer()); await font.load(); document.fonts.add(font);
-                    if(!customFonts.includes(fontName)) { 
-                        customFonts.push(fontName); const opt1 = document.createElement('option'); opt1.value = opt1.text = fontName; $('globalFont').appendChild(opt1); const opt2 = document.createElement('option'); opt2.value = opt2.text = fontName; $('endFont').appendChild(opt2); 
-                        $('globalFont').value = fontName; $('endFont').value = fontName;
+                c.save(); c.translate(cx, cy); c.rotate(l.rotation || 0); c.translate(-w/2, -h/2);
+                c.globalAlpha = Math.min(p*1.5, 1) * endAlpha;
+                
+                if (l.postImg && postPhase) {
+                    let pe_post = ease(postP);
+                    if (l.postEffect === 'slide') { 
+                        // 슬라이드 버그 수정 (원본 소스 해상도(sw, sh)를 이용하여 잘라냄)
+                        let sw1 = l.img.width, sh1 = l.img.height;
+                        let sw2 = l.postImg.width, sh2 = l.postImg.height;
+                        c.drawImage(l.img, sw1*pe_post, 0, sw1*(1-pe_post), sh1, w*pe_post, 0, w*(1-pe_post), h); 
+                        c.drawImage(l.postImg, 0, 0, sw2*pe_post, sh2, 0, 0, w*pe_post, h); 
+                    } else { 
+                        c.globalAlpha *= (1-pe_post); c.drawImage(l.img, 0, 0, w, h); 
+                        c.globalAlpha = Math.min(p*1.5, 1) * endAlpha * pe_post; c.drawImage(l.postImg, 0, 0, w, h); 
                     }
-                } catch (err) { alert('폰트 로드 실패'); }
-            } e.target.value = ''; document.fonts.ready.then(() => { draw(); triggerAutoSave(); });
-        };
-
-        $('imageInput').onchange = e => {
-            Array.from(e.target.files).forEach(file => { const r = new FileReader();
-                r.onload = ev => { const img = new Image(); img.onload = () => {
-                        const sc = 0.5; layers.push({ img, src: ev.target.result, name: file.name, anim: layers.length % 2 === 0 ? 'slideLeft' : 'slideRight', scale: sc, rotation: 0, textRot: 0, x: W/2 - (img.width*sc)/2, y: H/2 - (img.height*sc)/2, text: '', colors: [], textX: W/2 - (img.width*sc)/2 - 80, textY: H/2 - (img.height*sc)/2 - 30 });
-                        updateUI(layers.length - 1); updatePostUI(); document.querySelector('input[name="previewState"][value="endMain"]').checked = true; draw(); triggerAutoSave();
-                    }; img.src = ev.target.result;
-                }; r.readAsDataURL(file);
-            }); e.target.value = '';
-        };
-
-        window.act = (type) => {
-            if (!layers.length) return; const gap = +$('gap').value || 0, l = layers[sel!==-1?sel:0];
-            if (type === 'crop') {
-                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
-                layers.forEach(ly => { 
-                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize, false);
-                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
-                    if(ly.anim === 'slideLeft') minX -= 70; if(ly.anim === 'slideRight') maxX += 70; if(ly.anim === 'slideUp') maxY += 70; if(ly.anim === 'slideDown') minY -= 70;
-                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
-                });
-                if(mX === Infinity) return;
-                const cx = W / 2, cy = H / 2, newW = Math.max(100, Math.ceil(Math.max(cx - mX, xX - cx) + 10) * 2), newH = Math.max(100, Math.ceil(Math.max(cy - mY, xY - cy) + 10) * 2);
-                W = canvasEl.width = newW; H = canvasEl.height = newH; $('canvasW').value = W; $('canvasH').value = H;
-                layers.forEach(ly => { ly.x += newW/2 - cx; ly.y += newH/2 - cy; ly.textX += newW/2 - cx; ly.textY += newH/2 - cy; });
-            }
-            else if (type === 'matchH' || type === 'matchW') {
-                if (layers.length > 1 && l) {
-                    const isH = type === 'matchH', target = isH ? l.img.height * l.scale : l.img.width * l.scale;
-                    layers.forEach(ly => { if(ly !== l) { const oldSc = ly.scale; ly.scale = target / (isH ? ly.img.height : ly.img.width); const r = ly.scale / oldSc; ly.textX = ly.x + (ly.textX - ly.x) * r; ly.textY = ly.y + (ly.textY - ly.y) * r; } }); 
-                }
-            }
-            else if (type === 'distH' || type === 'distV') {
-                const isH = type === 'distH', tSz = layers.reduce((a, ly) => a + ly.img[isH?'width':'height'] * ly.scale, 0) + gap * (layers.length - 1);
-                let cur = ((isH?W:H) - tSz) / 2;
-                layers.forEach(ly => { 
-                    const dx = isH ? cur - ly.x : ((W - ly.img.width*ly.scale)/2) - ly.x, dy = isH ? ((H - ly.img.height*ly.scale)/2) - ly.y : cur - ly.y;
-                    ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; cur += ly.img[isH?'width':'height']*ly.scale + gap; 
-                });
-            }
-            else if (type === 'center') {
-                let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; const fSize = parseInt($('gFontSize').value) || 60;
-                layers.forEach(ly => { 
-                    const w = ly.img.width * ly.scale, h = ly.img.height * ly.scale, bounds = getTextBounds(ly.text, fSize, false);
-                    let minX = Math.min(ly.x, ly.text ? ly.textX : Infinity), minY = Math.min(ly.y, ly.text ? ly.textY : Infinity), maxX = Math.max(ly.x + w, ly.text ? ly.textX + bounds.w : -Infinity), maxY = Math.max(ly.y + h, ly.text ? ly.textY + bounds.h : -Infinity);
-                    mX = Math.min(mX, minX); mY = Math.min(mY, minY); xX = Math.max(xX, maxX); xY = Math.max(xY, maxY); 
-                });
-                if(mX === Infinity) return;
-                let cx = (mX + xX) / 2, cy = (mY + xY) / 2, sX = W/2 - cx, sY = H/2 - cy;
-                layers.forEach(ly => { ly.x += sX; ly.y += sY; ly.textX += sX; ly.textY += sY; });
-            }
-            else if (type === 'zigzag') {
-                if (layers.length === 0) return;
-                let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
-                const isVertLayout = tW > tH; const ref = layers[sel !== -1 ? sel : 0]; const oVal = parseInt($('zigzagOffset').value) / 100;
-                if (isVertLayout) { 
-                    const rW = ref.img.width * ref.scale; layers.forEach(ly => { ly.scale = rW / ly.img.width; });
-                    let totH = 0; layers.forEach(ly => totH += ly.img.height * ly.scale); totH += gap * (layers.length - 1);
-                    let startY = (H - totH) / 2, offsetX = rW * oVal;
-                    layers.forEach((ly, i) => { let h = ly.img.height * ly.scale, dy = startY - ly.y, tgX = (W / 2) - (rW / 2) + (i % 2 === 0 ? -offsetX : offsetX), dx = tgX - ly.x; ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; startY += h + gap; });
-                } else { 
-                    const rH = ref.img.height * ref.scale; layers.forEach(ly => { ly.scale = rH / ly.img.height; });
-                    let totW = 0; layers.forEach(ly => totW += ly.img.width * ly.scale); totW += gap * (layers.length - 1);
-                    let startX = (W - totW) / 2, offsetY = rH * oVal;
-                    layers.forEach((ly, i) => { let w = ly.img.width * ly.scale, dx = startX - ly.x, tgY = (H / 2) - (rH / 2) + (i % 2 === 0 ? -offsetY : offsetY), dy = tgY - ly.y; ly.x += dx; ly.y += dy; ly.textX += dx; ly.textY += dy; startX += w + gap; });
-                }
-            }
-            else if (type === 'quick') {
-                let tW = 0, tH = 0; layers.forEach(ly => { tW += ly.img.width * ly.scale; tH += ly.img.height * ly.scale; });
-                const isVert = tW > tH;
-                if (isVert) { act('matchW'); act('distV'); } else { act('matchH'); act('distH'); }
-                act('center');
-            }
-            draw(); triggerAutoSave();
-        };
-
-        const getPos = e => { const r = canvasEl.getBoundingClientRect(); return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) }; };
-        
-        canvasEl.onwheel = e => { 
-            if(isPlay) return; e.preventDefault(); 
-            let viewState = document.querySelector('input[name="previewState"]:checked').value;
-            if (viewState === 'ending' && $('endActive').checked && selEnd !== -1 && endLayers[selEnd]) {
-                if (endLayers[selEnd].type === 'image') endLayers[selEnd].scale = Math.max(0.05, endLayers[selEnd].scale + (e.deltaY < 0 ? 0.05 : -0.05));
-                else endLayers[selEnd].fontSize = Math.max(10, endLayers[selEnd].fontSize + (e.deltaY < 0 ? 5 : -5));
-                updateEndUI();
-            }
-            else if ((viewState === 'endMain' || viewState === 'postMain') && selExtra !== -1 && extraLayers[selExtra]) {
-                if (extraLayers[selExtra].type === 'image') extraLayers[selExtra].scale = Math.max(0.05, extraLayers[selExtra].scale + (e.deltaY < 0 ? 0.05 : -0.05));
-                else extraLayers[selExtra].fontSize = Math.max(10, extraLayers[selExtra].fontSize + (e.deltaY < 0 ? 5 : -5));
-                updateExtraUI();
-            } 
-            else if ((viewState === 'endMain' || viewState === 'postMain') && sel !== -1 && layers[sel]) {
-                const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, l.scale + (e.deltaY < 0 ? 0.05 : -0.05)); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r;
-                updateUI();
-            }
-            draw(); triggerAutoSave();
-        };
-        
-        canvasEl.onmousedown = e => {
-            if (isPlay) return; const {x, y} = getPos(e); const fSize = parseInt($('gFontSize').value) || 60;
-            let viewState = document.querySelector('input[name="previewState"]:checked').value;
-            
-            if (viewState === 'ending' && $('endActive').checked) {
-                if (selEnd !== -1 && endLayers[selEnd]) {
-                    let el = endLayers[selEnd], w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w, h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
-                    let hit = getTransformHit(x, y, el.x, el.y, w, h, el.rotation || 0);
-                    if (hit.isRot) { isDrag = true; dragType = 'endRot'; offX = hit.cx; offY = hit.cy; return; }
-                    if (hit.isRes) { isDrag = true; dragType = 'endRes'; offX = el.x; offY = el.y; return; }
-                    if (hit.isInside) { isDrag = true; dragType = 'endMove'; offX = x - el.x; offY = y - el.y; return; }
-                }
-                for (let i = endLayers.length - 1; i >= 0; i--) {
-                    let el = endLayers[i], w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w, h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h;
-                    if (getTransformHit(x, y, el.x, el.y, w, h, el.rotation || 0).isInside) { isDrag = true; dragType = 'endMove'; updateEndUI(i); offX = x - el.x; offY = y - el.y; draw(); return; }
-                }
-                updateEndUI(-1); draw(); return;
-            }
-
-            if (selExtra !== -1 && extraLayers[selExtra]) {
-                let el = extraLayers[selExtra], b = getExtraLayerBounds(el, ctx); let hit = getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0);
-                if (hit.isRot) { isDrag = true; dragType = 'extraRot'; offX = hit.cx; offY = hit.cy; return; }
-                if (hit.isRes) { isDrag = true; dragType = 'extraRes'; offX = el.x; offY = el.y; return; }
-                if (hit.isInside) { isDrag = true; dragType = 'extraMove'; offX = x - el.x; offY = y - el.y; return; }
-            }
-
-            if (sel !== -1 && layers[sel]) {
-                let l = layers[sel], w = l.img.width*l.scale, h = l.img.height*l.scale; let hitImg = getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0);
-                if (hitImg.isRot) { isDrag = true; dragType = 'mainImgRot'; offX = hitImg.cx; offY = hitImg.cy; return; }
-                if (hitImg.isRes) { isDrag = true; dragType = 'mainImgRes'; offX = l.x; offY = l.y; return; }
-                if (hitImg.isInside) { isDrag = true; dragType = 'mainImgMove'; offX = x - l.x; offY = y - l.y; textRelX = l.textX - l.x; textRelY = l.textY - l.y; return; }
+                } else c.drawImage(l.img, 0, 0, w, h);
+                c.restore();
 
                 if (l.text) {
-                    let b = getTextBounds(l.text, fSize, false); let hitTxt = getTransformHit(x, y, l.textX, l.textY, b.w, b.h, l.textRot || 0);
-                    if (hitTxt.isRot) { isDrag = true; dragType = 'mainTextRot'; offX = hitTxt.cx; offY = hitTxt.cy; return; }
-                    if (hitTxt.isRes) { isDrag = true; dragType = 'mainTextRes'; offX = l.textX; offY = l.textY; return; }
-                    if (hitTxt.isInside) { isDrag = true; dragType = 'mainTextMove'; offX = x - l.textX; offY = y - l.textY; return; }
-                }
-            }
-            
-            for (let i = extraLayers.length - 1; i >= 0; i--) { let el = extraLayers[i], b = getExtraLayerBounds(el, ctx); if (getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0).isInside) { isDrag = true; dragType = 'extraMove'; updateExtraUI(i); offX = x - el.x; offY = y - el.y; draw(); return; } }
-            for (let i = layers.length - 1; i >= 0; i--) { let l = layers[i], b = getTextBounds(l.text, fSize, false); if (l.text && getTransformHit(x, y, l.textX, l.textY, b.w, b.h, l.textRot || 0).isInside) { isDrag = true; dragType = 'mainTextMove'; updateUI(i); offX = x - l.textX; offY = y - l.textY; draw(); return; } }
-            for (let i = layers.length - 1; i >= 0; i--) { let l = layers[i], w = l.img.width*l.scale, h = l.img.height*l.scale; if (getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0).isInside) { isDrag = true; dragType = 'mainImgMove'; updateUI(i); offX = x - l.x; offY = y - l.y; textRelX = l.textX - l.x; textRelY = l.textY - l.y; draw(); return; } }
-            updateExtraUI(-1); updateUI(-1); updateEndUI(-1); draw();
-        };
-        
-        window.onmousemove = e => {
-            if (isPlay || !isDrag) return; const {x, y} = getPos(e);
-            if (dragType === 'endRot') endLayers[selEnd].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'endRes') { let el = endLayers[selEnd]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); updateEndUI(); }
-            else if (dragType === 'endMove') { endLayers[selEnd].x = x - offX; endLayers[selEnd].y = y - offY; }
-            else if (dragType === 'extraRot') extraLayers[selExtra].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'extraRes') { let el = extraLayers[selExtra]; if (el.type === 'image') el.scale = Math.max(0.05, (x - offX) / el.img.width); else el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); updateExtraUI(); }
-            else if (dragType === 'extraMove') { extraLayers[selExtra].x = x - offX; extraLayers[selExtra].y = y - offY; }
-            else if (dragType === 'mainImgRot') layers[sel].rotation = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'mainTextRot') layers[sel].textRot = Math.atan2(y - offY, x - offX) + Math.PI/2;
-            else if (dragType === 'mainImgRes') { const l = layers[sel], oldSc = l.scale; l.scale = Math.max(0.05, (x - offX) / l.img.width); const r = l.scale / oldSc; l.textX = l.x + (l.textX - l.x) * r; l.textY = l.y + (l.textY - l.y) * r; }
-            else if (dragType === 'mainTextRes') { $('gFontSize').value = Math.max(10, Math.round((y - offY) / 1.1)); }
-            else if (dragType === 'mainTextMove') { layers[sel].textX = x - offX; layers[sel].textY = y - offY; }
-            else if (dragType === 'mainImgMove') { layers[sel].x = x - offX; layers[sel].y = y - offY; layers[sel].textX = layers[sel].x + textRelX; layers[sel].textY = layers[sel].y + textRelY; }
-            draw();
-        };
-        window.onmouseup = () => { if (isDrag) triggerAutoSave(); isDrag = false; dragType = ''; };
-
-        // --- 완전한 통합 렌더링 엔진 ---
-        const renderFrame = (c, t) => {
-            const dur = getDuration(), pDur = 1000, eDur = 2000;
-            const isEndActive = $('endActive').checked, endOp = parseInt($('endOpacity').value) / 100, eff = $('globalEffect').value, endEff = $('endEffect').value;
-            
-            let mainP = Math.min(1, t / dur);
-            let postPhase = t > dur, postP = Math.min(1, Math.max(0, (t - dur) / pDur));
-            let endPhase = isEndActive && (t > dur + pDur), endP = isEndActive ? Math.min(1, Math.max(0, (t - dur - pDur) / eDur)) : 0;
-            let endAlphaMulti = 1.0; if (endPhase && endP > 0) endAlphaMulti = 1.0 - (ease(endP) * (1.0 - endOp));
-
-            c.clearRect(0, 0, W, H); c.imageSmoothingQuality = "high";
-            let isHoriz = false; if (layers.length > 1) { let hc = 0; layers.forEach(l => { if(l.img && l.img.width*l.scale > l.img.height*l.scale) hc++; }); isHoriz = hc >= (layers.length/2); }
-
-            const drawWithTransform = (x, y, w, h, angle, alphaVal, isMainOrEx, drawFunc) => {
-                let cx = x + w/2, cy = y + h/2, px = 0, py = 0;
-                if (isEndActive && endEff === 'split' && endP > 0 && isMainOrEx) {
-                    let sD = ease(endP) * (Math.max(W, H) / 2);
-                    if (isHoriz) py = (cy < H/2) ? -sD : sD; else px = (cx < W/2) ? -sD : sD;
-                }
-                c.save(); c.translate(cx + px, cy + py); c.rotate(angle || 0); c.translate(-w/2, -h/2); c.globalAlpha = alphaVal * endAlphaMulti; drawFunc(); c.restore();
-            };
-
-            // 1. 메인 레이어 (+ 표정 변경)
-            layers.forEach(l => {
-                let pE = ease(mainP), s = l.scale, w = l.img.width*s, h = l.img.height*s, dx = 0, dy = 0;
-                if(l.anim === 'slideLeft') dx = -(1-pE)*70; else if(l.anim === 'slideRight') dx = (1-pE)*70; else if(l.anim === 'slideUp') dy = (1-pE)*70; else if(l.anim === 'slideDown') dy = -(1-pE)*70; else if(l.anim === 'zoomIn') { let ts = 0.7 + pE*0.3; w *= ts; h *= ts; dx = -(w - l.img.width*l.scale)/2; dy = -(h - l.img.height*l.scale)/2; }
-                
-                drawWithTransform(l.x + dx, l.y + dy, w, h, l.rotation, Math.min(pE * 1.5, 1), true, () => {
-                    if (l.postImg && postPhase && postP > 0) {
-                        let pE_post = ease(postP);
-                        if (l.postEffect === 'slide') { c.drawImage(l.img, w*pE_post, 0, w*(1-pE_post), h, w*pE_post, 0, w*(1-pE_post), h); c.drawImage(l.postImg, 0, 0, w*pE_post, h, 0, 0, w*pE_post, h); } 
-                        else { c.globalAlpha *= (1-pE_post); c.drawImage(l.img, 0, 0, w, h); c.globalAlpha = (Math.min(pE * 1.5, 1) * endAlphaMulti) * pE_post; c.drawImage(l.postImg, 0, 0, w, h); }
-                    } else { c.drawImage(l.img, 0, 0, w, h); }
-
-                    if (eff === 'trace' && mainP < 1) { let pm = (w+h)*2; c.strokeStyle='#fff'; c.shadowColor='#fff'; c.shadowBlur=8; c.lineWidth=2; c.setLineDash([pm*0.15, pm*0.85]); c.lineDashOffset = -pm*mainP*2; c.strokeRect(0,0,w,h); }
-                    if (eff === 'lines' && mainP < 1) {
-                        c.save(); c.beginPath(); c.rect(-2,-2,w+4,h+4); c.clip();
-                        if (!isHoriz) { let lH = h*0.8, hY = (h+lH)*mainP - lH, gL = c.createLinearGradient(0,hY,0,hY+lH); gL.addColorStop(1,'rgba(255,255,255,1)'); gL.addColorStop(0,'rgba(255,255,255,0)'); c.fillStyle=gL; c.fillRect(0,hY,3,lH); let hYR = h - (h+lH)*mainP + lH, gR = c.createLinearGradient(0,hYR-lH,0,hYR); gR.addColorStop(0,'rgba(255,255,255,1)'); gR.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=gR; c.fillRect(w-3,hYR-lH,3,lH); } 
-                        else { let lW = w*0.8, hX = (w+lW)*mainP - lW, gT = c.createLinearGradient(hX,0,hX+lW,0); gT.addColorStop(1,'rgba(255,255,255,1)'); gT.addColorStop(0,'rgba(255,255,255,0)'); c.fillStyle=gT; c.fillRect(hX,0,lW,3); let hXB = w - (w+lW)*mainP + lW, gB = c.createLinearGradient(hXB-lW,0,hXB,0); gB.addColorStop(0,'rgba(255,255,255,1)'); gB.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=gB; c.fillRect(hXB-lW,h-3,lW,3); } c.restore();
-                    }
-                    if (eff === 'trace_after' && mainP >= 1 && postP < 1) { let pm = (w+h)*2; c.strokeStyle='#fff'; c.shadowColor='#fff'; c.shadowBlur=8; c.lineWidth=2; c.setLineDash([pm*0.15, pm*0.85]); c.lineDashOffset = -pm*postP*3; c.globalAlpha *= Math.max(0, 1 - postP*1.5); c.strokeRect(0,0,w,h); }
-                });
-                if(l.text) {
-                    let fSize = parseInt($('gFontSize').value) || 60, b = getTextBounds(l.text, fSize, false);
-                    drawWithTransform(l.textX + dx, l.textY + dy, b.w, b.h, l.textRot, 1.0, true, () => {
-                        if (l.anim === 'zoomIn') { let ts = 0.7 + pE*0.3; c.translate(b.w/2, b.h/2); c.scale(ts, ts); c.translate(-b.w/2, -b.h/2); }
-                        c.font = getFontStr(fSize); c.textBaseline = 'top'; if ($('gShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 6; } if ($('gStroke').checked) { c.lineWidth = parseInt($('gStrokeWidth').value) || 3; c.strokeStyle = $('gStrokeHex').value; }
-                        let chars = l.text.split(''), isVert = $('gVertical').checked, charX = 0, charY = 0, tSpdMs = getTypeSpeedMs();
-                        chars.forEach((ch, idx) => { let charP = Math.min(Math.max((t - idx * tSpdMs) / 150, 0), 1); c.globalAlpha = charP * Math.min(pE * 1.5, 1) * endAlphaMulti; if(ch !== ' ') { c.fillStyle = l.colors[idx] || '#ffffff'; let chX = isVert ? charX + (b.w / 2) - (c.measureText(ch).width / 2) - 2 : charX; if ($('gStroke').checked) c.strokeText(ch, chX, charY); c.fillText(ch, chX, charY); } if (isVert) charY += (ch === ' ') ? (fSize * 0.5) : (fSize * 1.05); else charX += c.measureText(ch).width; });
-                    });
+                    let fSize = parseInt($('gFontSize').value) || 60;
+                    c.font = `${$('gItalic').checked ? 'italic ' : ''}${$('gBold').checked ? 'bold ' : ''}${fSize}px "${$('globalFont').value}"`;
+                    let tw = c.measureText(l.text).width, th = fSize + 10;
+                    if($('gVertical').checked) { let ttw=0; l.text.split('').forEach(ch=>ttw=Math.max(ttw, c.measureText(ch).width)); tw=ttw+4; th=l.text.length*(fSize*1.1)+4; }
+                    
+                    c.save(); c.translate(l.textX + tw/2 + dx, l.textY + th/2 + dy); c.rotate(l.textRot || 0); c.translate(-tw/2, -th/2);
+                    c.fillStyle = "#fff";
+                    let chars = l.text.split(''), isV = $('gVertical').checked, cx_t = 0, cy_t = 0;
+                    chars.forEach((ch, idx) => {
+                        let cp = Math.min(Math.max((t - idx*100)/150, 0), 1); c.globalAlpha = cp * endAlpha;
+                        if(ch !== ' ') { if($('gStroke').checked) { c.strokeStyle=$('gStrokeHex').value; c.lineWidth=parseInt($('gStrokeWidth').value)||3; c.strokeText(ch, cx_t, cy_t); } c.fillStyle=l.colors[idx]||'#fff'; c.fillText(ch, cx_t, cy_t); }
+                        if (isV) cy_t += (ch === ' ' ? fSize*0.5 : fSize*1.05); else cx_t += c.measureText(ch).width;
+                    }); c.restore();
                 }
             });
 
-            // 2. 추가 독립 레이어
+            // 2. 독립 레이어
             extraLayers.forEach(el => {
-                let eDur = el.animSpeed || 1000, epRaw = Math.min(1, t / eDur), ep = ease(epRaw), b = getExtraLayerBounds(el, c), dx = 0, dy = 0, eAngle = el.rotation || 0, eAlpha = Math.min(ep * 1.5, 1);
-                if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70; else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; b.w *= ts; b.h *= ts; dx = -(b.w - b.w/ts)/2; dy = -(b.h - b.h/ts)/2; } else if(el.anim === 'rotateIn') eAngle += (1-ep) * Math.PI * 2; else if(el.anim === 'blink' && epRaw >= 1) eAlpha = 0.4 + Math.sin(t / 120) * 0.4;
-                drawWithTransform(el.x + dx, el.y + dy, b.w, b.h, eAngle, eAlpha, true, () => {
-                    if (el.type === 'text') { c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`; c.fillStyle = el.color; c.textBaseline = 'top'; c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 6; c.lineWidth = 3; c.strokeStyle = '#000'; c.strokeText(el.content, 0, 0); c.fillText(el.content, 0, 0); } else if (el.img) c.drawImage(el.img, 0, 0, b.w, b.h);
-                });
+                let eDur = el.animSpeed || 1000, epRaw = Math.min(1, t / eDur), ep = ease(epRaw);
+                let eAlpha = Math.min(ep * 1.5, 1) * endAlpha;
+                let w = el.type==='image'? el.img.width*el.scale : 0, h = el.type==='image'? el.img.height*el.scale : 0;
+                
+                if (el.type==='text') {
+                    c.font = `bold ${el.fontSize}px "${$('globalFont').value}"`;
+                    w = c.measureText(el.content).width; h = el.fontSize * 1.1;
+                }
+
+                let dx = 0, dy = 0, eAngle = el.rotation || 0;
+                if(el.anim === 'slideLeft') dx = -(1-ep)*70; else if(el.anim === 'slideRight') dx = (1-ep)*70; else if(el.anim === 'slideUp') dy = (1-ep)*70; else if(el.anim === 'slideDown') dy = -(1-ep)*70; else if(el.anim === 'zoomIn') { let ts = 0.7 + ep*0.3; w *= ts; h *= ts; dx = -(w - w/ts)/2; dy = -(h - h/ts)/2; } else if(el.anim === 'rotateIn') eAngle += (1-ep) * Math.PI * 2; else if(el.anim === 'blink' && epRaw >= 1) eAlpha = (0.4 + Math.sin(t / 120) * 0.4) * endAlpha;
+
+                c.save(); c.translate(el.x + w/2 + dx, el.y + h/2 + dy); c.rotate(eAngle); c.translate(-w/2, -h/2);
+                c.globalAlpha = eAlpha;
+                if (el.type === 'text') { c.fillStyle=el.color; c.fillText(el.content, 0, 0); }
+                else if (el.img) c.drawImage(el.img, 0, 0, w, h);
+                c.restore();
             });
 
-            if (eff === 'flash' && mainP >= 1 && postP < 1 && t < dur + pDur) { let flashA = Math.max(0, 1 - postP * 4); if (flashA > 0) { c.save(); c.fillStyle = `rgba(255, 255, 255, ${flashA})`; c.fillRect(0, 0, W, H); c.restore(); } }
-
-            // 3. 엔딩 연출 레이어
-            if (endPhase && endP > 0) {
-                if (endEff === 'flash_appear' && endP < 0.5) { c.fillStyle = `rgba(255,255,255,${1 - endP * 2})`; c.fillRect(0,0,W,H); }
-                let baseEndAlpha = Math.min(1, endP * 4);
-                
+            // 3. 엔딩 레이어
+            if (endPhase) {
+                let et = (order === 'postFirst')? t - dur - postDur : t - dur;
+                let ep = Math.min(1, et / 500);
                 endLayers.forEach(el => {
-                    let b = (el.type==='text')? getTextBounds(el.text, el.fontSize, true) : {w: el.img.width*el.scale, h: el.img.height*el.scale};
-                    c.save(); c.globalAlpha = baseEndAlpha;
-                    let slamS = ($('endEffect').value === 'slam')? 1 + (1-endP*4)*3 : 1;
-                    if(slamS < 1) slamS = 1; // 쾅 꽂히기 보정
-                    c.translate(el.x + b.w/2, el.y + b.h/2); c.rotate(el.rotation || 0); c.scale(slamS, slamS); c.translate(-b.w/2, -b.h/2);
+                    let fSize = el.fontSize || 60;
+                    let w = el.type==='image'? el.img.width*el.scale : 0, h = el.type==='image'? el.img.height*el.scale : 0;
+                    if (el.type === 'text') {
+                        c.font = `${$('endItalic').checked?'italic ':''}bold ${fSize}px "${$('endFont').value}"`;
+                        if($('endVertical').checked) { let ttw=0; el.text.split('').forEach(ch=>ttw=Math.max(ttw, c.measureText(ch).width)); w=ttw+4; let thh=0; el.text.split('').forEach(ch=>{thh+=(ch===' ')?fSize*0.5:fSize*1.05;}); h=thh+4; }
+                        else { w = c.measureText(el.text).width + 4; h = fSize + 10; }
+                    }
+
+                    c.save(); c.globalAlpha = ease(ep);
+                    let slamS = ($('endEffect').value === 'slam')? 1 + (1-ep)*3 : 1;
+                    c.translate(el.x + w/2, el.y + h/2); c.rotate(el.rotation || 0); c.scale(slamS, slamS); c.translate(-w/2, -h/2);
                     
                     if (el.type === 'text') {
-                        c.font = getEndFontStr(el.fontSize); c.textBaseline = 'top'; if ($('endShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.7)'; c.shadowBlur = 6; } if ($('endStroke').checked) { c.lineWidth = parseInt($('endStrokeWidth').value) || 4; c.strokeStyle = $('endStrokeHex').value; }
-                        let chars = el.text.split(''), isVert = $('endVertical').checked, charX = 0, charY = 0, tSpdMs = getEndTypeSpeedMs();
-                        let baseTime = dur + pDur;
+                        let chars = el.text.split(''), isV = $('endVertical').checked, cx_e = 0, cy_e = 0;
                         chars.forEach((ch, idx) => {
-                            let charP = 1; if (tSpdMs > 0) { charP = Math.min(Math.max((t - baseTime - idx * tSpdMs) / 150, 0), 1); } c.globalAlpha = charP * baseEndAlpha;
-                            if(ch !== ' ') { c.fillStyle = el.colors[idx] || '#ffffff'; let chX = isVert ? charX + (b.w / 2) - (c.measureText(ch).width / 2) - 2 : charX; if ($('endStroke').checked) c.strokeText(ch, chX, charY); c.fillText(ch, chX, charY); }
-                            if (isVert) charY += (ch === ' ') ? (el.fontSize * 0.5) : (el.fontSize * 1.05); else charX += c.measureText(ch).width;
+                            let cp = ($('endTypeSpeed').value==='0')? 1 : Math.min(Math.max((et - idx*parseInt($('endTypeSpeed').value||100))/150, 0), 1);
+                            c.globalAlpha = cp; c.fillStyle = el.colors[idx] || '#fff';
+                            c.fillText(ch, cx_e, cy_e);
+                            if (isV) cy_e += (ch === ' ' ? fSize*0.5 : fSize*1.05); else cx_e += c.measureText(ch).width;
                         });
-                    } else if (el.img) c.drawImage(el.img, 0, 0, b.w, b.h);
+                    } else if (el.img) c.drawImage(el.img, 0, 0, w, h);
                     c.restore();
                 });
             }
-        };
+            if (flashA > 0) { c.fillStyle=`rgba(255,255,255,${flashA})`; c.fillRect(0,0,W,H); }
+        }
 
         const draw = () => {
-            if (isPlay) return; let state = document.querySelector('input[name="previewState"]:checked').value;
-            let dur = getDuration(), t = dur; if (state === 'postMain') t = dur + 1000; if (state === 'ending') t = dur + 1000 + 2000;
-            renderFrame(ctx, t);
+            if (isPlay) return;
+            let state = document.querySelector('input[name="previewState"]:checked').value;
+            let t = 2000; if (state === 'postMain') t = 3000; if (state === 'ending') t = 5000;
+            renderFrame(ctx, t, true);
             
             // 조절 핸들
             if (state === 'ending' && selEnd !== -1 && endLayers[selEnd]) {
-                let el = endLayers[selEnd]; let b = (el.type==='text')? getTextBounds(el.text, el.fontSize, true) : {w: el.img.width*el.scale, h: el.img.height*el.scale};
-                drawHandle(el.x, el.y, b.w, b.h, el.rotation);
+                let el = endLayers[selEnd];
+                let fSize = el.fontSize || 60;
+                let w = el.type==='image'? el.img.width*el.scale : 0, h = el.type==='image'? el.img.height*el.scale : 0;
+                if (el.type === 'text') {
+                    ctx.font = `${$('endItalic').checked?'italic ':''}bold ${fSize}px "${$('endFont').value}"`;
+                    if($('endVertical').checked) { let ttw=0; el.text.split('').forEach(ch=>ttw=Math.max(ttw, ctx.measureText(ch).width)); w=ttw+4; let thh=0; el.text.split('').forEach(ch=>{thh+=(ch===' ')?fSize*0.5:fSize*1.05;}); h=thh+4; }
+                    else { w = ctx.measureText(el.text).width + 4; h = fSize + 10; }
+                }
+                drawHandle(el.x, el.y, w, h, el.rotation);
             } else if ((state === 'endMain' || state === 'postMain') && selExtra !== -1 && extraLayers[selExtra]) {
-                let el = extraLayers[selExtra]; let b = getExtraLayerBounds(el, ctx); drawHandle(el.x, el.y, b.w, b.h, el.rotation);
+                let el = extraLayers[selExtra]; 
+                let w = el.type==='image'? el.img.width*el.scale : 0, h = el.type==='image'? el.img.height*el.scale : 0;
+                if(el.type==='text'){ ctx.font=`bold ${el.fontSize}px "${$('globalFont').value}"`; w=ctx.measureText(el.content).width; h=el.fontSize*1.1; }
+                drawHandle(el.x, el.y, w, h, el.rotation);
             } else if ((state === 'endMain' || state === 'postMain') && sel !== -1 && layers[sel]) {
                 let l = layers[sel]; drawHandle(l.x, l.y, l.img.width*l.scale, l.img.height*l.scale, l.rotation);
-                if(l.text) { let b = getTextBounds(l.text, parseInt($('gFontSize').value)||60, false); drawHandle(l.textX, l.textY, b.w, b.h, l.textRot); }
+                if(l.text){
+                    let fSize = parseInt($('gFontSize').value) || 60;
+                    ctx.font = `${$('gItalic').checked?'italic ':''}${$('gBold').checked?'bold ':''}${fSize}px "${$('globalFont').value}"`;
+                    let tw = ctx.measureText(l.text).width+4, th = fSize+10;
+                    if($('gVertical').checked){ let ttw=0; l.text.split('').forEach(c=>ttw=Math.max(ttw,ctx.measureText(c).width)); tw=ttw+4; th=l.text.length*(fSize*1.1)+4; }
+                    drawHandle(l.textX, l.textY, tw, th, l.textRot);
+                }
             }
         };
 
         function drawHandle(x, y, w, h, angle) {
             ctx.save(); ctx.translate(x+w/2, y+h/2); ctx.rotate(angle || 0); ctx.strokeStyle="#0055FF"; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.strokeRect(-w/2, -h/2, w, h);
-            ctx.setLineDash([]); ctx.fillStyle="#0055FF"; ctx.fillRect(w/2-7, h/2-7, 14, 14); ctx.beginPath(); ctx.moveTo(0, -h/2); ctx.lineTo(0, -h/2-25); ctx.stroke(); ctx.beginPath(); ctx.arc(0, -h/2-25, 6, 0, Math.PI*2); ctx.fill(); ctx.restore();
+            ctx.setLineDash([]); ctx.fillStyle="#0055FF"; ctx.fillRect(w/2-7, h/2-7, 14, 14); // resize
+            ctx.beginPath(); ctx.moveTo(0, -h/2); ctx.lineTo(0, -h/2-25); ctx.stroke(); ctx.beginPath(); ctx.arc(0, -h/2-25, 6, 0, Math.PI*2); ctx.fill(); // rotate
+            ctx.restore();
         }
 
-        const exec = cb => { const t1 = sel, t2 = selExtra, t3 = selEnd; updateUI(-1); updateExtraUI(-1); updateEndUI(-1); cb(t1, t2, t3); };
-        
-        $('previewBtn').onclick = () => {
-            if (!layers.length || isPlay || $('generateBtn').disabled) return; isPlay = true; 
-            let dur = getDuration(), pDur = 1000, eDur = 2000, isEnd = $('endActive').checked, totalDur = dur + pDur; if(isEnd) totalDur += eDur;
-            let startT = performance.now();
-            exec((t1, t2, t3) => { 
-                const loop = (now) => { 
-                    if (!isPlay) return; let t = now - startT;
-                    if (t >= totalDur) { document.querySelector('input[name="previewState"][value="ending"]').checked = isEnd; setTimeout(() => { isPlay = false; updateUI(t1); updateExtraUI(t2); updateEndUI(t3); draw(); }, 100); return; }
-                    renderFrame(ctx, t); requestAnimationFrame(loop); 
-                }; requestAnimationFrame(loop); 
+        // --- 기능 함수들 ---
+        window.resizeCanvas = () => { W = canvasEl.width = parseInt($('canvasW').value); H = canvasEl.height = parseInt($('canvasH').value); draw(); };
+        window.addExtraText = () => { extraLayers.push({type:'text', content:'추가 타이포', name:'타이포', fontSize:40, color:'#ffffff', x:W/2-50, y:H/2, rotation:0, scale:1, anim:'fade', animSpeed:1000}); updateExtraUI(); draw(); };
+        window.addEndText = () => { endLayers.push({type:'text', text:'전투 발생', name:'엔딩 텍스트', fontSize:120, colors:['#ffffff','#ffffff','#ffffff','#ffffff','#ffffff'], x:W/2-100, y:H/2-50, rotation:0, scale:1}); updateEndUI(); draw(); };
+
+        const updateExtraUI = () => {
+            const list = $('extraLayerList'); list.innerHTML = '';
+            extraLayers.forEach((el, i) => {
+                let div = document.createElement('div'); div.className = `layer-item ${i===selExtra?'active':''}`;
+                div.innerHTML = `<span style="font-size:11px;">${el.name}</span> <button class="l-btn del" onclick="extraLayers.splice(${i},1); updateExtraUI(); draw();" style="float:right;">삭제</button>`;
+                div.onclick = () => { selExtra = i; sel = -1; selEnd = -1; document.querySelector('input[name="previewState"][value="endMain"]').checked=true; updateExtraUI(); draw(); };
+                list.appendChild(div);
             });
         };
 
-        $('generateBtn').onclick = () => {
-            if (!layers.length || isPlay) return alert("이미지를 추가하거나 재생을 멈춰주세요.");
-            const mode = $('quality').value, isAPNG = mode === 'apng', isMP4 = mode === 'mp4', isGifTrans = mode === 'gif' && $('gifTransparentCheck').checked, bgColor = $('gifBgHex').value;
-            let dur = getDuration(), pDur = 1000, eDur = 2000, isEnd = $('endActive').checked, totalDur = dur + pDur; if(isEnd) totalDur += eDur;
-            let videoExt = (window.MediaRecorder && MediaRecorder.isTypeSupported('video/mp4')) ? '.mp4' : '.webm', ext = isAPNG ? '.png' : (isMP4 ? videoExt : '.gif');
-            let fn = prompt("저장할 파일명:", "FebCryptbound_fighting")?.trim(); if (!fn) return; if (!fn.endsWith(ext)) fn += ext;
-            
-            const btn = $('generateBtn'), og = btn.innerText; btn.disabled = $('previewBtn').disabled = true; btn.innerText = "⏳ 인코딩 중...";
-            const endGenerate = (msg) => { btn.innerText = msg; setTimeout(() => { btn.innerText = og; btn.disabled = $('previewBtn').disabled = false; updateUI(sel); updateExtraUI(selExtra); updateEndUI(selEnd); draw(); }, 2000); };
-            
-            let eFrames = Math.min(100, Math.round(totalDur / (isAPNG ? 66 : 50))), eDelay = Math.round(totalDur / eFrames), sc = 1.0;
-            if (isAPNG) { const curP = W * H * eFrames; if (curP > 5000000) sc = Math.min(1.0, Math.sqrt(5000000 / curP)); }
-            const eW = Math.floor(W * sc), eH = Math.floor(H * sc), oCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); oCtx.canvas.width = eW; oCtx.canvas.height = eH;
-            
-            exec((t1, t2, t3) => {
-                const drawFileFrame = (t) => { oCtx.save(); oCtx.clearRect(0, 0, eW, eH); if (!isGifTrans && !isAPNG) { oCtx.fillStyle = bgColor; oCtx.fillRect(0, 0, eW, eH); } oCtx.scale(sc, sc); renderFrame(oCtx, t); oCtx.restore(); };
+        const updateEndUI = () => {
+            const list = $('endLayerList'); list.innerHTML = '';
+            endLayers.forEach((el, i) => {
+                let div = document.createElement('div'); div.className = `layer-item ${i===selEnd?'active':''}`;
+                div.innerHTML = `<span style="font-size:11px;">${el.name}</span> <button class="l-btn del" onclick="endLayers.splice(${i},1); updateEndUI(); draw();" style="float:right;">삭제</button>`;
+                div.onclick = () => { selEnd = i; sel = -1; selExtra = -1; document.querySelector('input[name="previewState"][value="ending"]').checked=true; updateEndUI(); draw(); };
+                list.appendChild(div);
+            });
+        };
 
-                if (isMP4) {
-                    try { let mimeType = videoExt === '.mp4' ? 'video/mp4' : 'video/webm', stream = oCtx.canvas.captureStream(30), recorder = new MediaRecorder(stream, { mimeType: mimeType }), chunks = [];
-                        recorder.ondataavailable = e => chunks.push(e.data); recorder.onstop = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(chunks, { type: mimeType })); a.download = fn; a.click(); endGenerate("🔥 완료!"); }; recorder.start(); let startT = performance.now(); const renderLoop = (now) => { let t = Math.min(now - startT, totalDur); drawFileFrame(t); if (t < totalDur) requestAnimationFrame(renderLoop); else setTimeout(() => recorder.stop(), 100); }; requestAnimationFrame(renderLoop);
-                    } catch(e) { endGenerate("❌ 브라우저 미지원"); alert("비디오 레코딩을 지원하지 않는 브라우저입니다."); }
-                } else if (isAPNG) {
-                    const frames = []; for (let i = 0; i < eFrames; i++) { drawFileFrame(i * eDelay); frames.push(oCtx.getImageData(0, 0, eW, eH).data.buffer); }
-                    setTimeout(() => { try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([UPNG.encode(frames, eW, eH, 256, Array(eFrames).fill(eDelay))], { type: 'image/apng' })); a.download = fn; a.click(); endGenerate("🔥 완료!"); } catch (e) { endGenerate("❌ 오류 발생"); } }, 100);
-                } else {
-                    const processGif = async () => {
-                        try {
-                            if (!gifWorkerUrl) { const res = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'); gifWorkerUrl = URL.createObjectURL(new Blob([await res.text()], { type: 'application/javascript' })); }
-                            const gif = new GIF({ workers: 2, quality: 1, width: eW, height: eH, workerScript: gifWorkerUrl, transparent: isGifTrans ? 0xFF00FF : null, background: !isGifTrans ? bgColor : '#ffffff' });
-                            for (let i = 0; i < eFrames; i++) { drawFileFrame(i * eDelay); if (isGifTrans) { const imgData = oCtx.getImageData(0, 0, eW, eH), data = imgData.data; for (let j = 0; j < data.length; j += 4) { if (data[j+3] < 128) { data[j] = 255; data[j+1] = 0; data[j+2] = 255; data[j+3] = 255; } else { if (data[j] === 255 && data[j+1] === 0 && data[j+2] === 255) data[j] = 254; data[j+3] = 255; } } oCtx.putImageData(imgData, 0, 0); } gif.addFrame(oCtx.canvas, {copy: true, delay: eDelay}); }
-                            gif.on('finished', function(blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fn; a.click(); endGenerate("🔥 완료!"); }); gif.render();
-                        } catch (e) { endGenerate("❌ 오류 발생"); }
-                    }; processGif();
+        // --- 폰트 추가 로딩 연동 (가장 확실한 방법) ---
+        $('fontInput').onchange = async e => {
+            for (let file of e.target.files) {
+                try {
+                    const fontName = file.name.split('.')[0]; const font = new FontFace(fontName, await file.arrayBuffer()); await font.load(); document.fonts.add(font);
+                    if(!customFonts.includes(fontName)) { 
+                        customFonts.push(fontName); 
+                        const opt1 = document.createElement('option'); opt1.value = opt1.text = fontName; $('globalFont').appendChild(opt1); 
+                        const opt2 = document.createElement('option'); opt2.value = opt2.text = fontName; $('endFont').appendChild(opt2); 
+                    }
+                    $('globalFont').value = fontName; $('endFont').value = fontName;
+                } catch (err) { alert('폰트 로드 실패'); }
+            }
+            e.target.value = '';
+            // 폰트가 완전히 렌더 트리에 반영되도록 타임아웃 지연 렌더링
+            setTimeout(() => { draw(); triggerAutoSave(); }, 100);
+        };
+
+        // --- 마우스 제어 통합 시스템 ---
+        const getPos = e => { const r = canvasEl.getBoundingClientRect(); return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) }; };
+
+        canvasEl.onmousedown = e => {
+            if (isPlay) return; const {x, y} = getPos(e);
+            let state = document.querySelector('input[name="previewState"]:checked').value;
+            
+            // 엔딩 레이어 체크
+            if (state === 'ending') {
+                if (selEnd !== -1 && endLayers[selEnd]) {
+                    let el = endLayers[selEnd]; let w = el.type==='image'?el.img.width*el.scale:0, h = el.type==='image'?el.img.height*el.scale:0;
+                    if(el.type==='text') { ctx.font=`${$('endItalic').checked?'italic ':''}bold ${el.fontSize}px "${$('endFont').value}"`; w=ctx.measureText(el.text).width+4; h=el.fontSize+10; if($('endVertical').checked){w=el.fontSize; h=el.text.length*el.fontSize*1.05;} }
+                    let hit = getTransformHit(x, y, el.x, el.y, w, h, el.rotation); if(hit.isRot){isDrag=true; dragType='rotEnd'; return;} if(hit.isRes){isDrag=true; dragType='resEnd'; return;} if(hit.isInside){isDrag=true; dragType='moveEnd'; offX=x-el.x; offY=y-el.y; return;}
                 }
-            });
+                for(let i=endLayers.length-1; i>=0; i--) {
+                    let el = endLayers[i]; let w = el.type==='image'?el.img.width*el.scale:0, h = el.type==='image'?el.img.height*el.scale:0;
+                    if(el.type==='text') { ctx.font=`${$('endItalic').checked?'italic ':''}bold ${el.fontSize}px "${$('endFont').value}"`; w=ctx.measureText(el.text).width+4; h=el.fontSize+10; if($('endVertical').checked){w=el.fontSize; h=el.text.length*el.fontSize*1.05;} }
+                    if(getTransformHit(x,y,el.x,el.y,w,h,el.rotation).isInside){selEnd=i; sel=-1; selExtra=-1; updateEndUI(); draw(); return;}
+                }
+            }
+
+            // 추가 레이어 체크
+            if (selExtra !== -1 && extraLayers[selExtra]) {
+                let el = extraLayers[selExtra]; let w = el.type==='image'?el.img.width*el.scale:0, h = el.type==='image'?el.img.height*el.scale:0;
+                if(el.type==='text') { ctx.font=`bold ${el.fontSize}px "${$('globalFont').value}"`; w=ctx.measureText(el.content).width; h=el.fontSize*1.1; }
+                let hit = getTransformHit(x, y, el.x, el.y, w, h, el.rotation); if(hit.isRot){isDrag=true; dragType='rotEx'; return;} if(hit.isRes){isDrag=true; dragType='resEx'; return;} if(hit.isInside){isDrag=true; dragType='moveEx'; offX=x-el.x; offY=y-el.y; return;}
+            }
+
+            // 메인 레이어 체크
+            if (sel !== -1 && layers[sel]) {
+                let l = layers[sel]; let hit = getTransformHit(x, y, l.x, l.y, l.img.width*l.scale, l.img.height*l.scale, l.rotation);
+                if(hit.isRot){isDrag=true; dragType='rotMain'; return;} if(hit.isRes){isDrag=true; dragType='resMain'; return;} if(hit.isInside){isDrag=true; dragType='moveMain'; offX=x-l.x; offY=y-l.y; return;}
+                if (l.text) {
+                    let fSize = parseInt($('gFontSize').value)||60; ctx.font=`${$('gItalic').checked?'italic ':''}${$('gBold').checked?'bold ':''}${fSize}px "${$('globalFont').value}"`; let tw=ctx.measureText(l.text).width+4, th=fSize+10; if($('gVertical').checked){tw=fSize; th=l.text.length*fSize*1.05;}
+                    let hitT = getTransformHit(x, y, l.textX, l.textY, tw, th, l.textRot);
+                    if(hitT.isRot){isDrag=true; dragType='rotTextMain'; return;} if(hitT.isInside){isDrag=true; dragType='moveTextMain'; offX=x-l.textX; offY=y-l.textY; return;}
+                }
+            }
+
+            // 바탕 선택
+            for(let i=extraLayers.length-1; i>=0; i--) {
+                let el = extraLayers[i]; let w = el.type==='image'?el.img.width*el.scale:0, h = el.type==='image'?el.img.height*el.scale:0;
+                if(el.type==='text') { ctx.font=`bold ${el.fontSize}px "${$('globalFont').value}"`; w=ctx.measureText(el.content).width; h=el.fontSize*1.1; }
+                if(getTransformHit(x,y,el.x,el.y,w,h,el.rotation).isInside){selExtra=i; sel=-1; selEnd=-1; document.querySelector('input[name="previewState"][value="endMain"]').checked=true; updateExtraUI(); draw(); return;}
+            }
+            for(let i=layers.length-1; i>=0; i--) {
+                let l=layers[i]; if(getTransformHit(x,y,l.x,l.y,l.img.width*l.scale,l.img.height*l.scale,l.rotation).isInside){sel=i; selExtra=-1; selEnd=-1; document.querySelector('input[name="previewState"][value="endMain"]').checked=true; updateUI(); draw(); return;}
+            }
+            sel=-1; selExtra=-1; selEnd=-1; updateUI(); updateExtraUI(); updateEndUI(); draw();
         };
-        resizeCanvas();
+
+        window.onmousemove = e => {
+            if(!isDrag) return; const {x,y} = getPos(e);
+            if(dragType==='moveMain'){ layers[sel].x = x-offX; layers[sel].y = y-offY; }
+            if(dragType==='resMain'){ layers[sel].scale = Math.max(0.05, (x-layers[sel].x)/layers[sel].img.width); }
+            if(dragType==='rotMain'){ layers[sel].rotation = Math.atan2(y-(layers[sel].y+layers[sel].img.height*layers[sel].scale/2), x-(layers[sel].x+layers[sel].img.width*layers[sel].scale/2)) + Math.PI/2; }
+            if(dragType==='moveTextMain'){ layers[sel].textX = x-offX; layers[sel].textY = y-offY; }
+            if(dragType==='rotTextMain'){ layers[sel].textRot = Math.atan2(y-offY, x-offX) + Math.PI/2; }
+            
+            if(dragType==='moveEx'){ extraLayers[selExtra].x = x-offX; extraLayers[selExtra].y = y-offY; }
+            if(dragType==='resEx'){ let el = extraLayers[selExtra]; if(el.type==='image') el.scale = Math.max(0.05, (x-el.x)/el.img.width); else el.fontSize = Math.max(10, y-el.y); }
+            if(dragType==='rotEx'){ extraLayers[selExtra].rotation = Math.atan2(y-offY, x-offX) + Math.PI/2; }
+            
+            if(dragType==='moveEnd'){ endLayers[selEnd].x = x-offX; endLayers[selEnd].y = y-offY; }
+            if(dragType==='resEnd'){ let el = endLayers[selEnd]; if(el.type==='image') el.scale = Math.max(0.05, (x-el.x)/el.img.width); else el.fontSize = Math.max(10, y-el.y); }
+            if(dragType==='rotEnd'){ endLayers[selEnd].rotation = Math.atan2(y-offY, x-offX) + Math.PI/2; }
+            draw();
+        };
+        window.onmouseup = () => { if(isDrag) triggerAutoSave(); isDrag = false; dragType = ''; };
+
+        // --- 초기 로드 ---
+        localDB.init().then(() => localDB.get('ccfolia_cutin_backup')).then(data => { if(data) restoreProjectData(JSON.parse(data)); else resizeCanvas(); });
     </script>
 </body>
 </html>
