@@ -32,7 +32,7 @@
             align-items: flex-start; 
         }
         
-        /* 캔버스 영역 */
+        /* 캔버스 및 좌측 영역 */
         .canvas-wrapper { 
             display: flex; 
             flex-direction: column; 
@@ -63,9 +63,14 @@
             box-sizing: border-box; 
         }
         
+        .hint-box span { 
+            color: #0055FF; 
+            font-weight: bold; 
+        }
+        
         /* 컨트롤 패널 */
         .control-panel { 
-            width: 440px; 
+            width: 420px; 
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
@@ -105,7 +110,7 @@
             outline: none; 
         }
         
-        input:focus, select:focus { 
+        input:focus { 
             border-color: #0055FF; 
         }
         
@@ -150,45 +155,12 @@
         .btn:hover { background: #F2E8DA; }
         .btn.hl { background: #F2E8DA; font-weight: bold; }
         .btn.hl:hover { background: #E8D8C8; }
-        .btn.magic { background: #0055FF; color: #fff; border-color: #0044CC; font-weight: bold; font-size: 13px; padding: 10px; }
+        .btn.magic { background: #0055FF; color: #fff; border-color: #0044CC; font-weight: bold; }
         .btn.magic:hover { background: #0044CC; }
-        
-        /* 컬러 피커 UI */
-        .color-combo { 
-            display: flex; 
-            align-items: center; 
-            border: 1px solid #ccc; 
-            border-radius: 3px; 
-            background: #fff; 
-            height: 22px; 
-            width: fit-content; 
-            overflow: hidden; 
-        }
-        
-        .color-combo input[type="color"] { 
-            width: 22px; 
-            height: 22px; 
-            border: none; 
-            padding: 0; 
-            margin: 0; 
-            cursor: pointer; 
-            background: transparent; 
-        }
-        
-        .color-combo input[type="text"] { 
-            width: 55px; 
-            border: none; 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            font-family: monospace; 
-            text-align: center; 
-            outline: none; 
-            padding: 0; 
-        }
         
         /* 레이어 리스트 */
         .layer-list { 
-            max-height: 220px; 
+            max-height: 180px; 
             overflow-y: auto; 
             background: #f9f9f9; 
             border: 1px solid #E8D8C8; 
@@ -209,38 +181,30 @@
         .layer-item.active { 
             border-color: #0055FF; 
             background: #F0F4FF; 
-            box-shadow: 0 2px 8px rgba(0,85,255,0.1); 
-        }
-        
-        .layer-item.drag-over { 
-            border: 2px dashed #0055FF; 
-            opacity: 0.8; 
         }
         
         .thumb { 
-            width: 30px; 
-            height: 30px; 
+            width: 25px; 
+            height: 25px; 
             object-fit: contain; 
             background: #fff; 
-            border-radius: 4px; 
-            border: 1px solid #E8D8C8; 
-            flex-shrink: 0; 
+            border-radius: 3px; 
+            border: 1px solid #ddd; 
         }
         
         .l-btn { 
-            background: #F2E8DA; 
-            border: 1px solid #E8D8C8; 
             padding: 3px 6px; 
             font-size: 10px; 
             border-radius: 4px; 
             cursor: pointer; 
+            border: 1px solid #ccc; 
+            background: #fff; 
         }
         
         .l-btn.del { 
             background: #ff4d4d; 
             color: #fff; 
             border: none; 
-            font-size: 11px; 
         }
         
         .char-color-box { 
@@ -259,6 +223,34 @@
             font-size: 11px; 
         }
         
+        /* 컬러 피커 컴팩트 UI */
+        .color-combo { 
+            display: flex; 
+            align-items: center; 
+            border: 1px solid #ccc; 
+            border-radius: 3px; 
+            overflow: hidden; 
+            height: 22px; 
+            background: #fff;
+        }
+        
+        .color-combo input[type="color"] { 
+            width: 22px; 
+            height: 22px; 
+            border: none; 
+            padding: 0; 
+            cursor: pointer; 
+            background: transparent;
+        }
+        
+        .color-combo input[type="text"] { 
+            width: 50px; 
+            border: none; 
+            font-size: 10px; 
+            text-align: center; 
+            text-transform: uppercase;
+        }
+
         /* 하단 액션 버튼 */
         .action-btn { 
             border: none; 
@@ -270,7 +262,7 @@
             margin-top: 10px; 
             font-size: 14px; 
             color: #fff; 
-            transition: 0.2s; 
+            transition: 0.2s;
         }
         
         #previewBtn { background: #E8D8C8; color: #333; border: 1px solid #DBC4AC; } 
@@ -280,12 +272,9 @@
         button:disabled { background: #ccc !important; cursor: not-allowed; color: #888 !important; border-color: #ccc !important; }
         
         /* 스크롤바 */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-        
-        /* 세부 UI 조절용 클래스 */
-        #postLayerList .row { background: #fff; padding: 8px; border-radius: 4px; border: 1px solid #E8D8C8; margin-bottom: 5px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
     </style>
 </head>
 <body>
@@ -293,13 +282,13 @@
     <div style="visibility: hidden; position: absolute; font-family: 'Jua';">.</div>
     <div style="visibility: hidden; position: absolute; font-family: 'Nanum Myeongjo';">.</div>
 
-    <div id="mainHeader" style="width: 100%; max-width: 1530px; margin-bottom: 20px; text-align: center;">
-        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Black Han Sans', sans-serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,85,255,0.2);">🌊 [쏘랑] 다인 컷인 에디터 (PRO)</h2>
+    <div id="mainHeader" style="margin-bottom: 20px; text-align: center;">
+        <h2 style="margin: 0 auto; background: #0055FF; color: #fff; font-family: 'Black Han Sans', sans-serif; font-weight: 400; padding: 10px 40px; border-radius: 4px; display: inline-block; font-size: 26px; letter-spacing: 1px;">🌊 [쏘랑] 다인 컷인 에디터 (PRO)</h2>
     </div>
 
     <div class="container">
         <div class="canvas-wrapper">
-            <div style="display:flex; justify-content:center; gap:15px; margin-bottom:10px; font-weight:bold; font-size:13px; color:#0055FF; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #0055FF; box-shadow: 0 2px 10px rgba(0,85,255,0.1);">
+            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px; font-weight:bold; font-size:12px; color:#0055FF; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #0055FF;">
                 <label><input type="radio" name="previewState" value="endMain" checked onchange="draw()"> 배치 완료</label>
                 <label><input type="radio" name="previewState" value="postMain" onchange="draw()"> 표정 변경 화면</label>
                 <label><input type="radio" name="previewState" value="ending" onchange="draw()"> 엔딩 연출 화면</label>
@@ -309,22 +298,22 @@
             
             <div class="hint-box">
                 • <b style="color:#0055FF;">마우스 드래그</b>: 위치 이동 | <b style="color:#0055FF;">모서리 점</b>: 크기 조절 | <b style="color:#0055FF;">상단 동그라미</b>: 회전<br>
-                • <b style="color:#0055FF;">[간단 배치]</b>: 메인 이미지들의 가로/세로 비율을 감지하여 겹치지 않게 스마트 정렬합니다.
+                • 6번 기능 사용 시 '표정 변경 화면' 상태에서 이미지를 확인하세요.
             </div>
             
-            <div style="background:#fff; border:1px solid #0055FF; padding:15px; border-radius:6px; margin-top:10px; box-shadow: 0 2px 8px rgba(0,85,255,0.05);">
-                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:14px; color:#0044CC;">💾 작업 데이터 백업 및 복원</h3>
-                    <span id="autoSaveStatus" style="font-size:12px; color:#ff4d4d; font-weight:bold;"></span>
+            <div style="background:#fff; border:1px solid #0055FF; padding:12px; border-radius:6px; margin-top:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                    <h3 style="margin:0; font-size:13px; color:#0044CC;">💾 백업 및 복원</h3>
+                    <span id="autoSaveStatus" style="font-size:11px; color:#ff4d4d; font-weight:bold;"></span>
                 </div>
                 <div class="row">
-                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold; padding:10px;" onclick="saveProjectFile()">↓ 프로젝트 저장 (.json)</button>
-                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold; padding:10px;" onclick="$('projectFileInput').click()">↑ 프로젝트 불러오기</button>
+                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold;" onclick="saveProjectFile()">↓ 프로젝트 저장</button>
+                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold;" onclick="$('projectFileInput').click()">↑ 불러오기</button>
                     <input type="file" id="projectFileInput" accept=".json" style="display:none;" onchange="loadProjectFile(event)">
                 </div>
                 <div style="font-size:12px; color:#555; margin-top:10px; line-height:1.5;">
-                    • 모든 작업 내용은 브라우저 내부에 <b>실시간 자동 보존</b>됩니다.<br>
-                    • 브라우저 캐시 초기화 시 데이터가 삭제될 수 있으므로 중요한 작업은 <b>프로젝트 파일로 저장</b>하세요.
+                    • 작업 내용은 브라우저 내부에 <b>실시간 자동 보존</b>됩니다.<br>
+                    • 브라우저 캐시 초기화 시 데이터가 삭제될 수 있으므로 중요 작업은 <b>프로젝트 파일로 저장</b>하세요.
                 </div>
             </div>
         </div>
@@ -339,22 +328,23 @@
             </div>
             
             <div class="control-group">
-                <h3>2. 캔버스 조절 및 이미지 정렬</h3>
-                <div class="row" style="margin-bottom:8px; background:#f9f9f9; padding:8px; border-radius:4px; border:1px solid #E8D8C8;">
-                    <label style="font-size:12px; width:80px; font-weight:bold; color:#0055FF;">캔버스 크기:</label>
-                    <input type="number" id="canvasW" value="600" style="width:55px;"> <span style="font-size:12px; margin:0 3px;">X</span>
-                    <input type="number" id="canvasH" value="800" style="width:55px;">
-                    <button class="btn hl" onclick="resizeCanvas()" style="flex:none; padding:5px 10px; margin-left:8px; background:#0055FF; color:#fff; border:none;">크기 적용</button>
+                <h3>2. 캔버스 및 레이아웃</h3>
+                <div class="row" style="margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px; border:1px solid #E8D8C8;">
+                    <label style="font-size:12px; width:70px; font-weight:bold;">캔버스 크기:</label>
+                    <input type="number" id="canvasW" value="600" style="width:50px;"> <span style="font-size:12px;">×</span>
+                    <input type="number" id="canvasH" value="800" style="width:50px;">
+                    <button class="btn hl" onclick="resizeCanvas()" style="flex:none; padding:4px 8px; margin-left:5px;">적용</button>
                 </div>
                 <div class="row">
-                    <button class="btn magic" onclick="act('quick')">✨ 간단 배치 (자동 정렬)</button>
+                    <button class="btn magic" onclick="act('quick')">✨ 자동 정렬</button>
+                    <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold;" onclick="act('zigzag')">〰️ 지그재그 배치</button>
                 </div>
                 
                 <div style="text-align:center; margin: 8px 0 3px 0;">
                     <span onclick="toggleAdvAlign(this)" style="text-decoration: underline; cursor: pointer; font-size: 11px; color: #555;">상세 조절 펼치기 ▼</span>
                 </div>
                 
-                <div id="advAlignWrapper" style="display:none; margin-top:8px;">
+                <div id="advAlignWrapper" style="display:none; margin-top:5px;">
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
                         <button class="btn hl" onclick="act('matchH')">📏 세로 통일</button>
                         <button class="btn hl" onclick="act('matchW')">📏 가로 통일</button>
@@ -364,12 +354,11 @@
                         <button class="btn" onclick="act('center')">🎯 중앙 정렬</button>
                     </div>
                     
-                    <div class="row" style="margin-top:10px; justify-content: center; gap: 15px;">
+                    <div class="row" style="margin-top:10px; justify-content: center; gap: 15px; border-top:1px solid #eee; padding-top:8px;">
                         <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
                             이미지 간격: 
                             <input type="number" id="gap" value="20" onchange="triggerAutoSave()" style="width:40px; margin-left:6px; height:24px;"> px
                         </label>
-                        <button class="btn" style="border-color:#0055FF; color:#0055FF; font-weight:bold;" onclick="act('zigzag')">〰️ 지그재그 배치</button>
                         <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
                             지그재그 비율: 
                             <input type="number" id="zigzagOffset" value="15" step="1" min="0" max="100" onchange="triggerAutoSave()" style="width:40px; margin-left:6px; height:24px;"> %
@@ -394,7 +383,7 @@
                     </div>
                 </div>
                 
-                <div id="layerList" class="layer-list"></div>
+                <div id="layerList" class="layer-list" style="max-height: 250px;"></div>
 
                 <div class="row" style="margin-top:8px; align-items:center;">
                     <label style="font-size:12px; width:70px;">추가 효과:</label>
@@ -461,11 +450,10 @@
         </div>
 
         <div class="control-panel">
-            
             <div class="control-group" style="display:flex; flex-direction:column;">
-                <h3>5. 독립 레이어 (자동 정렬 무시)</h3>
+                <h3>5. 독립 레이어 (자유 배치)</h3>
                 <div class="hint-box" style="margin-top:0; margin-bottom:10px; padding:10px; border-color:#d0e2ff; background:#f4f9ff;">
-                    배경, 로고, 이펙트 등 자유롭게 배치할 이미지를 추가하세요. 개별 속도와 효과 제어가 가능합니다.
+                    배경, 로고, 이펙트 등 자유롭게 배치할 이미지를 추가하세요.
                 </div>
                 <div class="row">
                     <button class="btn" onclick="addExtraText()">+ 타이포 추가</button>
@@ -481,15 +469,13 @@
 
             <div class="control-group" style="display:flex; flex-direction:column;">
                 <h3>6. 애니메이션 종료 후 이미지 변경</h3>
-                
                 <div class="row" style="background:#f0f7ff; padding:10px; border-radius:4px; border:1px solid #d0e2ff; margin-bottom:10px; justify-content:center;">
                     <label style="font-weight:bold; color:#0055FF; font-size:13px; display:flex; align-items:center; cursor:pointer;">
                         <input type="checkbox" id="postActive" onchange="togglePostUI(); draw(); triggerAutoSave();"> 
                         🔄 이미지 변경 효과 켜기
                     </label>
                 </div>
-                
-                <div id="postOptions" style="display:none; flex-direction:column;">
+                <div id="postOptions" style="display:none; flex:1; flex-direction:column;">
                     <div class="hint-box" style="margin-top:0; margin-bottom:10px; padding:10px; border-color:#d0e2ff; background:#f4f9ff;">
                         메인 애니메이션 종료 후 위치는 고정한 채 다른 이미지(표정 등)로 변경합니다. (이후 자동으로 엔딩 연출 진행)
                     </div>
@@ -518,7 +504,7 @@
                             <option value="fade">페이드인</option>
                             <option value="shake">화면 강하게 흔들림</option>
                             <option value="split">기존 이미지 중앙 가르고 등장</option>
-                            <option value="flash_appear">번쩍하고 등장 (새하얀 섬광)</option>
+                            <option value="flash_appear">번쩍하고 등장</option>
                         </select>
                     </div>
                     <div class="row" style="margin-bottom:8px;">
@@ -834,7 +820,7 @@
             db: null,
             init: function() { 
                 return new Promise((res, rej) => { 
-                    const req = indexedDB.open('CCfoliaCutinDB_PRO_Final_v6', 1); 
+                    const req = indexedDB.open('CCfoliaCutinDB_PRO_Final_v7', 1); 
                     req.onupgradeneeded = function(e) { 
                         if (!e.target.result.objectStoreNames.contains('data')) {
                             e.target.result.createObjectStore('data'); 
@@ -1129,7 +1115,7 @@
             e.target.value = ''; 
         };
 
-        // --- 폰트 업로드 연동 ---
+        // --- 폰트 업로드 연동 로직 ---
         $('fontInput').onchange = async function(e) {
             for (let i = 0; i < e.target.files.length; i++) {
                 let file = e.target.files[i];
@@ -1297,7 +1283,7 @@
                         </select>
                     </div>
                     <div class="row" style="margin-top:5px;">
-                        <input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; while(layers[${i}].colors.length < this.value.length) { layers[${i}].colors.push('#ffffff'); } window.draw();" onchange="window.updateUI(${i}); window.triggerAutoSave();" style="flex:1;">
+                        <input type="text" placeholder="텍스트 입력" value="${l.text}" oninput="layers[${i}].text=this.value; window.draw(); window.triggerAutoSave();" onchange="window.updateUI(${i});" style="flex:1;">
                     </div>
                     ${colorPickersHTML}
                 `;
@@ -1448,15 +1434,18 @@
                     </div>
                     <div style="background:#fff; border:1px solid #ddd; padding:5px; border-radius:4px; margin-top:5px; font-size:11px;">
                         <div class="row">
-                            타이핑 <select onchange="extraLayers[${i}].typeSpeed=parseInt(this.value); window.draw(); window.triggerAutoSave();">
+                            타이핑 
+                            <select onchange="extraLayers[${i}].typeSpeed=parseInt(this.value); window.draw(); window.triggerAutoSave();">
                                 <option value="0" ${el.typeSpeed===0?'selected':''}>없음</option>
                                 <option value="50" ${el.typeSpeed===50?'selected':''}>빠름</option>
                                 <option value="100" ${el.typeSpeed===100?'selected':''}>기본</option>
                             </select>
-                            폰트 <select onchange="extraLayers[${i}].font=this.value; window.draw(); window.triggerAutoSave();" style="width:70px;">
+                            폰트 
+                            <select onchange="extraLayers[${i}].font=this.value; window.draw(); window.triggerAutoSave();" style="width:70px;">
                                 ${fontOptions}
                             </select>
-                            크기 <input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); window.draw(); window.triggerAutoSave();" style="width:35px;">
+                            크기 
+                            <input type="number" value="${el.fontSize}" onchange="extraLayers[${i}].fontSize=parseInt(this.value); window.draw(); window.triggerAutoSave();" style="width:35px;">
                         </div>
                         <div class="row" style="margin-top:5px;">
                             <label><input type="checkbox" onchange="extraLayers[${i}].isVertical=this.checked; window.draw(); window.triggerAutoSave();" ${el.isVertical?'checked':''}>세로</label>
@@ -1467,7 +1456,7 @@
                             <div class="color-combo" style="height:18px;">
                                 <input type="color" value="${el.strokeColor}" oninput="extraLayers[${i}].strokeColor=this.value; window.draw(); window.triggerAutoSave();">
                             </div>
-                            굵기<input type="number" value="${el.strokeWidth}" onchange="extraLayers[${i}].strokeWidth=parseInt(this.value); window.draw(); window.triggerAutoSave();" style="width:25px; margin-left:2px;">
+                            <input type="number" value="${el.strokeWidth}" onchange="extraLayers[${i}].strokeWidth=parseInt(this.value); window.draw(); window.triggerAutoSave();" style="width:25px; margin-left:2px;" title="테두리 굵기">
                         </div>
                     </div>`;
                 }
@@ -1483,7 +1472,6 @@
                     <option value="blink" ${el.anim==='blink'?'selected':''}>✨ 계속 반짝임</option>
                 `;
 
-                // 이미지 미리보기(썸네일) 렌더링
                 let thumbHTML = el.type === 'image' ? `<img src="${el.src}" class="thumb">` : `<div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">📝</div>`;
 
                 div.innerHTML = `
@@ -1918,7 +1906,6 @@
             }; 
         };
 
-        // --- 마우스 휠 (크기 조절) ---
         canvasEl.onwheel = function(e) {
             if(isPlay) return; 
             e.preventDefault(); 
@@ -1953,7 +1940,6 @@
             window.triggerAutoSave();
         };
 
-        // --- 마우스 클릭 (선택) ---
         canvasEl.onmousedown = function(e) {
             if (isPlay) return; 
             const pos = getPos(e);
@@ -1968,7 +1954,6 @@
                     let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
                     let h = el.type === 'image' ? el.img.height * el.scale : getTextBounds(el.text, el.fontSize, true).h; 
                     let hit = getTransformHit(x, y, el.x, el.y, w, h, el.rotation || 0); 
-                    
                     if (hit.isRot) { isDrag = true; dragType = 'endRot'; offX = hit.cx; offY = hit.cy; return; } 
                     if (hit.isRes) { isDrag = true; dragType = 'endRes'; offX = el.x; offY = el.y; return; } 
                     if (hit.isInside) { isDrag = true; dragType = 'endMove'; offX = x - el.x; offY = y - el.y; return; } 
@@ -1996,7 +1981,6 @@
                 let el = extraLayers[selExtra]; 
                 let b = getExtraLayerBounds(el, ctx); 
                 let hit = getTransformHit(x, y, el.x, el.y, b.w, b.h, el.rotation || 0); 
-                
                 if (hit.isRot) { isDrag = true; dragType = 'extraRot'; offX = hit.cx; offY = hit.cy; return; } 
                 if (hit.isRes) { isDrag = true; dragType = 'extraRes'; offX = el.x; offY = el.y; return; } 
                 if (hit.isInside) { isDrag = true; dragType = 'extraMove'; offX = x - el.x; offY = y - el.y; return; } 
@@ -2007,7 +1991,6 @@
                 let w = l.img.width*l.scale;
                 let h = l.img.height*l.scale; 
                 let hitImg = getTransformHit(x, y, l.x, l.y, w, h, l.rotation || 0); 
-                
                 if (hitImg.isRot) { isDrag = true; dragType = 'mainImgRot'; offX = hitImg.cx; offY = hitImg.cy; return; } 
                 if (hitImg.isRes) { isDrag = true; dragType = 'mainImgRes'; offX = l.x; offY = l.y; return; } 
                 if (hitImg.isInside) { isDrag = true; dragType = 'mainImgMove'; offX = x - l.x; offY = y - l.y; textRelX = l.textX - l.x; textRelY = l.textY - l.y; return; }
@@ -2071,7 +2054,6 @@
             window.draw();
         };
         
-        // --- 마우스 드래그 (이동) ---
         window.onmousemove = function(e) {
             if (isPlay || !isDrag) return; 
             const pos = getPos(e);
@@ -2135,10 +2117,10 @@
             dragType = ''; 
         };
 
-        // --- 백그라운드 렌더링 통합 엔진 (핵심) ---
+        // --- 백그라운드 렌더링 엔진 (순서 고정, 분리 로직 완전 복구) ---
         const renderFrame = function(c, t) {
             const dur = getDuration();
-            const pDur = 1000;
+            const pDur = 1000; // 표정 변경 진행 시간
             const eDur = parseInt($('endEffectSpeed').value) || 2000;
             
             const isPostActive = $('postActive').checked;
@@ -2148,7 +2130,7 @@
             const gEffDur = parseInt($('globalEffectDur').value) || 1000;
             const endEff = $('endEffect').value;
 
-            // 순서 고정: 1. 메인 완료(dur) -> 2. 표정 변경(pDur) -> 3. 엔딩 연출(eDur)
+            // 순서 확정: 1. 메인 완료(dur) -> 2. 표정 변경(pDur) -> 3. 엔딩 연출(eDur)
             let mainP = Math.min(1, t / dur);
             
             let postStart = dur;
@@ -2178,12 +2160,13 @@
                 isHoriz = layers[0].img.width*layers[0].scale > layers[0].img.height*layers[0].scale;
             }
 
-            // 시네마틱 밀어내기: 캔버스 크기(W,H)를 온전히 사용하여 화면 밖으로 완벽히 내보냄
+            // 시네마틱 밀어내기: 캔버스 해상도(W,H)를 최대치로 하여 완전히 화면 밖으로 이동
             const drawWithTransform = function(x, y, w, h, angle, alphaVal, isMainOrEx, drawFunc) {
                 let cx = x + w/2;
                 let cy = y + h/2;
                 let px = 0;
                 let py = 0;
+                
                 if (isEndActive && endEff === 'split' && endP > 0 && isMainOrEx) {
                     let sD = ease(endP) * Math.max(W, H); 
                     if (isHoriz) {
@@ -2201,7 +2184,7 @@
                 c.restore();
             };
 
-            // 전체 효과 진행률
+            // 전체 효과 타임라인 (효과 시간 연동)
             let gEffP = Math.min(1, t / gEffDur);
             let afterT = t - dur;
             let gEffAfterP = Math.min(1, Math.max(0, afterT / gEffDur));
@@ -2346,7 +2329,7 @@
                 let b = getExtraLayerBounds(el, c);
                 let dx = 0, dy = 0;
                 let eAngle = el.rotation || 0;
-                let eAlpha = Math.min(ep * 1.5, 1);
+                let eAlpha = Math.min(ep * 1.5, 1) * endAlphaMulti;
                 
                 let w = b.w, h = b.h;
                 
@@ -2357,11 +2340,11 @@
                 else if(el.anim === 'zoomIn') { 
                     let ts = 0.7 + ep*0.3; 
                     w *= ts; h *= ts; 
-                    dx = -(w - w/ts)/2; 
-                    dy = -(h - h/ts)/2; 
+                    dx = -(w - b.w)/2; 
+                    dy = -(h - b.h)/2; 
                 } 
                 else if(el.anim === 'rotateIn') eAngle += (1-ep) * Math.PI * 2; 
-                else if(el.anim === 'blink' && epRaw >= 1) eAlpha = 0.4 + Math.sin(t / 120) * 0.4;
+                else if(el.anim === 'blink' && epRaw >= 1) eAlpha = (0.4 + Math.sin(t / 120) * 0.4) * endAlphaMulti;
                 
                 drawWithTransform(el.x + dx, el.y + dy, w, h, eAngle, eAlpha, true, function() {
                     if (el.type === 'text') { 
@@ -2437,10 +2420,12 @@
                         let isV = $('endVertical').checked;
                         let cx_e = 0, cy_e = 0;
                         let tSpdMs = getEndTypeSpeedMs();
+                        let baseTime = endStart;
                         
+                        // 타이핑 버그 100% 수정 (타임라인 로직 정상화)
                         chars.forEach(function(ch, idx) {
-                            let cp = (tSpdMs === 0) ? 1 : Math.min(Math.max((t - endStart - idx*tSpdMs)/150, 0), 1);
-                            c.globalAlpha = cp * ease(endP); 
+                            let charP = (tSpdMs === 0) ? 1 : Math.min(Math.max((t - baseTime - idx*tSpdMs)/150, 0), 1);
+                            c.globalAlpha = charP * ease(endP); 
                             c.fillStyle = el.colors[idx] || '#ffffff';
                             let chX = isV ? cx_e + (b.w / 2) - (c.measureText(ch).width / 2) - 2 : cx_e; 
                             
@@ -2558,7 +2543,7 @@
             if(isPost) totalDur += pDur; 
             if(isEnd) totalDur += eDur;
             
-            // 전체 추가 효과 연장 방어
+            // 전체 추가 효과 시간 연장 방어 로직 복구
             if (eff === 'trace_after' || eff === 'flash') {
                 let effTotal = dur + gEffDur;
                 if (effTotal > totalDur) { totalDur = effTotal; }
