@@ -250,6 +250,12 @@
             gap: 2px; 
         }
         
+        .char-color-box span { 
+            font-size: 11px; 
+            font-weight: bold; 
+            color: #555; 
+        }
+        
         .fx-label { 
             display: flex; 
             align-items: center; 
@@ -370,7 +376,7 @@
                             <input type="number" id="gap" value="20" onchange="triggerAutoSave()" style="width:40px; margin-left:6px; height:24px;"> px
                         </label>
                         <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
-                            〰️ 지그재그 비율: 
+                            지그재그 비율: 
                             <input type="number" id="zigzagOffset" value="15" step="1" min="0" max="100" onchange="triggerAutoSave()" style="width:40px; margin-left:6px; height:24px;"> %
                         </label>
                     </div>
@@ -519,7 +525,7 @@
                                 <option value="fade">페이드인</option>
                                 <option value="shake">화면 강하게 흔들림</option>
                                 <option value="split">기존 이미지 중앙 가르고 등장</option>
-                                <option value="flash_appear">번쩍하고 등장 (새하얀 섬광)</option>
+                                <option value="flash_appear">번쩍하고 등장</option>
                             </select>
                         </div>
                         <div class="row" style="margin-bottom:8px;">
@@ -583,37 +589,37 @@
                     </div>
                 </div>
 
-              <div class="control-group" style="border-bottom:none; padding-bottom:0;">
-                <h3>8. 출력 파일 형식</h3>
-                <div class="row" style="flex-wrap: nowrap; gap: 8px;">
-                    <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0; transition: width 0.2s ease;">
-                        <option value="apng" selected>APNG(코코포리아 최적화)</option>
-                        <option value="gif">GIF</option>
-                        <option value="mp4">MP4 (원본 화질)</option>
-                    </select>
-                    
-                    <div id="bgOptionWrapper" style="display:none; align-items:center; gap:5px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
-                        <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
-                            <div class="color-combo">
-                                <input type="color" id="gifBgColor" value="#ffffff" oninput="$('gifBgHex').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave();" title="배경 색상">
-                                <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
+                <div class="control-group" style="border-bottom:none; padding-bottom:0;">
+                    <h3>8. 출력 파일 형식</h3>
+                    <div class="row" style="flex-wrap: nowrap; gap: 8px;">
+                        <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0; transition: width 0.2s ease;">
+                            <option value="apng" selected>APNG(코코포리아 최적화)</option>
+                            <option value="gif">GIF</option>
+                            <option value="mp4">MP4 (원본 화질)</option>
+                        </select>
+                        
+                        <div id="bgOptionWrapper" style="display:none; align-items:center; gap:5px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
+                            <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
+                                <div class="color-combo">
+                                    <input type="color" id="gifBgColor" value="#ffffff" oninput="$('gifBgHex').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave();" title="배경 색상">
+                                    <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
+                                </div>
                             </div>
+                            <div id="transCheckWrapper" style="display:flex; align-items:center;">
+                                <label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label>
+                            </div>
+                            <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;">
+                                <input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">
+                                코코포
+                            </label>
                         </div>
-                        <div id="transCheckWrapper" style="display:flex; align-items:center;">
-                            <label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label>
-                        </div>
-                        <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;">
-                            <input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">
-                            코코포
-                        </label>
+                    </div>
+                    
+                    <div style="margin-top:15px; display:flex; gap:10px;">
+                        <button id="previewBtn" class="action-btn" style="flex:1; margin-top:0;">▶ 재생</button>
+                        <button id="generateBtn" class="action-btn" style="flex:1; margin-top:0;">🎬 저장</button>
                     </div>
                 </div>
-                
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button id="previewBtn" class="action-btn" style="flex:1; margin-top:0;">▶ 재생</button>
-                    <button id="generateBtn" class="action-btn" style="flex:1; margin-top:0;">🎬 저장</button>
-                </div>
-            </div>
             </div>
         </div>
     </div>
@@ -622,7 +628,7 @@
         window.$ = function(id) { 
             return document.getElementById(id); 
         };
-        const canvasEl = $('canvas');
+        const canvasEl = window.$('canvas');
         const ctx = canvasEl.getContext('2d', { willReadFrequently: true });
         
         let layers = [];
@@ -655,7 +661,7 @@
         };
 
         window.toggleAdvAlign = function(span) { 
-            const wrap = $('advAlignWrapper'); 
+            const wrap = window.$('advAlignWrapper'); 
             if(wrap.style.display === 'none') { 
                 wrap.style.display = 'block'; 
                 span.innerText = '상세 조절 접기 ▲'; 
@@ -666,8 +672,8 @@
         };
         
         window.togglePostUI = function() { 
-            const wrap = $('postOptions');
-            if ($('postActive').checked) {
+            const wrap = window.$('postOptions');
+            if (window.$('postActive').checked) {
                 wrap.style.display = 'flex';
             } else {
                 wrap.style.display = 'none';
@@ -675,8 +681,8 @@
         };
 
         window.toggleEndingUI = function() { 
-            const wrap = $('endingOptions');
-            if ($('endActive').checked) {
+            const wrap = window.$('endingOptions');
+            if (window.$('endActive').checked) {
                 wrap.style.display = 'block';
             } else {
                 wrap.style.display = 'none';
@@ -684,83 +690,82 @@
         };
         
         window.toggleCustomSpeed = function() { 
-            $('customSpeedWrapper').style.display = $('animSpeed').value === 'custom' ? 'flex' : 'none'; 
+            window.$('customSpeedWrapper').style.display = window.$('animSpeed').value === 'custom' ? 'flex' : 'none'; 
         };
         
         window.toggleCustomTypeSpeed = function() { 
-            $('customTypeSpeedWrapper').style.display = $('typeSpeed').value === 'custom' ? 'flex' : 'none'; 
+            window.$('customTypeSpeedWrapper').style.display = window.$('typeSpeed').value === 'custom' ? 'flex' : 'none'; 
         };
         
         window.toggleBgColor = function() { 
-            const v = $('quality').value;
-            const wrap = $('bgOptionWrapper');
-            const transOpt = $('transCheckWrapper'); 
-            const qualitySelect = $('quality'); // 드롭다운 너비 조절용 변수
+            const v = window.$('quality').value;
+            const wrap = window.$('bgOptionWrapper');
+            const transOpt = window.$('transCheckWrapper'); 
+            const qualitySelect = window.$('quality');
             
             if (v === 'gif') { 
                 wrap.style.display = 'flex'; 
                 transOpt.style.display = 'flex'; 
-                qualitySelect.style.width = '110px'; // 체크박스 공간 확보를 위해 너비 축소
+                qualitySelect.style.width = '110px';
             } else if (v === 'mp4') { 
                 wrap.style.display = 'flex'; 
                 transOpt.style.display = 'none'; 
-                $('gifTransparentCheck').checked = false; 
+                window.$('gifTransparentCheck').checked = false; 
                 window.toggleTrans(); 
-                qualitySelect.style.width = '110px'; // 공간 확보를 위해 너비 축소
+                qualitySelect.style.width = '110px';
             } else { 
                 wrap.style.display = 'none'; 
-                qualitySelect.style.width = '225px'; // APNG일 경우 원래 넓이로 복구
+                qualitySelect.style.width = '225px';
             } 
-        };
         };
         
         window.toggleTrans = function() { 
-            const isTrans = $('gifTransparentCheck').checked; 
-            $('gifBgColor').disabled = isTrans; 
-            $('gifBgHex').disabled = isTrans; 
-            $('ccfoliaBgCheck').disabled = isTrans; 
-            $('colorComboWrapper').style.opacity = isTrans ? '0.4' : '1'; 
-            $('colorComboWrapper').style.pointerEvents = isTrans ? 'none' : 'auto'; 
+            const isTrans = window.$('gifTransparentCheck').checked; 
+            window.$('gifBgColor').disabled = isTrans; 
+            window.$('gifBgHex').disabled = isTrans; 
+            window.$('ccfoliaBgCheck').disabled = isTrans; 
+            window.$('colorComboWrapper').style.opacity = isTrans ? '0.4' : '1'; 
+            window.$('colorComboWrapper').style.pointerEvents = isTrans ? 'none' : 'auto'; 
             window.draw(); 
             window.triggerAutoSave(); 
         };
 
         const getDuration = function() { 
-            if ($('animSpeed').value === 'custom') {
-                return parseInt($('customSpeed').value) || 2000;
+            if (window.$('animSpeed').value === 'custom') {
+                return parseInt(window.$('customSpeed').value) || 2000;
             } else {
-                return parseInt($('animSpeed').value);
+                return parseInt(window.$('animSpeed').value);
             }
         };
 
         const getTypeSpeedMs = function() { 
-            if ($('typeSpeed').value === 'custom') {
-                return parseInt($('customTypeSpeed').value) || 100;
+            if (window.$('typeSpeed').value === 'custom') {
+                return parseInt(window.$('customTypeSpeed').value) || 100;
             } else {
-                return parseInt($('typeSpeed').value);
+                return parseInt(window.$('typeSpeed').value);
             }
         };
 
         const getEndTypeSpeedMs = function() { 
-            if ($('endTypeSpeed').value === 'custom') {
-                return parseInt($('endCustomTypeSpeed').value) || 100;
+            if (window.$('endTypeSpeed').value === 'custom') {
+                return parseInt(window.$('endCustomTypeSpeed').value) || 100;
             } else {
-                return parseInt($('endTypeSpeed').value) || 0;
+                return parseInt(window.$('endTypeSpeed').value) || 0;
             }
         };
         
         const getFontStr = function(sz) { 
-            let italic = $('gItalic').checked ? 'italic ' : '';
-            let bold = $('gBold').checked ? 'bold ' : '';
-            let size = sz || parseInt($('gFontSize').value) || 60;
-            return italic + bold + size + 'px "' + $('globalFont').value + '"';
+            let italic = window.$('gItalic').checked ? 'italic ' : '';
+            let bold = window.$('gBold').checked ? 'bold ' : '';
+            let size = sz || parseInt(window.$('gFontSize').value) || 60;
+            return italic + bold + size + 'px "' + window.$('globalFont').value + '"';
         };
 
         const getEndFontStr = function(sz) { 
-            let italic = $('endItalic').checked ? 'italic ' : '';
-            let bold = $('endBold').checked ? 'bold ' : '';
-            let size = sz || parseInt($('endFontSize').value) || 60;
-            return italic + bold + size + 'px "' + $('endFont').value + '"';
+            let italic = window.$('endItalic').checked ? 'italic ' : '';
+            let bold = window.$('endBold').checked ? 'bold ' : '';
+            let size = sz || parseInt(window.$('endFontSize').value) || 60;
+            return italic + bold + size + 'px "' + window.$('endFont').value + '"';
         };
 
         const getExtraFontStr = function(el) {
@@ -773,7 +778,7 @@
             if (!text) return { w: 0, h: 0 };
             
             ctx.font = isEndPhaseCheck ? getEndFontStr(fSize) : getFontStr(fSize);
-            let isVert = isEndPhaseCheck ? $('endVertical').checked : $('gVertical').checked;
+            let isVert = isEndPhaseCheck ? window.$('endVertical').checked : window.$('gVertical').checked;
             
             if (isVert) {
                 let w = 0;
@@ -809,8 +814,8 @@
         };
 
         window.resizeCanvas = function() { 
-            W = parseInt($('canvasW').value) || 600; 
-            H = parseInt($('canvasH').value) || 800; 
+            W = parseInt(window.$('canvasW').value) || 600; 
+            H = parseInt(window.$('canvasH').value) || 800; 
             canvasEl.width = W; 
             canvasEl.height = H; 
             window.draw(); 
@@ -838,7 +843,7 @@
             db: null,
             init: function() { 
                 return new Promise((res, rej) => { 
-                    const req = indexedDB.open('CCfoliaCutinDB_PRO_Final_v8', 1); 
+                    const req = indexedDB.open('CCfoliaCutinDB_PRO_Final_v12', 1); 
                     req.onupgradeneeded = function(e) { 
                         if (!e.target.result.objectStoreNames.contains('data')) {
                             e.target.result.createObjectStore('data'); 
@@ -898,7 +903,7 @@
             autoSaveTimer = setTimeout(async function() { 
                 try { 
                     await localDB.set('ccfolia_cutin_backup', JSON.stringify(getProjectData())); 
-                    const st = $('autoSaveStatus'); 
+                    const st = window.$('autoSaveStatus'); 
                     if (st) { 
                         st.innerText = "✓ 방금 전 저장됨"; 
                         setTimeout(function() { 
@@ -940,47 +945,47 @@
                     };
                 }),
                 settings: { 
-                    gap: $('gap').value, 
-                    zigzagOffset: $('zigzagOffset').value, 
-                    globalFont: $('globalFont').value, 
-                    gFontSize: $('gFontSize').value, 
-                    gBold: $('gBold').checked, 
-                    gItalic: $('gItalic').checked, 
-                    gShadow: $('gShadow').checked, 
-                    gStroke: $('gStroke').checked, 
-                    gStrokeColor: $('gStrokeColor').value, 
-                    gStrokeHex: $('gStrokeHex').value, 
-                    gStrokeWidth: $('gStrokeWidth').value, 
-                    gVertical: $('gVertical').checked, 
-                    typeSpeed: $('typeSpeed').value, 
-                    customTypeSpeed: $('customTypeSpeed').value, 
-                    animSpeed: $('animSpeed').value, 
-                    customSpeed: $('customSpeed').value, 
-                    globalEffect: $('globalEffect').value, 
-                    globalEffectDur: $('globalEffectDur').value,
-                    quality: $('quality').value, 
-                    gifTransparentCheck: $('gifTransparentCheck').checked, 
-                    gifBgColor: $('gifBgColor').value, 
-                    gifBgHex: $('gifBgHex').value, 
-                    ccfoliaBgCheck: $('ccfoliaBgCheck').checked, 
+                    gap: window.$('gap').value, 
+                    zigzagOffset: window.$('zigzagOffset').value, 
+                    globalFont: window.$('globalFont').value, 
+                    gFontSize: window.$('gFontSize').value, 
+                    gBold: window.$('gBold').checked, 
+                    gItalic: window.$('gItalic').checked, 
+                    gShadow: window.$('gShadow').checked, 
+                    gStroke: window.$('gStroke').checked, 
+                    gStrokeColor: window.$('gStrokeColor').value, 
+                    gStrokeHex: window.$('gStrokeHex').value, 
+                    gStrokeWidth: window.$('gStrokeWidth').value, 
+                    gVertical: window.$('gVertical').checked, 
+                    typeSpeed: window.$('typeSpeed').value, 
+                    customTypeSpeed: window.$('customTypeSpeed').value, 
+                    animSpeed: window.$('animSpeed').value, 
+                    customSpeed: window.$('customSpeed').value, 
+                    globalEffect: window.$('globalEffect').value, 
+                    globalEffectDur: window.$('globalEffectDur').value,
+                    quality: window.$('quality').value, 
+                    gifTransparentCheck: window.$('gifTransparentCheck').checked, 
+                    gifBgColor: window.$('gifBgColor').value, 
+                    gifBgHex: window.$('gifBgHex').value, 
+                    ccfoliaBgCheck: window.$('ccfoliaBgCheck').checked, 
                     canvasW: W, 
                     canvasH: H,
-                    postActive: $('postActive').checked,
-                    endActive: $('endActive').checked, 
-                    endOpacity: $('endOpacity').value, 
-                    endEffect: $('endEffect').value, 
-                    endEffectSpeed: $('endEffectSpeed').value,
-                    endTypeSpeed: $('endTypeSpeed').value, 
-                    endCustomTypeSpeed: $('endCustomTypeSpeed').value, 
-                    endVertical: $('endVertical').checked, 
-                    endBold: $('endBold').checked, 
-                    endItalic: $('endItalic').checked, 
-                    endShadow: $('endShadow').checked, 
-                    endStroke: $('endStroke').checked, 
-                    endStrokeColor: $('endStrokeColor').value, 
-                    endStrokeHex: $('endStrokeHex').value, 
-                    endStrokeWidth: $('endStrokeWidth').value, 
-                    endFont: $('endFont').value
+                    postActive: window.$('postActive').checked,
+                    endActive: window.$('endActive').checked, 
+                    endOpacity: window.$('endOpacity').value, 
+                    endEffect: window.$('endEffect').value, 
+                    endEffectSpeed: window.$('endEffectSpeed').value,
+                    endTypeSpeed: window.$('endTypeSpeed').value, 
+                    endCustomTypeSpeed: window.$('endCustomTypeSpeed').value, 
+                    endVertical: window.$('endVertical').checked, 
+                    endBold: window.$('endBold').checked, 
+                    endItalic: window.$('endItalic').checked, 
+                    endShadow: window.$('endShadow').checked, 
+                    endStroke: window.$('endStroke').checked, 
+                    endStrokeColor: window.$('endStrokeColor').value, 
+                    endStrokeHex: window.$('endStrokeHex').value, 
+                    endStrokeWidth: window.$('endStrokeWidth').value, 
+                    endFont: window.$('endFont').value
                 }
             };
         };
@@ -990,48 +995,48 @@
             if(s) {
                 let textInputs = ['gap', 'zigzagOffset', 'gFontSize', 'gStrokeWidth', 'typeSpeed', 'customTypeSpeed', 'animSpeed', 'customSpeed', 'globalEffect', 'globalEffectDur', 'quality', 'canvasW', 'canvasH', 'endOpacity', 'endEffect', 'endEffectSpeed', 'endTypeSpeed', 'endCustomTypeSpeed', 'endStrokeWidth'];
                 textInputs.forEach(function(id) { 
-                    if(s[id] !== undefined && $(id)) {
-                        $(id).value = s[id]; 
+                    if(s[id] !== undefined && window.$(id)) {
+                        window.$(id).value = s[id]; 
                     }
                 });
                 
                 let checkInputs = ['gBold', 'gItalic', 'gShadow', 'gStroke', 'gVertical', 'gifTransparentCheck', 'ccfoliaBgCheck', 'postActive', 'endActive', 'endVertical', 'endBold', 'endItalic', 'endShadow', 'endStroke'];
                 checkInputs.forEach(function(id) { 
-                    if(s[id] !== undefined && $(id)) {
-                        $(id).checked = !!s[id]; 
+                    if(s[id] !== undefined && window.$(id)) {
+                        window.$(id).checked = !!s[id]; 
                     }
                 });
                 
                 let colorInputs = ['gStrokeColor', 'gStrokeHex', 'gifBgColor', 'gifBgHex', 'endStrokeColor', 'endStrokeHex'];
                 colorInputs.forEach(function(id) { 
-                    if(s[id] !== undefined && $(id)) {
-                        $(id).value = s[id]; 
+                    if(s[id] !== undefined && window.$(id)) {
+                        window.$(id).value = s[id]; 
                     }
                 });
 
-                if (s.globalFont && !Array.from($('globalFont').options).some(opt => opt.value === s.globalFont)) {
+                if (s.globalFont && !Array.from(window.$('globalFont').options).some(opt => opt.value === s.globalFont)) {
                     const opt = document.createElement('option'); 
                     opt.value = opt.text = s.globalFont; 
-                    $('globalFont').appendChild(opt); 
+                    window.$('globalFont').appendChild(opt); 
                     customFonts.push(s.globalFont); 
                 }
-                $('globalFont').value = s.globalFont || 'Black Han Sans';
+                window.$('globalFont').value = s.globalFont || 'Black Han Sans';
 
-                if (s.endFont && !Array.from($('endFont').options).some(opt => opt.value === s.endFont)) {
+                if (s.endFont && !Array.from(window.$('endFont').options).some(opt => opt.value === s.endFont)) {
                     const opt = document.createElement('option'); 
                     opt.value = opt.text = s.endFont; 
-                    $('endFont').appendChild(opt); 
+                    window.$('endFont').appendChild(opt); 
                 }
-                $('endFont').value = s.endFont || 'Black Han Sans';
+                window.$('endFont').value = s.endFont || 'Black Han Sans';
                 
                 W = canvasEl.width = s.canvasW || 600; 
                 H = canvasEl.height = s.canvasH || 800; 
-                $('canvasW').value = W; 
-                $('canvasH').value = H;
+                window.$('canvasW').value = W; 
+                window.$('canvasH').value = H;
 
-                $('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none'; 
-                $('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none'; 
-                $('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
+                window.$('customSpeedWrapper').style.display = s.animSpeed === 'custom' ? 'flex' : 'none'; 
+                window.$('customTypeSpeedWrapper').style.display = s.typeSpeed === 'custom' ? 'flex' : 'none'; 
+                window.$('endCustomTypeSpeedWrapper').style.display = s.endTypeSpeed === 'custom' ? 'flex' : 'none';
                 
                 window.toggleBgColor(); 
                 window.toggleTrans(); 
@@ -1154,29 +1159,8 @@
             e.target.value = ''; 
         };
 
-        window.loadPostImage = function(e, i) { 
-            const file = e.target.files[0]; 
-            if (!file) return; 
-            const r = new FileReader(); 
-            r.onload = function(ev) { 
-                const img = new Image(); 
-                img.onload = function() { 
-                    layers[i].postImg = img; 
-                    layers[i].postSrc = ev.target.result; 
-                    if(!layers[i].postEffect) layers[i].postEffect = 'fade'; 
-                    window.updatePostUI(); 
-                    document.querySelector('input[name="previewState"][value="postMain"]').checked = true; 
-                    window.draw(); 
-                    window.triggerAutoSave(); 
-                }; 
-                img.src = ev.target.result; 
-            }; 
-            r.readAsDataURL(file); 
-            e.target.value = ''; 
-        };
-
         // --- 폰트 업로드 연동 ---
-        $('fontInput').onchange = async function(e) {
+        window.$('fontInput').onchange = async function(e) {
             for (let i = 0; i < e.target.files.length; i++) {
                 let file = e.target.files[i];
                 try {
@@ -1190,19 +1174,20 @@
                         customFonts.push(fontName); 
                         const opt1 = document.createElement('option'); 
                         opt1.value = opt1.text = fontName; 
-                        $('globalFont').appendChild(opt1); 
+                        window.$('globalFont').appendChild(opt1); 
                         
                         const opt2 = document.createElement('option'); 
                         opt2.value = opt2.text = fontName; 
-                        $('endFont').appendChild(opt2); 
+                        window.$('endFont').appendChild(opt2); 
                     }
-                    $('globalFont').value = fontName; 
-                    $('endFont').value = fontName;
+                    window.$('globalFont').value = fontName; 
+                    window.$('endFont').value = fontName;
                 } catch (err) { 
                     alert('폰트 로드 실패: ' + file.name); 
                 }
             }
             e.target.value = '';
+            // 폰트 로드 시간 보장
             setTimeout(function() { 
                 window.updateExtraUI();
                 window.draw(); 
@@ -1211,7 +1196,7 @@
         };
 
         // --- 메인 이미지 등록 ---
-        $('imageInput').onchange = function(e) {
+        window.$('imageInput').onchange = function(e) {
             for (let i = 0; i < e.target.files.length; i++) {
                 let file = e.target.files[i];
                 const r = new FileReader();
@@ -1256,7 +1241,7 @@
                 window.updateEndUI(-1); 
             }
             
-            const list = $('layerList'); 
+            const list = window.$('layerList'); 
             list.innerHTML = '';
             if (layers.length === 0) {
                 list.innerHTML = '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하세요.</p>';
@@ -1351,7 +1336,7 @@
         };
 
         window.updatePostUI = function() {
-            const list = $('postLayerList'); 
+            const list = window.$('postLayerList'); 
             list.innerHTML = '';
             if (layers.length === 0) {
                 list.innerHTML = '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">메인 이미지를 추가하면 목록이 나타납니다.</p>';
@@ -1389,10 +1374,31 @@
             }
         };
 
+        window.loadPostImage = function(e, i) { 
+            const file = e.target.files[0]; 
+            if (!file) return; 
+            const r = new FileReader(); 
+            r.onload = function(ev) { 
+                const img = new Image(); 
+                img.onload = function() { 
+                    layers[i].postImg = img; 
+                    layers[i].postSrc = ev.target.result; 
+                    if(!layers[i].postEffect) layers[i].postEffect = 'fade'; 
+                    window.updatePostUI(); 
+                    document.querySelector('input[name="previewState"][value="postMain"]').checked = true; 
+                    window.draw(); 
+                    window.triggerAutoSave(); 
+                }; 
+                img.src = ev.target.result; 
+            }; 
+            r.readAsDataURL(file); 
+            e.target.value = ''; 
+        };
+
         // --- 독립 추가 레이어 생성기 (개별 폰트 설정 적용) ---
         window.addExtraText = function() {
             let fSize = 40; 
-            ctx.font = 'bold ' + fSize + 'px "' + $('globalFont').value + '"'; 
+            ctx.font = 'bold ' + fSize + 'px "' + window.$('globalFont').value + '"'; 
             let w = ctx.measureText('추가 타이포').width;
             let h = fSize * 1.1;
             
@@ -1400,7 +1406,7 @@
                 type: 'text', content: '추가 타이포', name: '타이포', 
                 anim: 'fade', animSpeed: 1000, scale: 1, rotation: 0, 
                 x: W/2 - w/2, y: H/2 - h/2, fontSize: fSize, color: '#ffffff',
-                font: $('globalFont').value, typeSpeed: 100, isVertical: false,
+                font: window.$('globalFont').value, typeSpeed: 100, isVertical: false,
                 isBold: true, isItalic: false, hasShadow: true, hasStroke: true, strokeColor: '#000000', strokeWidth: 3
             });
             window.updateExtraUI(extraLayers.length - 1); 
@@ -1408,7 +1414,7 @@
             window.triggerAutoSave();
         };
 
-        $('extraImageInput').onchange = function(e) {
+        window.$('extraImageInput').onchange = function(e) {
             for (let i = 0; i < e.target.files.length; i++) {
                 let file = e.target.files[i];
                 const r = new FileReader();
@@ -1443,7 +1449,7 @@
                 window.updateEndUI(-1); 
             }
             
-            const list = $('extraLayerList'); 
+            const list = window.$('extraLayerList'); 
             list.innerHTML = '';
             if (extraLayers.length === 0) {
                 list.innerHTML = '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">독립 요소가 없습니다.</p>';
@@ -1456,9 +1462,9 @@
                 
                 let controls = '';
                 if(el.type === 'text') {
-                    // 개별 타이포 설정 패널
+                    // 개별 타이포 설정 패널 구축
                     let fontOptions = '';
-                    Array.from($('globalFont').options).forEach(opt => {
+                    Array.from(window.$('globalFont').options).forEach(opt => {
                         fontOptions += `<option value="${opt.value}" ${el.font===opt.value?'selected':''}>${opt.text}</option>`;
                     });
                     
@@ -1582,9 +1588,9 @@
 
         window.addEndText = function() {
             let fSize = 120; 
-            let italic = $('endItalic').checked ? 'italic ' : '';
-            let bold = $('endBold').checked ? 'bold ' : '';
-            ctx.font = italic + bold + fSize + 'px "' + $('endFont').value + '"'; 
+            let italic = window.$('endItalic').checked ? 'italic ' : '';
+            let bold = window.$('endBold').checked ? 'bold ' : '';
+            ctx.font = italic + bold + fSize + 'px "' + window.$('endFont').value + '"'; 
             
             let w = ctx.measureText('전투 발생').width;
             let h = fSize * 1.1;
@@ -1600,7 +1606,7 @@
             window.triggerAutoSave();
         };
 
-        $('endImageInput').onchange = function(e) {
+        window.$('endImageInput').onchange = function(e) {
             for (let i = 0; i < e.target.files.length; i++) {
                 let file = e.target.files[i];
                 const r = new FileReader();
@@ -1635,7 +1641,7 @@
                 window.updateExtraUI(-1); 
             }
             
-            const list = $('endLayerList'); 
+            const list = window.$('endLayerList'); 
             list.innerHTML = '';
             if (endLayers.length === 0) {
                 list.innerHTML = '<p style="font-size:12px;text-align:center;color:#777;margin-top:10px;">엔딩 요소가 없습니다.</p>';
@@ -1740,7 +1746,7 @@
         // --- 배치 연산 ---
         window.act = function(type) {
             if (!layers.length) return; 
-            const gap = parseInt($('gap').value) || 0;
+            const gap = parseInt(window.$('gap').value) || 0;
             const l = layers[sel !== -1 ? sel : 0];
             
             if (type === 'zigzag') {
@@ -1751,7 +1757,7 @@
                 });
                 const isVertLayout = tW > tH; 
                 const ref = layers[sel !== -1 ? sel : 0]; 
-                const oVal = parseInt($('zigzagOffset').value) / 100;
+                const oVal = parseInt(window.$('zigzagOffset').value) / 100;
                 
                 if (isVertLayout) { 
                     const rW = ref.img.width * ref.scale; 
@@ -1809,7 +1815,7 @@
             } 
             else if (type === 'crop') {
                 let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; 
-                const fSize = parseInt($('gFontSize').value) || 60;
+                const fSize = parseInt(window.$('gFontSize').value) || 60;
                 
                 layers.forEach(function(ly) { 
                     const w = ly.img.width * ly.scale;
@@ -1839,8 +1845,8 @@
                 
                 W = canvasEl.width = newW; 
                 H = canvasEl.height = newH; 
-                $('canvasW').value = W; 
-                $('canvasH').value = H;
+                window.$('canvasW').value = W; 
+                window.$('canvasH').value = H;
                 
                 let shiftX = newW/2 - cx;
                 let shiftY = newH/2 - cy;
@@ -1889,7 +1895,7 @@
             }
             else if (type === 'center') {
                 let mX = Infinity, mY = Infinity, xX = -Infinity, xY = -Infinity; 
-                const fSize = parseInt($('gFontSize').value) || 60;
+                const fSize = parseInt(window.$('gFontSize').value) || 60;
                 
                 layers.forEach(function(ly) { 
                     const w = ly.img.width * ly.scale;
@@ -1948,7 +1954,7 @@
             e.preventDefault(); 
             let viewState = document.querySelector('input[name="previewState"]:checked').value;
             
-            if (viewState === 'ending' && $('endActive').checked && selEnd !== -1 && endLayers[selEnd]) {
+            if (viewState === 'ending' && window.$('endActive').checked && selEnd !== -1 && endLayers[selEnd]) {
                 if (endLayers[selEnd].type === 'image') {
                     endLayers[selEnd].scale = Math.max(0.05, endLayers[selEnd].scale + (e.deltaY < 0 ? 0.05 : -0.05)); 
                 } else {
@@ -1982,10 +1988,10 @@
             const pos = getPos(e);
             let x = pos.x;
             let y = pos.y;
-            const fSize = parseInt($('gFontSize').value) || 60;
+            const fSize = parseInt(window.$('gFontSize').value) || 60;
             let viewState = document.querySelector('input[name="previewState"]:checked').value;
             
-            if (viewState === 'ending' && $('endActive').checked) {
+            if (viewState === 'ending' && window.$('endActive').checked) {
                 if (selEnd !== -1 && endLayers[selEnd]) { 
                     let el = endLayers[selEnd]; 
                     let w = el.type === 'image' ? el.img.width * el.scale : getTextBounds(el.text, el.fontSize, true).w;
@@ -2104,7 +2110,7 @@
                 if (el.type === 'image') {
                     el.scale = Math.max(0.05, (x - offX) / el.img.width); 
                 } else {
-                    el.fontSize = Math.max(10, Math.round(y - offY)); 
+                    el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); 
                 }
                 window.updateEndUI(); 
             } else if (dragType === 'endMove') { 
@@ -2117,7 +2123,7 @@
                 if (el.type === 'image') {
                     el.scale = Math.max(0.05, (x - offX) / el.img.width); 
                 } else {
-                    el.fontSize = Math.max(10, Math.round(y - offY)); 
+                    el.fontSize = Math.max(10, Math.round((y - offY) / 1.1)); 
                 }
                 window.updateExtraUI(); 
             } else if (dragType === 'extraMove') { 
@@ -2135,7 +2141,7 @@
                 l.textX = l.x + (l.textX - l.x) * r; 
                 l.textY = l.y + (l.textY - l.y) * r; 
             } else if (dragType === 'mainTextRes') { 
-                $('gFontSize').value = Math.max(10, Math.round(y - offY)); 
+                window.$('gFontSize').value = Math.max(10, Math.round((y - offY) / 1.1)); 
             } else if (dragType === 'mainTextMove') { 
                 layers[sel].textX = x - offX; 
                 layers[sel].textY = y - offY; 
@@ -2154,20 +2160,20 @@
             dragType = ''; 
         };
 
-        // --- 백그라운드 렌더링 엔진 ---
+        // --- 백그라운드 렌더링 엔진 (모든 효과/순서 통합) ---
         const renderFrame = function(c, t) {
             const dur = getDuration();
-            const pDur = 1000; // 표정 변경 시간
-            const eDur = parseInt($('endEffectSpeed').value) || 2000;
+            const pDur = 1000;
+            const eDur = parseInt(window.$('endEffectSpeed').value) || 2000;
             
-            const isPostActive = $('postActive').checked;
-            const isEndActive = $('endActive').checked;
-            const endOp = parseInt($('endOpacity').value) / 100;
-            const eff = $('globalEffect').value;
-            const gEffDur = parseInt($('globalEffectDur').value) || 1000;
-            const endEff = $('endEffect').value;
+            const isPostActive = window.$('postActive').checked;
+            const isEndActive = window.$('endActive').checked;
+            const endOp = parseInt(window.$('endOpacity').value) / 100;
+            const eff = window.$('globalEffect').value;
+            const gEffDur = parseInt(window.$('globalEffectDur').value) || 1000;
+            const endEff = window.$('endEffect').value;
 
-            // 타임라인 계산: 메인 -> (표정변경) -> (엔딩)
+            // 순서 확정: 1. 메인(dur) -> 2. 표정 변경(pDur) -> 3. 엔딩 연출(eDur)
             let mainP = Math.min(1, t / dur);
             
             let postStart = dur;
@@ -2197,14 +2203,14 @@
                 isHoriz = layers[0].img.width*layers[0].scale > layers[0].img.height*layers[0].scale;
             }
 
-            // 시네마틱 밀어내기 (가르고 등장)
+            // 시네마틱 밀어내기: 캔버스 크기(W,H)를 온전히 사용하여 화면 밖으로 완벽히 내보냄
             const drawWithTransform = function(x, y, w, h, angle, alphaVal, isMainOrEx, drawFunc) {
                 let cx = x + w/2;
                 let cy = y + h/2;
                 let px = 0;
                 let py = 0;
                 
-                // 가르기 연산: 화면 밖으로 완벽하게 날아가게 (거리 Max(W,H))
+                // 가르고 등장 효과: 중앙에서 화면 밖으로 완벽하게 날리기
                 if (isEndActive && endEff === 'split' && endP > 0 && isMainOrEx) {
                     let sD = ease(endP) * Math.max(W, H); 
                     if (isHoriz) {
@@ -2321,7 +2327,7 @@
                 });
 
                 if(l.text) {
-                    let fSize = parseInt($('gFontSize').value) || 60;
+                    let fSize = parseInt(window.$('gFontSize').value) || 60;
                     let b = getTextBounds(l.text, fSize, false);
                     drawWithTransform(l.textX + dx, l.textY + dy, b.w, b.h, l.textRot, 1.0, true, function() {
                         if (l.anim === 'zoomIn') { 
@@ -2332,11 +2338,11 @@
                         }
                         c.font = getFontStr(fSize); 
                         c.textBaseline = 'top'; 
-                        if ($('gShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 6; } 
-                        if ($('gStroke').checked) { c.lineWidth = parseInt($('gStrokeWidth').value) || 3; c.strokeStyle = $('gStrokeHex').value; }
+                        if (window.$('gShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 6; } 
+                        if (window.$('gStroke').checked) { c.lineWidth = parseInt(window.$('gStrokeWidth').value) || 3; c.strokeStyle = window.$('gStrokeHex').value; }
                         
                         let chars = l.text.split('');
-                        let isVert = $('gVertical').checked;
+                        let isVert = window.$('gVertical').checked;
                         let charX = 0, charY = 0;
                         let tSpdMs = getTypeSpeedMs();
                         
@@ -2346,7 +2352,7 @@
                             if(ch !== ' ') { 
                                 c.fillStyle = l.colors[idx] || '#ffffff'; 
                                 let chX = isVert ? charX + (b.w / 2) - (c.measureText(ch).width / 2) - 2 : charX; 
-                                if ($('gStroke').checked) c.strokeText(ch, chX, charY); 
+                                if (window.$('gStroke').checked) c.strokeText(ch, chX, charY); 
                                 c.fillText(ch, chX, charY); 
                             }
                             if (isVert) {
@@ -2451,24 +2457,24 @@
                     if (el.type === 'text') {
                         c.font = getEndFontStr(el.fontSize); 
                         c.textBaseline = 'top'; 
-                        if ($('endShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.7)'; c.shadowBlur = 6; } 
-                        if ($('endStroke').checked) { c.lineWidth = parseInt($('endStrokeWidth').value) || 4; c.strokeStyle = $('endStrokeHex').value; }
+                        if (window.$('endShadow').checked) { c.shadowColor = 'rgba(0,0,0,0.7)'; c.shadowBlur = 6; } 
+                        if (window.$('endStroke').checked) { c.lineWidth = parseInt(window.$('endStrokeWidth').value) || 4; c.strokeStyle = window.$('endStrokeHex').value; }
                         
                         let chars = el.text.split('');
-                        let isV = $('endVertical').checked;
+                        let isV = window.$('endVertical').checked;
                         let cx_e = 0, cy_e = 0;
                         let tSpdMs = getEndTypeSpeedMs();
                         let baseTime = endStart;
                         
+                        // 타이핑 연산 완벽 복원
                         chars.forEach(function(ch, idx) {
-                            // 타이핑 속도 오류 해결
                             let charP = (tSpdMs === 0) ? 1 : Math.min(Math.max((t - baseTime - idx*tSpdMs)/150, 0), 1);
                             c.globalAlpha = charP * ease(endP); 
                             c.fillStyle = el.colors[idx] || '#ffffff';
                             let chX = isV ? cx_e + (b.w / 2) - (c.measureText(ch).width / 2) - 2 : cx_e; 
                             
                             if(ch !== ' ') {
-                                if ($('endStroke').checked) c.strokeText(ch, chX, cy_e); 
+                                if (window.$('endStroke').checked) c.strokeText(ch, chX, cy_e); 
                                 c.fillText(ch, chX, cy_e);
                             }
                             
@@ -2492,14 +2498,14 @@
             let state = document.querySelector('input[name="previewState"]:checked').value;
             let dur = getDuration();
             let pDur = 1000;
-            let eDur = parseInt($('endEffectSpeed').value) || 2000;
+            let eDur = parseInt(window.$('endEffectSpeed').value) || 2000;
             
             let t = dur; 
-            if (state === 'postMain' && $('postActive').checked) {
+            if (state === 'postMain') {
                 t = dur + pDur;
             }
-            if (state === 'ending' && $('endActive').checked) {
-                t = dur + ($('postActive').checked ? pDur : 0) + eDur;
+            if (state === 'ending') {
+                t = dur + (window.$('postActive').checked ? pDur : 0) + eDur;
             }
             
             offCanvas.width = W; 
@@ -2512,7 +2518,7 @@
             ctx.drawImage(offCanvas, 0, 0);
             
             // 조절 핸들 가시화
-            if (state === 'ending' && $('endActive').checked) {
+            if (state === 'ending' && window.$('endActive').checked) {
                 if (selEnd !== -1 && endLayers[selEnd]) {
                     let el = endLayers[selEnd]; 
                     let b = (el.type==='text') ? getTextBounds(el.text, el.fontSize, true) : {w: el.img.width*el.scale, h: el.img.height*el.scale}; 
@@ -2526,7 +2532,7 @@
                 let l = layers[sel]; 
                 drawHandle(l.x, l.y, l.img.width*l.scale, l.img.height*l.scale, l.rotation); 
                 if(l.text) { 
-                    let b = getTextBounds(l.text, parseInt($('gFontSize').value)||60, false); 
+                    let b = getTextBounds(l.text, parseInt(window.$('gFontSize').value)||60, false); 
                     drawHandle(l.textX, l.textY, b.w, b.h, l.textRot); 
                 }
             }
@@ -2563,19 +2569,19 @@
             cb(t1, t2, t3); 
         };
         
-        $('previewBtn').onclick = function() {
-            if (!layers.length || isPlay || $('generateBtn').disabled) return; 
+        window.$('previewBtn').onclick = function() {
+            if (!layers.length || isPlay || window.$('generateBtn').disabled) return; 
             isPlay = true; 
             sel = -1; selExtra = -1; selEnd = -1; 
             window.updateUI(); window.updateExtraUI(); window.updateEndUI();
             
             let dur = getDuration();
             let pDur = 1000;
-            let eDur = parseInt($('endEffectSpeed').value) || 2000;
-            let isPost = $('postActive').checked;
-            let isEnd = $('endActive').checked;
-            let eff = $('globalEffect').value;
-            let gEffDur = parseInt($('globalEffectDur').value) || 1000;
+            let eDur = parseInt(window.$('endEffectSpeed').value) || 2000;
+            let isPost = window.$('postActive').checked;
+            let isEnd = window.$('endActive').checked;
+            let eff = window.$('globalEffect').value;
+            let gEffDur = parseInt(window.$('globalEffectDur').value) || 1000;
             
             let totalDur = dur; 
             if(isPost) totalDur += pDur; 
@@ -2619,22 +2625,22 @@
             requestAnimationFrame(loop); 
         };
 
-        $('generateBtn').onclick = function() {
+        window.$('generateBtn').onclick = function() {
             if (!layers.length || isPlay) return alert("이미지를 추가하거나 재생을 멈춰주세요.");
             
-            const mode = $('quality').value;
+            const mode = window.$('quality').value;
             const isAPNG = mode === 'apng';
             const isMP4 = mode === 'mp4';
-            const isGifTrans = mode === 'gif' && $('gifTransparentCheck').checked;
-            const bgColor = $('gifBgHex').value;
+            const isGifTrans = mode === 'gif' && window.$('gifTransparentCheck').checked;
+            const bgColor = window.$('gifBgHex').value;
             
             let dur = getDuration();
             let pDur = 1000;
-            let eDur = parseInt($('endEffectSpeed').value) || 2000;
-            let isPost = $('postActive').checked;
-            let isEnd = $('endActive').checked;
-            let eff = $('globalEffect').value;
-            let gEffDur = parseInt($('globalEffectDur').value) || 1000;
+            let eDur = parseInt(window.$('endEffectSpeed').value) || 2000;
+            let isPost = window.$('postActive').checked;
+            let isEnd = window.$('endActive').checked;
+            let eff = window.$('globalEffect').value;
+            let gEffDur = parseInt(window.$('globalEffectDur').value) || 1000;
             
             let totalDur = dur; 
             if(isPost) totalDur += pDur; 
@@ -2653,10 +2659,10 @@
             if (!fn) return; 
             if (!fn.endsWith(ext)) fn += ext;
             
-            const btn = $('generateBtn');
+            const btn = window.$('generateBtn');
             const og = btn.innerText; 
             btn.disabled = true; 
-            $('previewBtn').disabled = true; 
+            window.$('previewBtn').disabled = true; 
             btn.innerText = "⏳ 인코딩 중...";
             
             const endGenerate = function(msg) { 
@@ -2664,7 +2670,7 @@
                 setTimeout(function() { 
                     btn.innerText = og; 
                     btn.disabled = false; 
-                    $('previewBtn').disabled = false; 
+                    window.$('previewBtn').disabled = false; 
                     window.draw(); 
                 }, 2000); 
             };
