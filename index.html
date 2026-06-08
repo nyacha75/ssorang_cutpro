@@ -603,7 +603,7 @@
     </div>
 
     <script>
-        const $ = function(id) { 
+       window.$ = function(id) { 
             return document.getElementById(id); 
         };
         const canvasEl = $('canvas');
@@ -1291,7 +1291,7 @@
             }
         };
 
-        const updatePostUI = function() {
+        window.updatePostUI = function() {
             const list = $('postLayerList'); 
             list.innerHTML = '';
             if (layers.length === 0) {
@@ -1306,7 +1306,8 @@
                 if (l.postImg) {
                     postImgHTML = `<img src="${l.postSrc}" class="thumb" style="margin-right:5px;"> <button class="l-btn del" onclick="layers[${i}].postImg=null; layers[${i}].postSrc=null; window.updatePostUI(); window.draw(); window.triggerAutoSave();">삭제</button>`;
                 } else {
-                    postImgHTML = `<button class="l-btn" onclick="$('postImageInput_${i}').click()">+ 이미지 등록</button>`;
+                    // 오류 방지를 위해 명시적으로 document.getElementById 사용
+                    postImgHTML = `<button class="l-btn" onclick="document.getElementById('postImageInput_${i}').click()">+ 이미지 등록</button>`;
                 }
 
                 div.innerHTML = `
