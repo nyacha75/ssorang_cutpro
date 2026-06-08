@@ -583,37 +583,37 @@
                     </div>
                 </div>
 
-                <div class="control-group" style="border-bottom:none; padding-bottom:0;">
-                    <h3>8. 출력 파일 형식</h3>
-                    <div class="row" style="flex-wrap: nowrap; gap: 8px;">
-                        <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0;">
-                            <option value="apng" selected>APNG(코코포리아 최적화)</option>
-                            <option value="gif">GIF</option>
-                            <option value="mp4">MP4 (원본 화질)</option>
-                        </select>
-                        
-                        <div id="bgOptionWrapper" style="display:none; align-items:center; gap:8px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
-                            <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
-                                <div class="color-combo">
-                                    <input type="color" id="gifBgColor" value="#ffffff" oninput="$('gifBgHex').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave();" title="배경 색상">
-                                    <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
-                                </div>
-                            </div>
-                            <div id="transCheckWrapper" style="display:flex; align-items:center;">
-                                <label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label>
-                            </div>
-                            <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;">
-                                <input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">
-                                코코포
-                            </label>
-                        </div>
-                    </div>
+              <div class="control-group" style="border-bottom:none; padding-bottom:0;">
+                <h3>8. 출력 파일 형식</h3>
+                <div class="row" style="flex-wrap: nowrap; gap: 8px;">
+                    <select id="quality" onchange="toggleBgColor(); triggerAutoSave();" style="width: 225px; font-size: 12px; flex-shrink: 0; transition: width 0.2s ease;">
+                        <option value="apng" selected>APNG(코코포리아 최적화)</option>
+                        <option value="gif">GIF</option>
+                        <option value="mp4">MP4 (원본 화질)</option>
+                    </select>
                     
-                    <div style="margin-top:15px; display:flex; gap:10px;">
-                        <button id="previewBtn" class="action-btn" style="flex:1; margin-top:0;">▶ 재생</button>
-                        <button id="generateBtn" class="action-btn" style="flex:1; margin-top:0;">🎬 저장</button>
+                    <div id="bgOptionWrapper" style="display:none; align-items:center; gap:5px; background:#f5f5f5; border-radius:4px; border:1px solid #E8D8C8; padding:3px 6px; flex:1; min-width:0;">
+                        <div id="colorComboWrapper" style="display:flex; align-items:center; transition:0.2s;">
+                            <div class="color-combo">
+                                <input type="color" id="gifBgColor" value="#ffffff" oninput="$('gifBgHex').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave();" title="배경 색상">
+                                <input type="text" id="gifBgHex" value="#ffffff" maxlength="7" oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/i)) { $('gifBgColor').value=this.value; $('ccfoliaBgCheck').checked=false; draw(); triggerAutoSave(); }">
+                            </div>
+                        </div>
+                        <div id="transCheckWrapper" style="display:flex; align-items:center;">
+                            <label class="fx-label" style="font-weight:bold; color:#0055FF; margin:0;"><input type="checkbox" id="gifTransparentCheck" onchange="toggleTrans();">투명</label>
+                        </div>
+                        <label style="font-size:11px; display:flex; align-items:center; cursor:pointer; color:#0055FF; font-weight:bold; margin:0; margin-left:auto;">
+                            <input type="checkbox" id="ccfoliaBgCheck" onchange="if(this.checked){ $('gifBgHex').value='#2b2b2b'; $('gifBgColor').value='#2b2b2b'; } else { $('gifBgHex').value='#ffffff'; $('gifBgColor').value='#ffffff'; } draw(); triggerAutoSave();">
+                            코코포
+                        </label>
                     </div>
                 </div>
+                
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <button id="previewBtn" class="action-btn" style="flex:1; margin-top:0;">▶ 재생</button>
+                    <button id="generateBtn" class="action-btn" style="flex:1; margin-top:0;">🎬 저장</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -695,17 +695,23 @@
             const v = $('quality').value;
             const wrap = $('bgOptionWrapper');
             const transOpt = $('transCheckWrapper'); 
+            const qualitySelect = $('quality'); // 드롭다운 너비 조절용 변수
+            
             if (v === 'gif') { 
                 wrap.style.display = 'flex'; 
                 transOpt.style.display = 'flex'; 
+                qualitySelect.style.width = '110px'; // 체크박스 공간 확보를 위해 너비 축소
             } else if (v === 'mp4') { 
                 wrap.style.display = 'flex'; 
                 transOpt.style.display = 'none'; 
                 $('gifTransparentCheck').checked = false; 
                 window.toggleTrans(); 
+                qualitySelect.style.width = '110px'; // 공간 확보를 위해 너비 축소
             } else { 
                 wrap.style.display = 'none'; 
+                qualitySelect.style.width = '225px'; // APNG일 경우 원래 넓이로 복구
             } 
+        };
         };
         
         window.toggleTrans = function() { 
